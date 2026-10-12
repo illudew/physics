@@ -190,8 +190,13 @@ ch1_sections = [
  defn("向量",p("既有大小又有方向的量称为<strong>向量</strong>（矢量）。在直角坐标系中，向量 $\\vec{a}$ 可表示为：")+
  fml("\\vec{a} = a_x\\vec{i} + a_y\\vec{j} + a_z\\vec{k} = (a_x, a_y, a_z)")+
  p("其模（大小）为 $|\\vec{a}|=\\sqrt{a_x^2+a_y^2+a_z^2}$。"))+
- note(p("只有大小没有方向的量称为标量。向量与起点无关，可自由平移（自由向量）。单位向量 $\\vec{a}^0 = \\dfrac{\\vec{a}}{|\\vec{a}|}$。"))+
- der(p("<strong>由模长公式推导单位向量：</strong>设 $\\vec{a}^0 = \\lambda\\vec{a}$ 且 $|\\vec{a}^0|=1$，则 $|\\lambda\\vec{a}|=|\\lambda||\\vec{a}|=1$，取 $\\lambda>0$ 得 $\\lambda=1/|\\vec{a}|$，故 $\\vec{a}^0=\\vec{a}/|\\vec{a}|$。"))
+ note(p("只有大小没有方向的量称为<strong>标量</strong>。向量与起点无关，可自由平移，称为<strong>自由向量</strong>，故只有大小与方向两个要素。"))+
+ der(p("<strong>模长公式推导：</strong>先把二维情形作为起点。设 $\\vec{a}$ 在 $xy$ 平面内的分量为 $(a_x,a_y)$，由勾股定理其长度为 $\\sqrt{a_x^2+a_y^2}$；再把它作为一条直角边、与垂直的 $z$ 分量 $a_z$ 构成直角三角形，长度即为")+
+ fml("|\\vec{a}|=\\sqrt{\\left(\\sqrt{a_x^2+a_y^2}\\right)^2+a_z^2}=\\sqrt{a_x^2+a_y^2+a_z^2}")+
+ p("这就是三维模长公式，其本质是三次勾股定理（正交分解后可逐维叠加）。"))+
+ der(p("<strong>单位向量推导：</strong>要求 $\\vec{a}^0$ 与 $\\vec{a}$ 同向，故设 $\\vec{a}^0=\\lambda\\vec{a}$ 且 $\\lambda>0$。由数乘对模的作用 $|\\lambda\\vec{a}|=\\lambda|\\vec{a}|$，令其等于 $1$：")+
+ fml("\\lambda|\\vec{a}|=1\\ \\Longrightarrow\\ \\lambda=\\dfrac{1}{|\\vec{a}|},\\qquad \\vec{a}^0=\\dfrac{\\vec{a}}{|\\vec{a}|}")+
+ p("即把向量按模长归一化，得到模为 $1$ 而方向不变的向量。"))
 )},
 {"id":"v1s1-2","name":"向量的加法与数乘","tags":["def","thm","der"],"brief":"平行四边形法则、三角形法则与数乘运算律。",
 "fig":"vector_add","figCap":"向量加法的平行四边形法则：a+b 为平行四边形对角线",
@@ -204,14 +209,21 @@ ch1_sections = [
  thm("运算律",p("加法满足交换律、结合律；数乘满足结合律与分配律：")+
  fml("\\vec{a}+\\vec{b}=\\vec{b}+\\vec{a},\\quad (\\vec{a}+\\vec{b})+\\vec{c}=\\vec{a}+(\\vec{b}+\\vec{c})")+
  fml("\\lambda(\\mu\\vec{a})=(\\lambda\\mu)\\vec{a},\\quad \\lambda(\\vec{a}+\\vec{b})=\\lambda\\vec{a}+\\lambda\\vec{b}"))+
- der(p("<strong>交换律推导：</strong>分量形式中 $a_i+b_i=b_i+a_i$（实数加法交换律），故各分量相等，向量相等。平行四边形法则中对角线与选取起点无关，几何上亦成立。"))
+ der(p("<strong>向量相等的判据：</strong>在给定坐标系中，$\\vec{a}=\\vec{b}\\iff$ 三个分量分别相等 $a_x=b_x,\\ a_y=b_y,\\ a_z=b_z$。据此，向量运算律的证明都可归结为实数运算律。"))+
+ der(p("<strong>加法交换律推导：</strong>由分量形式，第 $i$ 分量为 $(\\vec{a}+\\vec{b})_i=a_i+b_i$。由实数加法交换律 $a_i+b_i=b_i+a_i=(\\vec{b}+\\vec{a})_i$，三个分量逐一相等，故 $\\vec{a}+\\vec{b}=\\vec{b}+\\vec{a}$。几何上，平行四边形的两条对角线同向同长，与先沿哪条边平移无关。"))+
+ der(p("<strong>数乘模长推导：</strong>将 $\\lambda\\vec{a}$ 的三个分量 $(\\lambda a_x,\\lambda a_y,\\lambda a_z)$ 代入模长公式：")+
+ fml("|\\lambda\\vec{a}|=\\sqrt{(\\lambda a_x)^2+(\\lambda a_y)^2+(\\lambda a_z)^2}=|\\lambda|\\sqrt{a_x^2+a_y^2+a_z^2}=|\\lambda|\\,|\\vec{a}|")+
+ p("当 $\\lambda<0$ 时各分量同时变号，方向与原向量相反，这也说明了 $\\lambda$ 的符号控制方向、$|\\lambda|$ 控制长度。"))
 )},
 {"id":"v1s1-3","name":"线性相关与无关","tags":["def","thm","der"],"brief":"判断向量组是否可互相线性表示。",
 "body":wrap(
  defn("线性组合",p("对向量 $\\vec{a}_1,\\vec{a}_2,\\ldots,\\vec{a}_n$，表达式 $k_1\\vec{a}_1+k_2\\vec{a}_2+\\cdots+k_n\\vec{a}_n$ 称为它们的<strong>线性组合</strong>。"))+
  defn("线性相关",p("若存在不全为零的数 $k_1,\\ldots,k_n$ 使 $\\sum k_i\\vec{a}_i=\\vec{0}$，则称向量组<strong>线性相关</strong>；否则称<strong>线性无关</strong>。"))+
  thm("判定定理",p("① 两个向量线性相关 $\\iff$ 它们平行；<br>② 三个向量线性相关 $\\iff$ 它们共面；<br>③ $n$ 维空间中 $n+1$ 个向量必线性相关。"))+
- der(p("<strong>三向量共面推导：</strong>若 $\\vec{a},\\vec{b},\\vec{c}$ 线性相关，存在不全为零的 $k_1,k_2,k_3$ 使 $k_1\\vec{a}+k_2\\vec{b}+k_3\\vec{c}=\\vec{0}$。不妨 $k_3\\neq 0$，则 $\\vec{c}=-(k_1/k_3)\\vec{a}-(k_2/k_3)\\vec{b}$，即 $\\vec{c}$ 可由 $\\vec{a},\\vec{b}$ 线性表示，故三向量共面。反之，若共面，$\\vec{c}$ 可表为 $\\vec{a},\\vec{b}$ 的线性组合，即存在相关关系。"))
+ der(p("<strong>三向量共面推导：</strong>若 $\\vec{a},\\vec{b},\\vec{c}$ 线性相关，则存在不全为零的 $k_1,k_2,k_3$ 使 $k_1\\vec{a}+k_2\\vec{b}+k_3\\vec{c}=\\vec{0}$。不妨 $k_3\\neq 0$，移项得 $\\vec{c}=-\\dfrac{k_1}{k_3}\\vec{a}-\\dfrac{k_2}{k_3}\\vec{b}$，即 $\\vec{c}$ 落在 $\\vec{a},\\vec{b}$ 张成的平面内，三向量共面。<br>反之，若三向量共面，$\\vec{c}$ 必可写成 $\\vec{a},\\vec{b}$ 的线性组合 $\\vec{c}=\\alpha\\vec{a}+\\beta\\vec{b}$，移项即得一个非平凡线性关系，故线性相关。"))+
+ der(p("<strong>行列式判据推导：</strong>把三向量写成 $3\\times 3$ 行列式的三行。若线性相关，设 $\\vec{c}=\\alpha\\vec{a}+\\beta\\vec{b}$，由行列式的线性性（对行可加、可提公因子）：")+
+ fml("\\begin{vmatrix}a_x&a_y&a_z\\\\b_x&b_y&b_z\\\\c_x&c_y&c_z\\end{vmatrix}=\\alpha\\begin{vmatrix}a_x&a_y&a_z\\\\b_x&b_y&b_z\\\\a_x&a_y&a_z\\end{vmatrix}+\\beta\\begin{vmatrix}a_x&a_y&a_z\\\\b_x&b_y&b_z\\\\b_x&b_y&b_z\\end{vmatrix}=0")+
+ p("两行相同则行列式为零。反之，当行列式为零时该齐次方程组系数矩阵奇异，存在非零解，即三向量线性相关。故<strong>三向量线性相关 $\\iff$ 其行列式（混合积）为零</strong>。"))
 )}
 ]},
 {"name":"1.2 点积","color":"#3b82f6","desc":"点积的定义、几何意义、性质与投影",
@@ -224,8 +236,12 @@ ch1_sections = [
  p("其中 $\\theta$ 为 $\\vec{a}$ 与 $\\vec{b}$ 的夹角（$0\\le\\theta\\le\\pi$）。分量形式：")+
  fml("\\vec{a}\\cdot\\vec{b} = a_xb_x + a_yb_y + a_zb_z"))+
  thm("性质",p("① $\\vec{a}\\cdot\\vec{a}=|\\vec{a}|^2$；<br>② $\\vec{a}\\perp\\vec{b}\\iff\\vec{a}\\cdot\\vec{b}=0$；<br>③ 交换律 $\\vec{a}\\cdot\\vec{b}=\\vec{b}\\cdot\\vec{a}$；<br>④ 分配律 $\\vec{a}\\cdot(\\vec{b}+\\vec{c})=\\vec{a}\\cdot\\vec{b}+\\vec{a}\\cdot\\vec{c}$。"))+
- der(p("<strong>几何意义推导：</strong>$\\vec{b}$ 在 $\\vec{a}$ 方向上的投影长度为 $|\\vec{b}|\\cos\\theta$，故 $\\vec{a}\\cdot\\vec{b}=|\\vec{a}|(|\\vec{b}|\\cos\\theta)$。当 $\\vec{a}$ 为单位向量时，点积即为投影长度。由此可定义投影向量 $\\mathrm{proj}_{\\vec{a}}\\vec{b}=\\dfrac{\\vec{a}\\cdot\\vec{b}}{|\\vec{a}|^2}\\vec{a}$。"))+
- der(p("<strong>分量形式推导：</strong>利用 $\\vec{i}\\cdot\\vec{i}=\\vec{j}\\cdot\\vec{j}=\\vec{k}\\cdot\\vec{k}=1$，$\\vec{i}\\cdot\\vec{j}=\\vec{j}\\cdot\\vec{k}=\\vec{k}\\cdot\\vec{i}=0$，将 $\\vec{a}=a_x\\vec{i}+a_y\\vec{j}+a_z\\vec{k}$，$\\vec{b}=b_x\\vec{i}+b_y\\vec{j}+b_z\\vec{k}$ 展开点积，交叉项为零，得 $\\vec{a}\\cdot\\vec{b}=a_xb_x+a_yb_y+a_zb_z$。"))
+ der(p("<strong>几何意义推导：</strong>$\\vec{b}$ 在 $\\vec{a}$ 方向上的投影长度为 $|\\vec{b}|\\cos\\theta$，故 $\\vec{a}\\cdot\\vec{b}=|\\vec{a}|(|\\vec{b}|\\cos\\theta)$，即 $\\vec{a}$ 的模乘以 $\\vec{b}$ 在 $\\vec{a}$ 上的投影。当 $\\vec{a}$ 为单位向量时，点积恰好等于投影长度。"))+
+ der(p("<strong>投影向量推导：</strong>设 $\\vec{b}$ 在 $\\vec{a}$ 上的投影向量为 $\\mathrm{proj}_{\\vec{a}}\\vec{b}=k\\vec{a}$（方向沿 $\\vec{a}$）。要求剩余部分与 $\\vec{a}$ 垂直，即 $(\\vec{b}-k\\vec{a})\\cdot\\vec{a}=0$，展开得 $\\vec{a}\\cdot\\vec{b}-k|\\vec{a}|^2=0$，解得 $k=\\dfrac{\\vec{a}\\cdot\\vec{b}}{|\\vec{a}|^2}$，故")+
+ fml("\\mathrm{proj}_{\\vec{a}}\\vec{b}=\\dfrac{\\vec{a}\\cdot\\vec{b}}{|\\vec{a}|^2}\\vec{a}"))+
+ der(p("<strong>分量形式推导：</strong>利用正交基的性质 $\\vec{i}\\cdot\\vec{i}=\\vec{j}\\cdot\\vec{j}=\\vec{k}\\cdot\\vec{k}=1$，$\\vec{i}\\cdot\\vec{j}=\\vec{j}\\cdot\\vec{k}=\\vec{k}\\cdot\\vec{i}=0$。将 $\\vec{a}=a_x\\vec{i}+a_y\\vec{j}+a_z\\vec{k}$、$\\vec{b}=b_x\\vec{i}+b_y\\vec{j}+b_z\\vec{k}$ 代入，由分配律展开为九项，交叉项因基矢正交而为零，只剩三个同基矢项：")+
+ fml("\\vec{a}\\cdot\\vec{b}=a_xb_x+a_yb_y+a_zb_z")+
+ p("这正是点积最常用的计算式：把几何定义化归为分量乘积之和。"))
 )}
 ]},
 {"name":"1.3 叉积与混合积","color":"#1d4ed8","desc":"叉积的定义、右手定则、行列式计算，以及混合积",
@@ -240,7 +256,10 @@ ch1_sections = [
  p("展开得 $(a_yb_z-a_zb_y,\\ a_zb_x-a_xb_z,\\ a_xb_y-a_yb_x)$。"))+
  thm("性质",p("① 反交换律：$\\vec{a}\\times\\vec{b}=-\\vec{b}\\times\\vec{a}$；<br>② $\\vec{a}\\parallel\\vec{b}\\iff\\vec{a}\\times\\vec{b}=0$；<br>③ $|\\vec{a}\\times\\vec{b}|$ 等于以 $\\vec{a},\\vec{b}$ 为邻边的平行四边形面积；<br>④ 分配律：$\\vec{a}\\times(\\vec{b}+\\vec{c})=\\vec{a}\\times\\vec{b}+\\vec{a}\\times\\vec{c}$。"))+
  der(p("<strong>反交换律推导：</strong>由定义，$\\vec{b}\\times\\vec{a}=|\\vec{b}||\\vec{a}|\\sin\\theta\\ \\vec{n}'$，其中 $\\vec{n}'$ 由右手定则从 $\\vec{b}$ 转向 $\\vec{a}$ 确定，与从 $\\vec{a}$ 转向 $\\vec{b}$ 的 $\\vec{n}$ 方向相反，故 $\\vec{n}'=-\\vec{n}$，因此 $\\vec{b}\\times\\vec{a}=-\\vec{a}\\times\\vec{b}$。"))+
- der(p("<strong>模长=面积推导：</strong>平行四边形面积 = 底 $\\times$ 高 = $|\\vec{a}|\\times(|\\vec{b}|\\sin\\theta)=|\\vec{a}||\\vec{b}|\\sin\\theta=|\\vec{a}\\times\\vec{b}|$。"))
+ der(p("<strong>模长=面积推导：</strong>平行四边形面积 = 底 $\\times$ 高 = $|\\vec{a}|\\times(|\\vec{b}|\\sin\\theta)=|\\vec{a}||\\vec{b}|\\sin\\theta=|\\vec{a}\\times\\vec{b}|$。"))+
+ der(p("<strong>行列式与几何定义的等价性：</strong>把行列式按第一行展开，得分量 $(a_yb_z-a_zb_y,\\ a_zb_x-a_xb_z,\\ a_xb_y-a_yb_x)$。先验证正交性：它与 $\\vec{a}$ 的点积 $a_x(a_yb_z-a_zb_y)+a_y(a_zb_x-a_xb_z)+a_z(a_xb_y-a_yb_x)$ 中六项两两相消为零，同理与 $\\vec{b}$ 正交。再验证模长：由拉格朗日恒等式")+
+ fml("|\\vec{a}\\times\\vec{b}|^2=|\\vec{a}|^2|\\vec{b}|^2-(\\vec{a}\\cdot\\vec{b})^2=|\\vec{a}|^2|\\vec{b}|^2\\sin^2\\theta")+
+ p("故该向量模长为 $|\\vec{a}||\\vec{b}|\\sin\\theta$、方向垂直于 $\\vec{a},\\vec{b}$ 平面，正是叉积的几何定义。"))
 )},
 {"id":"v1s3-2","name":"混合积与多重积","tags":["def","thm","der"],"brief":"(a×b)·c 的几何意义为平行六面体体积，以及 BAC-CAB 公式。",
 "body":wrap(
@@ -253,6 +272,7 @@ ch1_sections = [
  thm("BAC-CAB 公式",p("二重叉积满足：")+
  fml("\\vec{a}\\times(\\vec{b}\\times\\vec{c}) = \\vec{b}(\\vec{a}\\cdot\\vec{c})-\\vec{c}(\\vec{a}\\cdot\\vec{b})"))+
  der(p("<strong>体积意义推导：</strong>$|\\vec{a}\\times\\vec{b}|$ 为底面积，$\\vec{c}$ 在垂直于底面方向的投影高为 $|\\vec{c}\\cos\\phi|$（$\\phi$ 为 $\\vec{c}$ 与法向夹角），故体积 $V=|\\vec{a}\\times\\vec{b}||\\vec{c}\\cos\\phi|=|(\\vec{a}\\times\\vec{b})\\cdot\\vec{c}|$。"))+
+ der(p("<strong>轮换对称性推导：</strong>混合积的分量形式是 $[\\vec{a}\\ \\vec{b}\\ \\vec{c}]=\\begin{vmatrix}a_x&a_y&a_z\\\\b_x&b_y&b_z\\\\c_x&c_y&c_z\\end{vmatrix}$。从 $[\\vec{a}\\ \\vec{b}\\ \\vec{c}]$ 到 $[\\vec{b}\\ \\vec{c}\\ \\vec{a}]$ 是把三行作一次<strong>循环轮换</strong>，相当于把第一行依次与后两行作两次相邻交换——偶数次换行不改变行列式，故三者相等。而交换任意两行（奇置换）则变号，这正是 $(\\vec{a}\\times\\vec{b})\\cdot\\vec{c}=-(\\vec{b}\\times\\vec{a})\\cdot\\vec{c}$ 的来源。"))+
  der(p("<strong>BAC-CAB 推导（分量法）：</strong>记 $\\vec{D}=\\vec{b}\\times\\vec{c}$，则 $D_x=b_yc_z-b_zc_y$。$\\vec{a}\\times\\vec{D}$ 的 $x$ 分量为 $a_yD_z-a_zD_y=a_y(b_zc_x-b_xc_z)-a_z(b_xc_y-b_yc_x)=b_x(a_yc_y+a_zc_z)-c_x(a_yb_y+a_zb_z)$。加减 $a_xb_xc_x$ 项，整理得 $b_x(\\vec{a}\\cdot\\vec{c})-c_x(\\vec{a}\\cdot\\vec{b})$。同理 $y,z$ 分量，合并即得 BAC-CAB。"))
 )}
 ]}
@@ -270,7 +290,10 @@ ch2_sections = [
  p("分量形式：$\\dfrac{d\\vec{A}}{dt} = \\dfrac{dA_x}{dt}\\vec{i}+\\dfrac{dA_y}{dt}\\vec{j}+\\dfrac{dA_z}{dt}\\vec{k}$。"))+
  thm("求导法则",p("① $\\dfrac{d}{dt}(\\vec{A}\\pm\\vec{B})=\\dfrac{d\\vec{A}}{dt}\\pm\\dfrac{d\\vec{B}}{dt}$；<br>② $\\dfrac{d}{dt}(\\lambda\\vec{A})=\\dfrac{d\\lambda}{dt}\\vec{A}+\\lambda\\dfrac{d\\vec{A}}{dt}$；<br>③ $\\dfrac{d}{dt}(\\vec{A}\\cdot\\vec{B})=\\dfrac{d\\vec{A}}{dt}\\cdot\\vec{B}+\\vec{A}\\cdot\\dfrac{d\\vec{B}}{dt}$；<br>④ $\\dfrac{d}{dt}(\\vec{A}\\times\\vec{B})=\\dfrac{d\\vec{A}}{dt}\\times\\vec{B}+\\vec{A}\\times\\dfrac{d\\vec{B}}{dt}$。"))+
  der(p("<strong>几何意义推导：</strong>$\\vec{r}(t)$ 为空间曲线的位置矢量，$\\Delta\\vec{r}=\\vec{r}(t+\\Delta t)-\\vec{r}(t)$ 为割线方向向量。当 $\\Delta t\\to 0$ 时，割线趋近于切线，故 $\\dfrac{d\\vec{r}}{dt}=\\lim\\dfrac{\\Delta\\vec{r}}{\\Delta t}$ 沿曲线切线方向，即<strong>切向量</strong>。若 $t$ 为弧长 $s$，则 $\\dfrac{d\\vec{r}}{ds}$ 为单位切向量。"))+
- der(p("<strong>点积求导推导：</strong>$\\dfrac{d}{dt}(\\vec{A}\\cdot\\vec{B})=\\lim\\dfrac{(\\vec{A}+\\Delta\\vec{A})\\cdot(\\vec{B}+\\Delta\\vec{B})-\\vec{A}\\cdot\\vec{B}}{\\Delta t}=\\lim\\left(\\dfrac{\\Delta\\vec{A}}{\\Delta t}\\cdot\\vec{B}+\\vec{A}\\cdot\\dfrac{\\Delta\\vec{B}}{\\Delta t}+\\dfrac{\\Delta\\vec{A}\\cdot\\Delta\\vec{B}}{\\Delta t}\\right)=\\dfrac{d\\vec{A}}{dt}\\cdot\\vec{B}+\\vec{A}\\cdot\\dfrac{d\\vec{B}}{dt}$（最后一项为高阶无穷小）。"))
+ der(p("<strong>点积求导推导：</strong>$\\dfrac{d}{dt}(\\vec{A}\\cdot\\vec{B})=\\lim\\dfrac{(\\vec{A}+\\Delta\\vec{A})\\cdot(\\vec{B}+\\Delta\\vec{B})-\\vec{A}\\cdot\\vec{B}}{\\Delta t}=\\lim\\left(\\dfrac{\\Delta\\vec{A}}{\\Delta t}\\cdot\\vec{B}+\\vec{A}\\cdot\\dfrac{\\Delta\\vec{B}}{\\Delta t}+\\dfrac{\\Delta\\vec{A}\\cdot\\Delta\\vec{B}}{\\Delta t}\\right)=\\dfrac{d\\vec{A}}{dt}\\cdot\\vec{B}+\\vec{A}\\cdot\\dfrac{d\\vec{B}}{dt}$（末项为 $o(\\Delta t)$，取极限为零）。"))+
+ der(p("<strong>叉积求导推导：</strong>同理展开 $\\vec{A}(t+\\Delta t)\\times\\vec{B}(t+\\Delta t)$，利用叉积对加减法的分配律：")+
+ fml("\\dfrac{d}{dt}(\\vec{A}\\times\\vec{B})=\\dfrac{d\\vec{A}}{dt}\\times\\vec{B}+\\vec{A}\\times\\dfrac{d\\vec{B}}{dt}")+
+ p("因叉积反交换（$\\vec{A}\\times\\vec{B}=-\\vec{B}\\times\\vec{A}$），两项中 $\\vec{A}$、$\\vec{B}$ 与各自导数的<strong>先后次序不可交换</strong>，否则会多出一个负号——这是叉积求导与点积求导的关键区别。"))
 )},
 {"id":"v2s1-2","name":"矢量函数的积分（线积分）","tags":["def","thm","der"],"brief":"第一型与第二型曲线积分的定义与计算。",
 "body":wrap(
@@ -290,7 +313,9 @@ ch2_sections = [
  defn("标量场",p("若空间区域 $V$ 内每一点 $M$ 都对应一个标量 $u(M)$，则称在 $V$ 上定义了一个<strong>标量场</strong> $u=u(x,y,z)$。如温度场、密度场、电势场。"))+
  defn("矢量场",p("若空间区域 $V$ 内每一点 $M$ 都对应一个矢量 $\\vec{F}(M)$，则称在 $V$ 上定义了一个<strong>矢量场</strong> $\\vec{F}=\\vec{F}(x,y,z)=(P,Q,R)$。如力场、速度场、电场。"))+
  exa(p("<strong>例：</strong>静电场中电势 $\\phi(x,y,z)$ 是标量场，电场强度 $\\vec{E}=-\\nabla\\phi$ 是矢量场。不可压缩流体的速度场 $\\vec{v}(x,y,z)$ 是矢量场。"))+
- der(p("<strong>场的等值面/矢量线：</strong>标量场用等值面 $u=C$ 描述；矢量场用矢量线（积分曲线满足 $\\dfrac{dx}{P}=\\dfrac{dy}{Q}=\\dfrac{dz}{R}$）描述。等值面与矢量线分别刻画场的空间分布形态。"))
+ der(p("<strong>矢量线微分方程推导：</strong>矢量线是这样的曲线，其上任一点 $M$ 处的切向量 $d\\vec{r}=(dx,dy,dz)$ 与场矢量 $\\vec{F}=(P,Q,R)$ 平行，即 $d\\vec{r}\\times\\vec{F}=\\vec{0}$。写成分量：$(dy\\,R-dz\\,Q,\\ dz\\,P-dx\\,R,\\ dx\\,Q-dy\\,P)=\\vec{0}$，等价于比例式")+
+ fml("\\dfrac{dx}{P}=\\dfrac{dy}{Q}=\\dfrac{dz}{R}")+
+ p("解此一阶微分方程组即得矢量线族。标量场则用等值面 $u=C$ 刻画。等值面与矢量线分别从「分层」与「流线」两个角度描述场在空间中的分布形态。"))
 )},
 {"id":"v2s2-2","name":"方向导数与链式法则","tags":["def","thm","der"],"brief":"方向导数是梯度在该方向的投影。",
 "body":wrap(
@@ -304,7 +329,9 @@ ch2_sections = [
  p("梯度方向是函数增长最快的方向，梯度的模是最大方向导数。"))+
  thm("复合函数链式法则",p("若 $u=u(x,y,z)$，而 $x=x(t),y=y(t),z=z(t)$，则：")+
  fml("\\dfrac{du}{dt} = \\dfrac{\\partial u}{\\partial x}\\dfrac{dx}{dt}+\\dfrac{\\partial u}{\\partial y}\\dfrac{dy}{dt}+\\dfrac{\\partial u}{\\partial z}\\dfrac{dz}{dt} = \\nabla u\\cdot\\dfrac{d\\vec{r}}{dt}"))+
- der(p("<strong>方向导数推导：</strong>设 $\\vec{l}^0=(\\cos\\alpha,\\cos\\beta,\\cos\\gamma)$，沿 $\\vec{l}$ 方向动点坐标为 $x+x_0+\\rho\\cos\\alpha$ 等。由全微分 $du=u_xdx+u_ydy+u_zdz$，除以 $\\rho$ 取极限得 $\\dfrac{\\partial u}{\\partial l}=u_x\\cos\\alpha+u_y\\cos\\beta+u_z\\cos\\gamma=\\nabla u\\cdot\\vec{l}^0$。"))+
+ der(p("<strong>方向导数推导：</strong>设点 $M_0=(x_0,y_0,z_0)$，$\\vec{l}^0=(\\cos\\alpha,\\cos\\beta,\\cos\\gamma)$ 为单位方向。沿 $\\vec{l}$ 方向取动点 $M'=(x_0+\\rho\\cos\\alpha,\\ y_0+\\rho\\cos\\beta,\\ z_0+\\rho\\cos\\gamma)$，故坐标增量 $\\Delta x=\\rho\\cos\\alpha$ 等。由全微分 $\\Delta u=\\dfrac{\\partial u}{\\partial x}\\Delta x+\\dfrac{\\partial u}{\\partial y}\\Delta y+\\dfrac{\\partial u}{\\partial z}\\Delta z+o(\\rho)$，两边除以 $\\rho$ 并取极限：")+
+ fml("\\dfrac{\\partial u}{\\partial l}=\\lim_{\\rho\\to 0}\\dfrac{\\Delta u}{\\rho}=\\dfrac{\\partial u}{\\partial x}\\cos\\alpha+\\dfrac{\\partial u}{\\partial y}\\cos\\beta+\\dfrac{\\partial u}{\\partial z}\\cos\\gamma=\\nabla u\\cdot\\vec{l}^0")+
+ p("即方向导数等于梯度在方向 $\\vec{l}^0$ 上的投影。"))+
  der(p("<strong>链式法则推导：</strong>由全微分 $du=u_xdx+u_ydy+u_zdz$，两边除以 $dt$，因 $dx=x'(t)dt$ 等，得 $\\dfrac{du}{dt}=u_xx'+u_yy'+u_zz'=\\nabla u\\cdot\\dfrac{d\\vec{r}}{dt}$。几何上表示沿轨道 $\\vec{r}(t)$ 函数的变化率等于梯度与速度的点积。"))
 )},
 {"id":"v2s2-3","name":"梯度的运算性质","tags":["thm","der","app"],"brief":"梯度的四则运算与复合函数梯度规则。",
@@ -362,7 +389,11 @@ ch3_sections = [
 "body":wrap(
  thm("高斯公式",p("设空间闭区域 $V$ 由分片光滑闭合曲面 $S$ 围成，$\\vec{F}$ 在 $V$ 上有连续偏导数，则：")+
  fml("\\oiint_S \\vec{F}\\cdot d\\vec{S} = \\iiint_V (\\nabla\\cdot\\vec{F})\\,dV"))+
- der(p("<strong>证明思路：</strong>将 $V$ 分割为无数小体积元。每个小体积元的通量等于其散度乘以体积（散度定义）。相邻小体积元的公共面通量相互抵消（法向相反），最终只剩下外表面 $S$ 的通量，即得高斯公式。严格证明需用多元函数积分中值定理与极限。"))+
+ der(p("<strong>证明（分割-求和-取极限）：</strong>用平行于坐标面的平面把闭区域 $V$ 分割成 $N$ 个边长 $\\Delta x,\\Delta y,\\Delta z$ 的小长方体 $V_k$。<br><strong>① 小长方体通量：</strong>由散度定义，每个小长方体对其表面的净通量等于散度乘以体积：")+
+ fml("\\Phi_k=(\\nabla\\cdot\\vec{F})(M_k)\\,\\Delta V_k+o(\\Delta V_k)")+
+ p("其中 $M_k$ 为第 $k$ 块内一点。"))+
+ der(p("<strong>② 内部面成对抵消：</strong>相邻两块长方体共享一个内表面。对该面，左块、右块的外法向相反而面积元相同，故 $\\vec{F}\\cdot\\vec{n}\\,dS$ 贡献恰好相消。于是求和 $\\sum_k\\Phi_k$ 后所有内表面贡献为零，只剩外表面 $S$ 的通量。"))+
+ der(p("<strong>③ 取极限：</strong>令分割无限加细（$\\max\\Delta x\\to 0$），左端 $\\sum_k\\Phi_k\\to\\oiint_S\\vec{F}\\cdot d\\vec{S}$；右端由黎曼和收敛为体积分 $\\iiint_V(\\nabla\\cdot\\vec{F})\\,dV$。两边取极限相等，即得 $\\oiint_S\\vec{F}\\cdot d\\vec{S}=\\iiint_V(\\nabla\\cdot\\vec{F})\\,dV$。"))+
  app(p("<strong>电磁学应用：</strong>电场高斯定理 $\\oiint_S\\vec{E}\\cdot d\\vec{S}=\\dfrac{q}{\\varepsilon_0}$，写成微分形式为 $\\nabla\\cdot\\vec{E}=\\dfrac{\\rho}{\\varepsilon_0}$，其中 $\\rho$ 为电荷密度。磁场 $\\nabla\\cdot\\vec{B}=0$ 表明磁场无源（无磁单极子）。"))
 )},
 {"id":"v3s3-2","name":"斯托克斯公式","tags":["thm","der","app"],"brief":"闭合曲线环量等于旋度穿过曲面的通量。",
@@ -370,7 +401,11 @@ ch3_sections = [
  thm("斯托克斯公式",p("设光滑曲面 $S$ 的边界为分段光滑闭合曲线 $L$，$\\vec{F}$ 在 $S$ 上有连续偏导数，则：")+
  fml("\\oint_L \\vec{F}\\cdot d\\vec{l} = \\iint_S (\\nabla\\times\\vec{F})\\cdot d\\vec{S}")+
  p("其中 $L$ 的正向与 $S$ 的法向满足右手定则。"))+
- der(p("<strong>证明思路：</strong>将曲面 $S$ 分割为无数小面元。每个小面元边界的环量等于旋度在该面元法向的投影乘以面积（旋度定义）。相邻面元公共边界的环量相互抵消（方向相反），最终只剩下外边界 $L$ 的环量。"))+
+ der(p("<strong>证明（以 $F_x\\,dx$ 项为例）：</strong>设 $S:z=z(x,y)\\ (x,y)\\in D$，取上侧法向 $d\\vec{S}=(-z_x,-z_y,1)\\,dxdy$，边界 $L$ 在 $xy$ 平面的投影为 $\\partial D$。沿 $L$ 有 $z=z(x,y)$，故")+
+ fml("\\oint_L F_x\\,dx=\\oint_{\\partial D}F_x\\big(x,y,z(x,y)\\big)\\,dx")+
+ p("由格林公式（取 $P=F_x,\\ Q=0$，即 $\\oint_{\\partial D}P\\,dx=-\\iint_D\\dfrac{\\partial P}{\\partial y}dxdy$）：")+
+ fml("\\oint_{\\partial D}F_x\\,dx=-\\iint_D\\left(\\dfrac{\\partial F_x}{\\partial y}+\\dfrac{\\partial F_x}{\\partial z}\\dfrac{\\partial z}{\\partial y}\\right)dxdy")+
+ p("对 $F_y\\,dy$、$F_z\\,dz$ 同样处理，把三项按 $z_x,z_y$ 归并，所得恰为 $\\iint_S(\\nabla\\times\\vec{F})\\cdot d\\vec{S}$ 的展开式，故 $\\oint_L\\vec{F}\\cdot d\\vec{l}=\\iint_S(\\nabla\\times\\vec{F})\\cdot d\\vec{S}$。一般曲面可由若干这样的面片拼接，公共内边界方向相反相互抵消，结论不变。"))+
  app(p("<strong>电磁学应用：</strong>法拉第电磁感应定律的微分形式 $\\nabla\\times\\vec{E}=-\\dfrac{\\partial\\vec{B}}{\\partial t}$，由斯托克斯公式可得积分形式 $\\oint_L\\vec{E}\\cdot d\\vec{l}=-\\dfrac{d}{dt}\\iint_S\\vec{B}\\cdot d\\vec{S}$，即感应电动势等于磁通量变化率的负值。"))
 )},
 {"id":"v3s3-3","name":"零恒等式与拉普拉斯算子","tags":["thm","der"],"brief":"旋度的散度为零，梯度的旋度为零。",
@@ -410,7 +445,8 @@ ch4_sections = [
  thm("旋度通式",p("")+
  fml("\\nabla\\times\\vec{F} = \\dfrac{1}{h_1h_2h_3}\\begin{vmatrix}h_1\\vec{e}_1&h_2\\vec{e}_2&h_3\\vec{e}_3\\\\ \\dfrac{\\partial}{\\partial u_1}&\\dfrac{\\partial}{\\partial u_2}&\\dfrac{\\partial}{\\partial u_3}\\\\ h_1F_1&h_2F_2&h_3F_3\\end{vmatrix}"))+
  der(p("<strong>梯度通式推导：</strong>沿 $u_i$ 方向的方向导数 $\\dfrac{\\partial f}{\\partial s_i}=\\dfrac{1}{h_i}\\dfrac{\\partial f}{\\partial u_i}$（因 $ds_i=h_i\\,du_i$），梯度在 $\\vec{e}_i$ 方向分量即为该方向导数，故 $\\nabla f=\\sum_i\\dfrac{1}{h_i}\\dfrac{\\partial f}{\\partial u_i}\\vec{e}_i$。"))+
- der(p("<strong>散度通式推导：</strong>取由 $u_1,u_1+du_1$ 等六个坐标面围成的小体积元，其体积 $dV=h_1h_2h_3\\,du_1du_2du_3$。沿 $u_1$ 方向两面通量差为 $\\dfrac{\\partial}{\\partial u_1}(F_1\\cdot h_2h_3\\,du_2du_3)\\,du_1=\\dfrac{\\partial(h_2h_3F_1)}{\\partial u_1}du_1du_2du_3$。三方向通量和除以体积即得散度通式。"))
+ der(p("<strong>散度通式推导：</strong>取由 $u_1,u_1+du_1$ 等六个坐标面围成的小体积元，其体积 $dV=h_1h_2h_3\\,du_1du_2du_3$。沿 $u_1$ 方向两面通量差为 $\\dfrac{\\partial}{\\partial u_1}(F_1\\cdot h_2h_3\\,du_2du_3)\\,du_1=\\dfrac{\\partial(h_2h_3F_1)}{\\partial u_1}du_1du_2du_3$。三方向通量和除以体积即得散度通式。"))+
+ der(p("<strong>旋度通式推导：</strong>以 $\\vec{e}_1$ 方向为例，取 $u_2u_3$ 坐标面上的小面元，面积 $h_2h_3\\,du_2du_3$。沿其边界（$\\vec{e}_1$ 方向环绕）的环量由 $F_2ds_2+F_3ds_3$ 四项组成，二阶差分相消后为 $\\left[\\dfrac{\\partial(h_3F_3)}{\\partial u_2}-\\dfrac{\\partial(h_2F_2)}{\\partial u_3}\\right]du_2du_3$。除以面积得该方向分量，对 $1,2,3$ 轮换并排成行列式即得旋度通式。"))
 )}
 ]},
 {"name":"4.2 柱坐标系","color":"#8b5cf6","desc":"(r,φ,z) 坐标下的梯度、散度、旋度",
@@ -449,7 +485,7 @@ ch4_sections = [
  thm("球坐标中的拉普拉斯",p("")+
  fml("\\nabla^2 f = \\dfrac{1}{r^2}\\dfrac{\\partial}{\\partial r}\\left(r^2\\dfrac{\\partial f}{\\partial r}\\right)+\\dfrac{1}{r^2\\sin\\theta}\\dfrac{\\partial}{\\partial \\theta}\\left(\\sin\\theta\\dfrac{\\partial f}{\\partial \\theta}\\right)+\\dfrac{1}{r^2\\sin^2\\theta}\\dfrac{\\partial^2 f}{\\partial \\varphi^2}"))+
  der(p("<strong>拉梅系数推导：</strong>$\\dfrac{\\partial x}{\\partial r}=\\sin\\theta\\cos\\varphi$，$\\dfrac{\\partial y}{\\partial r}=\\sin\\theta\\sin\\varphi$，$\\dfrac{\\partial z}{\\partial r}=\\cos\\theta$，故 $h_r=\\sqrt{\\sin^2\\theta(\\cos^2\\varphi+\\sin^2\\varphi)+\\cos^2\\theta}=1$。$\\dfrac{\\partial x}{\\partial \\theta}=r\\cos\\theta\\cos\\varphi$，$\\dfrac{\\partial y}{\\partial \\theta}=r\\cos\\theta\\sin\\varphi$，$\\dfrac{\\partial z}{\\partial \\theta}=-r\\sin\\theta$，故 $h_\\theta=r$。$\\dfrac{\\partial x}{\\partial \\varphi}=-r\\sin\\theta\\sin\\varphi$，$\\dfrac{\\partial y}{\\partial \\varphi}=r\\sin\\theta\\cos\\varphi$，故 $h_\\varphi=r\\sin\\theta$。"))+
- der(p("<strong>拉普拉斯推导：</strong>$\\nabla^2f=\\nabla\\cdot(\\nabla f)$。梯度为 $\\left(\\dfrac{\\partial f}{\\partial r},\\dfrac{1}{r}\\dfrac{\\partial f}{\\partial\\theta},\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial f}{\\partial\\varphi}\\right)$。代入球坐标散度公式：$F_r=\\dfrac{\\partial f}{\\partial r}$，$F_\\theta=\\dfrac{1}{r}\\dfrac{\\partial f}{\\partial\\theta}$，$F_\\varphi=\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial f}{\\partial\\varphi}$。第一项 $\\dfrac{1}{r^2}\\dfrac{\\partial(r^2 f_r)}{\\partial r}$，第二项 $\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial(\\sin\\theta\\cdot\\frac{1}{r}f_\\theta)}{\\partial\\theta}$，第三项 $\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial(\\frac{1}{r\\sin\\theta}f_\\varphi)}{\\partial\\varphi}$，整理即得。"))
+ der(p("<strong>拉普拉斯推导：</strong>由恒等式 $\\nabla^2 f=\\nabla\\cdot(\\nabla f)$，令 $\\vec{F}=\\nabla f$，其分量为 $F_r=\\dfrac{\\partial f}{\\partial r},\\ F_\\theta=\\dfrac{1}{r}\\dfrac{\\partial f}{\\partial\\theta},\\ F_\\varphi=\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial f}{\\partial\\varphi}$。代入球坐标散度公式逐项化简：<br>① $\\dfrac{1}{r^2}\\dfrac{\\partial(r^2F_r)}{\\partial r}=\\dfrac{1}{r^2}\\dfrac{\\partial}{\\partial r}\\left(r^2\\dfrac{\\partial f}{\\partial r}\\right)$；<br>② $\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial(\\sin\\theta F_\\theta)}{\\partial\\theta}=\\dfrac{1}{r^2\\sin\\theta}\\dfrac{\\partial}{\\partial\\theta}\\left(\\sin\\theta\\dfrac{\\partial f}{\\partial\\theta}\\right)$；<br>③ $\\dfrac{1}{r\\sin\\theta}\\dfrac{\\partial F_\\varphi}{\\partial\\varphi}=\\dfrac{1}{r^2\\sin^2\\theta}\\dfrac{\\partial^2 f}{\\partial\\varphi^2}$。三项相加即得球坐标拉普拉斯公式。"))
 )},
 {"id":"v4s3-2","name":"球坐标中的旋度与球对称应用","tags":["thm","der","app"],"brief":"球坐标旋度公式及球对称场的简化。",
 "body":wrap(
@@ -494,7 +530,8 @@ ch5_sections = [
  defn("数乘",p("标量 $\\lambda$ 与张量 $\\mathbf{T}$ 的乘积：$(\\lambda\\mathbf{T})_{ij}=\\lambda T_{ij}$。"))+
  defn("张量积",p("$m$ 阶张量 $\\mathbf{T}$ 与 $n$ 阶张量 $\\mathbf{S}$ 的张量积为 $m+n$ 阶张量：$(\\mathbf{T}\\otimes\\mathbf{S})_{i_1\\cdots i_m j_1\\cdots j_n}=T_{i_1\\cdots i_m}S_{j_1\\cdots j_n}$。"))+
  thm("运算律",p("加法满足交换律、结合律；数乘满足结合律、分配律；张量积满足结合律、对加法的分配律，但不满足交换律。"))+
- der(p("<strong>张量积阶数推导：</strong>一阶张量（矢量）$\\vec{a}$ 有 3 个分量，$\\vec{b}$ 有 3 个分量，张量积 $\\vec{a}\\vec{b}$ 有 $3\\times 3=9$ 个分量 $a_i b_j$，是二阶张量。同理 $n$ 阶张量有 $3^n$ 个分量。张量积使阶数相加。"))
+ der(p("<strong>张量积阶数推导：</strong>设 $\\mathbf{T}$ 为 $m$ 阶张量（分量 $T_{i_1\\cdots i_m}$，共 $3^m$ 个），$\\mathbf{S}$ 为 $n$ 阶张量（共 $3^n$ 个）。张量积的分量带 $m+n$ 个自由指标 $T_{i_1\\cdots i_m}S_{j_1\\cdots j_n}$，个数为 $3^m\\cdot 3^n=3^{m+n}$，故阶数为 $m+n$。例如并矢 $\\vec{a}\\vec{b}$ 是 $1+1=2$ 阶张量，恰有 $9$ 个分量。"))+
+ der(p("<strong>非交换性推导：</strong>由分量定义 $(\\vec{a}\\vec{b})_{ij}=a_ib_j$，$(\\vec{b}\\vec{a})_{ij}=b_ia_j$。一般情况下 $a_ib_j\\neq b_ia_j$，故 $\\vec{a}\\vec{b}\\neq\\vec{b}\\vec{a}$。转置后更清楚：$(\\vec{a}\\vec{b})^T=\\vec{b}\\vec{a}$，即互为转置，这也解释了为何 $\\vec{c}\\cdot(\\vec{a}\\vec{b})\\neq(\\vec{a}\\vec{b})\\cdot\\vec{c}$。"))
 )},
 {"id":"v5s2-2","name":"缩并与内积（点积）","tags":["def","thm","der"],"brief":"缩并降低张量阶数，内积是缩并的一种。",
 "body":wrap(
@@ -542,7 +579,10 @@ ch6_sections = [
  defn("张量场",p("若空间区域 $V$ 内每一点 $M$ 都对应一个张量 $\\mathbf{T}(M)$，则称在 $V$ 上定义了一个<strong>张量场</strong>。二阶张量场表示为 $T_{ij}=T_{ij}(x,y,z)$。"))+
  defn("张量场的连续性与可微性",p("若张量的每个分量 $T_{ij}(x,y,z)$ 都是连续（可微）函数，则称该张量场连续（可微）。张量场的微分运算归结为各分量的偏导数运算。"))+
  exa(p("<strong>例：</strong>连续介质中的应力张量场 $\\sigma_{ij}(x,y,z)$，每点的应力状态由一个二阶张量描述；电磁场中的麦克斯韦应力张量也是二阶张量场。"))+
- der(p("<strong>标量场→矢量场→张量场：</strong>标量场 $u$ 是零阶张量场；梯度 $\\nabla u$ 是一阶张量场（矢量场）；梯度的梯度 $\\nabla\\nabla u$ 是二阶张量场，分量为 $\\dfrac{\\partial^2 u}{\\partial x_i\\partial x_j}$，即二阶导数构成的 Hessian 矩阵。"))
+ der(p("<strong>梯度升阶推导：</strong>标量场 $u$ 是零阶张量场（$3^0=1$ 个分量）。梯度 $\\nabla u=\\left(\\dfrac{\\partial u}{\\partial x_i}\\right)$ 有 $3$ 个分量，升为一阶张量场；再取梯度得 $\\nabla\\nabla u$，分量为 $\\dfrac{\\partial^2 u}{\\partial x_i\\partial x_j}$，共 $9$ 个，即 Hessian 矩阵，是二阶张量场。"))+
+ der(p("<strong>Hessian 是二阶张量的验证：</strong>在正交变换 $\\vec{e}'_i=\\sum_jR_{ij}\\vec{e}_j$ 下，由链式法则 $\\dfrac{\\partial}{\\partial x'_i}=\\sum_jR_{ij}\\dfrac{\\partial}{\\partial x_j}$。二次求导得")+
+ fml("\\dfrac{\\partial^2 u}{\\partial x'_i\\partial x'_j}=\\sum_{k,l}R_{ik}R_{jl}\\dfrac{\\partial^2 u}{\\partial x_k\\partial x_l}")+
+ p("恰满足二阶张量变换法则 $T'_{ij}=\\sum_{k,l}R_{ik}R_{jl}T_{kl}$，故 $\\nabla\\nabla u$ 确为一个（且对称，因混合偏导相等）二阶张量场。"))
 )},
 {"id":"v6s1-2","name":"张量的梯度与散度","tags":["def","thm","der"],"brief":"张量场的梯度升阶，散度降阶。",
 "body":wrap(
@@ -635,14 +675,21 @@ ch7_sections = [
  fml("\\nabla\\cdot(\\vec{F}\\times\\vec{G}) = \\vec{G}\\cdot(\\nabla\\times\\vec{F})-\\vec{F}\\cdot(\\nabla\\times\\vec{G})"))+
  thm("叉积的旋度",p("")+
  fml("\\nabla\\times(\\vec{F}\\times\\vec{G}) = \\vec{F}(\\nabla\\cdot\\vec{G})-\\vec{G}(\\nabla\\cdot\\vec{F})+(\\vec{G}\\cdot\\nabla)\\vec{F}-(\\vec{F}\\cdot\\nabla)\\vec{G}"))+
- der(p("<strong>叉积散度推导：</strong>利用 $\\nabla$ 的双重性，形式上 $\\nabla\\cdot(\\vec{F}\\times\\vec{G})$ 中 $\\nabla$ 分别作用于 $\\vec{F}$ 和 $\\vec{G}$。当 $\\nabla$ 作用于 $\\vec{F}$ 时（$\\vec{G}$ 视为常矢），由矢量恒等式 $\\vec{A}\\cdot(\\vec{B}\\times\\vec{C})=\\vec{B}\\cdot(\\vec{C}\\times\\vec{A})$，得 $(\\nabla\\times\\vec{F})\\cdot\\vec{G}$；当作用于 $\\vec{G}$ 时，得 $\\vec{F}\\cdot(\\vec{G}\\times\\nabla)$，轮换为 $-\\vec{F}\\cdot(\\nabla\\times\\vec{G})$。相加即得。"))+
- der(p("<strong>叉积旋度推导：</strong>用 BAC-CAB 公式 $\\vec{A}\\times(\\vec{B}\\times\\vec{C})=\\vec{B}(\\vec{A}\\cdot\\vec{C})-\\vec{C}(\\vec{A}\\cdot\\vec{B})$，将 $\\vec{A}$ 视为 $\\nabla$。$\\nabla\\times(\\vec{F}\\times\\vec{G})$ 中 $\\nabla$ 分别作用于 $\\vec{F}$ 和 $\\vec{G}$：<br>① $\\nabla$ 作用于 $\\vec{G}$：$\\vec{F}(\\nabla\\cdot\\vec{G})-(\\vec{F}\\cdot\\nabla)\\vec{G}$；<br>② $\\nabla$ 作用于 $\\vec{F}$：$(\\vec{G}\\cdot\\nabla)\\vec{F}-\\vec{G}(\\nabla\\cdot\\vec{F})$（注意符号因 $\\nabla$ 在 $\\vec{F}$ 前而调整）。<br>合并即得四元恒等式。"))
+ der(p("<strong>叉积散度推导（$\\nabla$ 拆分法）：</strong>把 $\\nabla$ 分别作用于 $\\vec{F}$ 与 $\\vec{G}$：$\\nabla\\cdot(\\vec{F}\\times\\vec{G})=\\nabla_F\\cdot(\\vec{F}\\times\\vec{G})+\\nabla_G\\cdot(\\vec{F}\\times\\vec{G})$。<br>① 固定 $\\vec{G}=\\vec{c}$ 为常矢，有辅助恒等式 $\\nabla\\cdot(\\vec{F}\\times\\vec{c})=(\\nabla\\times\\vec{F})\\cdot\\vec{c}$，代回 $\\vec{c}=\\vec{G}$ 得 $\\vec{G}\\cdot(\\nabla\\times\\vec{F})$；<br>② 固定 $\\vec{F}=\\vec{c}$，因 $\\vec{c}\\times\\vec{G}=-(\\vec{G}\\times\\vec{c})$，得 $\\nabla\\cdot(\\vec{c}\\times\\vec{G})=-\\vec{c}\\cdot(\\nabla\\times\\vec{G})$，即 $-\\vec{F}\\cdot(\\nabla\\times\\vec{G})$。<br>两式相加即得 $\\nabla\\cdot(\\vec{F}\\times\\vec{G})=\\vec{G}\\cdot(\\nabla\\times\\vec{F})-\\vec{F}\\cdot(\\nabla\\times\\vec{G})$。"))+
+ der(p("<strong>辅助恒等式验证：</strong>取 $\\vec{c}=\\vec{e}_z$，则 $\\vec{F}\\times\\vec{e}_z=(F_y,-F_x,0)$，其散度为 $\\partial_xF_y-\\partial_yF_x=(\\nabla\\times\\vec{F})_z$；对 $\\vec{e}_x,\\vec{e}_y$ 同理。故对任意常矢成立，这正是拆分法中两个子恒等式的依据。"))+
+ der(p("<strong>叉积旋度推导（$x$ 分量）：</strong>记 $\\vec{W}=\\vec{F}\\times\\vec{G}$，则 $W_y=F_zG_x-F_xG_z$，$W_z=F_xG_y-F_yG_x$，于是")+
+ fml("(\\nabla\\times\\vec{W})_x=\\partial_yW_z-\\partial_zW_y=\\partial_y(F_xG_y-F_yG_x)-\\partial_z(F_zG_x-F_xG_z)")+
+ p("按乘积法则展开，再补上成对相消的项 $\\pm F_x\\partial_xG_x$、$\\pm G_x\\partial_xF_x$，即可把八项凑成四个全导数组合：")+
+ fml("=F_x(\\nabla\\cdot\\vec{G})+(\\vec{G}\\cdot\\nabla)F_x-G_x(\\nabla\\cdot\\vec{F})-(\\vec{F}\\cdot\\nabla)G_x")+
+ p("这正是恒等式右端的 $x$ 分量。对 $y,z$ 分量同理，合并即得 $\\nabla\\times(\\vec{F}\\times\\vec{G})=\\vec{F}(\\nabla\\cdot\\vec{G})-\\vec{G}(\\nabla\\cdot\\vec{F})+(\\vec{G}\\cdot\\nabla)\\vec{F}-(\\vec{F}\\cdot\\nabla)\\vec{G}$。"))
 )},
 {"id":"v7s2-2","name":"点积的梯度展开","tags":["thm","der"],"brief":"∇(F·G) 的四元展开式。",
 "body":wrap(
  thm("点积的梯度",p("")+
  fml("\\nabla(\\vec{F}\\cdot\\vec{G}) = (\\vec{F}\\cdot\\nabla)\\vec{G}+(\\vec{G}\\cdot\\nabla)\\vec{F}+\\vec{F}\\times(\\nabla\\times\\vec{G})+\\vec{G}\\times(\\nabla\\times\\vec{F})"))+
- der(p("<strong>推导：</strong>利用恒等式 $\\vec{A}\\times(\\vec{B}\\times\\vec{C})=\\vec{B}(\\vec{A}\\cdot\\vec{C})-(\\vec{A}\\cdot\\vec{B})\\vec{C}$，解出 $\\vec{B}(\\vec{A}\\cdot\\vec{C})=\\vec{A}\\times(\\vec{B}\\times\\vec{C})+(\\vec{A}\\cdot\\vec{B})\\vec{C}$。<br>取 $\\vec{A}=\\nabla$，$\\vec{B}=\\vec{F}$，$\\vec{C}=\\vec{G}$，则 $\\nabla$ 作用于 $\\vec{G}$ 时：$\\vec{F}(\\nabla\\cdot\\vec{G})=\\nabla\\times(\\vec{F}\\times\\vec{G})+(\\vec{F}\\cdot\\nabla)\\vec{G}$，其中 $\\vec{F}$ 为常矢，$(\\nabla\\times(\\vec{F}\\times\\vec{G}))$ 项处理后得 $\\vec{F}\\times(\\nabla\\times\\vec{G})$ 的贡献。<br>同理 $\\nabla$ 作用于 $\\vec{F}$ 得 $\\vec{G}\\times(\\nabla\\times\\vec{F})+(\\vec{G}\\cdot\\nabla)\\vec{F}$。<br>两部分相加即得完整展开。"))+
+ der(p("<strong>推导（$\\nabla$ 拆分法）：</strong>把 $\\nabla(\\vec{F}\\cdot\\vec{G})$ 拆为 $\\nabla_F(\\vec{F}\\cdot\\vec{G})+\\nabla_G(\\vec{F}\\cdot\\vec{G})$。<br>① 固定 $\\vec{G}=\\vec{c}$，由辅助恒等式 $\\nabla(\\vec{F}\\cdot\\vec{c})=(\\vec{c}\\cdot\\nabla)\\vec{F}+\\vec{c}\\times(\\nabla\\times\\vec{F})$，代回 $\\vec{c}=\\vec{G}$ 得 $(\\vec{G}\\cdot\\nabla)\\vec{F}+\\vec{G}\\times(\\nabla\\times\\vec{F})$；<br>② 固定 $\\vec{F}$，同理得 $(\\vec{F}\\cdot\\nabla)\\vec{G}+\\vec{F}\\times(\\nabla\\times\\vec{G})$。<br>两部分相加即得"))+
+ fml("\\nabla(\\vec{F}\\cdot\\vec{G})=(\\vec{F}\\cdot\\nabla)\\vec{G}+(\\vec{G}\\cdot\\nabla)\\vec{F}+\\vec{F}\\times(\\nabla\\times\\vec{G})+\\vec{G}\\times(\\nabla\\times\\vec{F})")+
+ der(p("<strong>辅助恒等式验证：</strong>以 $x$ 分量验证 $\\nabla(\\vec{F}\\cdot\\vec{c})=(\\vec{c}\\cdot\\nabla)\\vec{F}+\\vec{c}\\times(\\nabla\\times\\vec{F})$。左端 $\\partial_x(\\vec{F}\\cdot\\vec{c})=\\sum_i c_i\\partial_xF_i$；右端 $[(\\vec{c}\\cdot\\nabla)\\vec{F}]_x=\\sum_i c_i\\partial_iF_x$，$[\\vec{c}\\times(\\nabla\\times\\vec{F})]_x=c_y(\\partial_xF_y-\\partial_yF_x)-c_z(\\partial_zF_x-\\partial_xF_z)$。两者相加后 $\\partial_yF_x,\\partial_zF_x$ 项相消，恰等于左端。"))+
  note(p("此式可记忆为：梯度点积 = 方向导数项 + 旋度耦合项。当 $\\vec{F}=\\vec{G}$ 时，$\\nabla(F^2)=2(\\vec{F}\\cdot\\nabla)\\vec{F}+2\\vec{F}\\times(\\nabla\\times\\vec{F})$，常用于流体力学。"))
 )}
 ]},
