@@ -1,0 +1,2159 @@
+# -*- coding: utf-8 -*-
+"""Generate atomic-physics.html with 6 chapters: 卢瑟福模型/玻尔模型/量子力学导论/电子自旋与原子精细结构/泡利不相容原理/X射线."""
+import json
+
+FIG = {
+"rutherford_scatter": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="104" y="24" width="10" height="112" fill="#fef3c7" stroke="#dc2626" stroke-width="1.2"/>
+<text x="118" y="30" font-size="10" fill="#dc2626">金箔</text>
+<line x1="14" y1="80" x2="102" y2="80" stroke="#dc2626" stroke-width="1.6"/>
+<polygon points="102,80 93,76 93,84" fill="#dc2626"/>
+<line x1="114" y1="80" x2="224" y2="80" stroke="#dc2626" stroke-width="1.6"/>
+<polygon points="224,80 215,76 215,84" fill="#dc2626"/>
+<line x1="114" y1="80" x2="220" y2="40" stroke="#b91c1c" stroke-width="1.4"/>
+<line x1="114" y1="80" x2="222" y2="118" stroke="#b91c1c" stroke-width="1.4"/>
+<line x1="114" y1="80" x2="96" y2="40" stroke="#f87171" stroke-width="1.4" stroke-dasharray="4 3"/>
+<circle cx="104" cy="80" r="4" fill="#dc2626"/>
+<text x="14" y="70" font-size="10" fill="#dc2626">α粒子</text>
+<text x="150" y="132" font-size="10" fill="#b91c1c">多数散射角极小</text>
+<text x="70" y="34" font-size="10" fill="#f87171">大角散射</text>
+</svg>''',
+"impact_parameter": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="150" cy="80" r="7" fill="#dc2626"/>
+<text x="160" y="74" font-size="10" fill="#dc2626">核</text>
+<line x1="14" y1="44" x2="224" y2="44" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="16" y="38" font-size="10" fill="#94a3b8">入射方向</text>
+<line x1="150" y1="44" x2="150" y2="80" stroke="#2563eb" stroke-width="1.2"/>
+<polygon points="150,44 146,54 154,54" fill="#2563eb"/>
+<polygon points="150,80 146,70 154,70" fill="#2563eb"/>
+<text x="154" y="66" font-size="10" fill="#2563eb">b</text>
+<path d="M 14 44 Q 120 44 138 78 Q 150 100 224 116" fill="none" stroke="#b91c1c" stroke-width="1.6"/>
+<line x1="150" y1="80" x2="118" y2="80" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="60" y="140" font-size="10" fill="#64748b">轨迹为双曲线，瞄距 b 决定散射角</text>
+</svg>''',
+"rutherford_formula": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="132" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="132" x2="226" y2="132" stroke="#475569" stroke-width="1.2"/>
+<text x="16" y="26" font-size="10" fill="#475569">dσ/dΩ</text>
+<text x="212" y="146" font-size="10" fill="#475569">θ</text>
+<path d="M 44 34 C 70 90 96 122 120 128 C 144 134 180 132 216 132" fill="none" stroke="#dc2626" stroke-width="2"/>
+<line x1="44" y1="34" x2="44" y2="34" stroke="#dc2626"/>
+<polygon points="226,132 216,128 216,136" fill="#475569"/>
+<text x="46" y="26" font-size="10" fill="#dc2626">∝ 1/sin⁴(θ/2)</text>
+<line x1="118" y1="20" x2="118" y2="132" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="100" y="146" font-size="10" fill="#64748b">90°</text>
+<text x="150" y="150" font-size="10" fill="#64748b">散射角增大，截面急剧减小</text>
+</svg>''',
+"electron_discovery": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="60" width="180" height="44" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+<rect x="40" y="66" width="8" height="32" fill="#94a3b8"/>
+<text x="34" y="112" font-size="10" fill="#475569">阴极</text>
+<rect x="150" y="52" width="6" height="60" fill="#94a3b8"/>
+<rect x="170" y="52" width="6" height="60" fill="#94a3b8"/>
+<text x="158" y="126" font-size="10" fill="#475569">阳极</text>
+<line x1="48" y1="82" x2="188" y2="82" stroke="#2563eb" stroke-width="1.6"/>
+<polygon points="188,82 179,78 179,86" fill="#2563eb"/>
+<text x="70" y="76" font-size="10" fill="#2563eb">阴极射线（电子）</text>
+<text x="120" y="150" font-size="10" fill="#64748b">磁场偏转测 e/m</text>
+</svg>''',
+"thomson_model": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="80" r="52" fill="#fee2e2" stroke="#dc2626" stroke-width="1.4"/>
+<g fill="#1d4ed8">
+<circle cx="96" cy="60" r="3.5"/><circle cx="130" cy="52" r="3.5"/><circle cx="150" cy="80" r="3.5"/>
+<circle cx="120" cy="96" r="3.5"/><circle cx="92" cy="94" r="3.5"/><circle cx="110" cy="72" r="3.5"/>
+</g>
+<text x="86" y="148" font-size="10" fill="#64748b">西瓜模型：正电荷球＋嵌镶电子</text>
+<text x="112" y="84" font-size="10" fill="#dc2626">+</text>
+</svg>''',
+"bohr_model": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="88" cy="80" r="8" fill="#dc2626"/>
+<text x="82" y="84" font-size="9" fill="#fff">+</text>
+<circle cx="88" cy="80" r="26" fill="none" stroke="#ea580c" stroke-width="1.2"/>
+<circle cx="88" cy="80" r="46" fill="none" stroke="#ea580c" stroke-width="1.2"/>
+<circle cx="88" cy="80" r="62" fill="none" stroke="#ea580c" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="134" cy="80" r="3.5" fill="#2563eb"/>
+<circle cx="57" cy="52" r="3.5" fill="#2563eb"/>
+<text x="116" y="76" font-size="10" fill="#ea580c">n=1</text>
+<text x="120" y="46" font-size="10" fill="#ea580c">n=2</text>
+<line x1="134" y1="80" x2="200" y2="52" stroke="#f59e0b" stroke-width="1.6"/>
+<polygon points="200,52 190,53 194,61" fill="#f59e0b"/>
+<text x="166" y="44" font-size="10" fill="#f59e0b">hν 跃迁</text>
+<text x="30" y="150" font-size="10" fill="#64748b">定态轨道＋量子跃迁</text>
+</svg>''',
+"energy_levels": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#ea580c" stroke-width="2">
+<line x1="60" y1="132" x2="180" y2="132"/>
+<line x1="60" y1="92" x2="180" y2="92"/>
+<line x1="60" y1="62" x2="180" y2="62"/>
+<line x1="60" y1="42" x2="180" y2="42"/>
+</g>
+<text x="184" y="136" font-size="10" fill="#ea580c">n=1</text>
+<text x="184" y="96" font-size="10" fill="#ea580c">n=2</text>
+<text x="184" y="66" font-size="10" fill="#ea580c">n=3</text>
+<text x="184" y="46" font-size="10" fill="#ea580c">n=4</text>
+<line x1="110" y1="62" x2="110" y2="132" stroke="#dc2626" stroke-width="1.4"/>
+<polygon points="110,132 107,124 113,124" fill="#dc2626"/>
+<line x1="150" y1="92" x2="150" y2="132" stroke="#2563eb" stroke-width="1.4"/>
+<polygon points="150,132 147,124 153,124" fill="#2563eb"/>
+<text x="60" y="22" font-size="10" fill="#64748b">E</text>
+<line x1="34" y1="28" x2="34" y2="140" stroke="#475569" stroke-width="1.2"/>
+<text x="52" y="156" font-size="10" fill="#64748b">能级跃迁发出线状光谱</text>
+</svg>''',
+"emission_spectrum": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="20" y="60" width="200" height="18" fill="#0f172a"/>
+<rect x="150" y="60" width="5" height="18" fill="#ef4444"/>
+<rect x="128" y="60" width="4" height="18" fill="#22d3ee"/>
+<rect x="108" y="60" width="4" height="18" fill="#3b82f6"/>
+<rect x="86" y="60" width="3.5" height="18" fill="#8b5cf6"/>
+<rect x="220" y="60" width="4" height="18" fill="#ef4444"/>
+<text x="150" y="94" font-size="10" fill="#ef4444">Hα</text>
+<text x="124" y="94" font-size="10" fill="#22d3ee">Hβ</text>
+<text x="102" y="94" font-size="10" fill="#3b82f6">Hγ</text>
+<text x="78" y="94" font-size="10" fill="#8b5cf6">Hδ</text>
+<text x="20" y="52" font-size="10" fill="#64748b">巴尔末系可见光谱（波长增大→）</text>
+<line x1="20" y1="132" x2="220" y2="132" stroke="#475569" stroke-width="1.2"/>
+<text x="150" y="148" font-size="10" fill="#64748b">λ</text>
+</svg>''',
+"rydberg": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="24" x2="30" y2="134" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="134" x2="226" y2="134" stroke="#475569" stroke-width="1.2"/>
+<text x="16" y="30" font-size="10" fill="#475569">E</text>
+<text x="212" y="148" font-size="10" fill="#475569">n</text>
+<line x1="46" y1="120" x2="216" y2="120" stroke="#dc2626" stroke-width="2"/>
+<line x1="46" y1="78" x2="216" y2="78" stroke="#ea580c" stroke-width="1.6"/>
+<line x1="46" y1="58" x2="216" y2="58" stroke="#f59e0b" stroke-width="1.6"/>
+<line x1="46" y1="46" x2="216" y2="46" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="34" y="124" font-size="9" fill="#dc2626">1</text>
+<text x="34" y="82" font-size="9" fill="#ea580c">2</text>
+<text x="34" y="62" font-size="9" fill="#f59e0b">3</text>
+<text x="34" y="50" font-size="9" fill="#fbbf24">4</text>
+<line x1="120" y1="58" x2="120" y2="120" stroke="#2563eb" stroke-width="1.2"/>
+<line x1="150" y1="78" x2="150" y2="120" stroke="#0d9488" stroke-width="1.2"/>
+<line x1="180" y1="120" x2="180" y2="140" stroke="#7c3aed" stroke-width="1.2"/>
+<text x="60" y="150" font-size="10" fill="#64748b">线系极限收敛于电离限</text>
+</svg>''',
+"franck_hertz": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="34" y1="20" x2="34" y2="132" stroke="#475569" stroke-width="1.2"/>
+<line x1="34" y1="132" x2="226" y2="132" stroke="#475569" stroke-width="1.2"/>
+<text x="18" y="26" font-size="10" fill="#475569">I</text>
+<text x="204" y="146" font-size="10" fill="#475569">V</text>
+<path d="M 40 128 L 74 40 L 92 126 L 126 44 L 144 124 L 178 48 L 196 122 L 220 56" fill="none" stroke="#ea580c" stroke-width="2"/>
+<line x1="74" y1="20" x2="74" y2="132" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="126" y1="20" x2="126" y2="132" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="58" y="18" font-size="10" fill="#ea580c">4.9 V</text>
+<text x="112" y="18" font-size="10" fill="#ea580c">9.8 V</text>
+<text x="40" y="150" font-size="10" fill="#64748b">峰值间隔即第一激发电位</text>
+</svg>''',
+"sommerfeld": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="88" cy="80" r="6" fill="#dc2626"/>
+<circle cx="88" cy="80" r="40" fill="none" stroke="#ea580c" stroke-width="1.2"/>
+<ellipse cx="88" cy="80" rx="62" ry="30" fill="none" stroke="#f59e0b" stroke-width="1.2"/>
+<ellipse cx="88" cy="80" rx="40" ry="58" fill="none" stroke="#fbbf24" stroke-width="1.2" transform="rotate(90 88 80)"/>
+<circle cx="150" cy="80" r="3" fill="#2563eb"/>
+<text x="130" y="140" font-size="10" fill="#64748b">索末菲椭圆轨道与空间量子化</text>
+</svg>''',
+"photon": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="40" y="96" width="160" height="34" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+<text x="96" y="118" font-size="10" fill="#92400e">金属</text>
+<line x1="40" y1="46" x2="150" y2="88" stroke="#d97706" stroke-width="2"/>
+<polygon points="150,88 139,84 142,76" fill="#d97706"/>
+<text x="46" y="40" font-size="10" fill="#d97706">hν 光子</text>
+<circle cx="168" cy="76" r="3.5" fill="#2563eb"/>
+<line x1="172" y1="74" x2="222" y2="56" stroke="#2563eb" stroke-width="1.4"/>
+<polygon points="222,56 212,58 216,66" fill="#2563eb"/>
+<text x="176" y="48" font-size="10" fill="#2563eb">光电子 Ek</text>
+<text x="40" y="150" font-size="10" fill="#64748b">hν = W + Ek</text>
+</svg>''',
+"debroglie": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="20" y1="80" x2="220" y2="80" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="60" cy="80" r="6" fill="#d97706"/>
+<circle cx="180" cy="80" r="6" fill="#d97706"/>
+<path d="M 60 80 Q 75 44 90 80 T 120 80 T 150 80 T 180 80" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="80" y="40" font-size="10" fill="#2563eb">物质波 λ=h/p</text>
+<text x="52" y="104" font-size="10" fill="#d97706">电子</text>
+<text x="24" y="140" font-size="10" fill="#64748b">驻波条件 2πr = nλ</text>
+</svg>''',
+"uncertainty": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="20" y1="80" x2="220" y2="80" stroke="#cbd5e1" stroke-width="1"/>
+<path d="M 24 80 Q 60 30 96 80 Q 132 130 168 80 Q 196 44 216 80" fill="none" stroke="#d97706" stroke-width="1.6"/>
+<path d="M 60 80 Q 90 52 120 80 Q 150 108 180 80" fill="none" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="3 3"/>
+<line x1="52" y1="112" x2="96" y2="112" stroke="#d97706" stroke-width="1.4"/>
+<polygon points="52,112 60,108 60,116" fill="#d97706"/>
+<polygon points="96,112 88,108 88,116" fill="#d97706"/>
+<text x="60" y="128" font-size="10" fill="#d97706">Δx</text>
+<text x="120" y="30" font-size="10" fill="#7c3aed">窄波包→宽动量谱</text>
+<text x="30" y="150" font-size="10" fill="#64748b">Δx·Δp ≥ ħ/2</text>
+</svg>''',
+"wavefunction": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="80" x2="220" y2="80" stroke="#475569" stroke-width="1"/>
+<line x1="30" y1="24" x2="30" y2="136" stroke="#475569" stroke-width="1.2"/>
+<rect x="30" y="24" width="4" height="112" fill="#d97706"/>
+<rect x="216" y="24" width="4" height="112" fill="#d97706"/>
+<path d="M 34 80 Q 80 20 126 80 Q 172 140 216 80" fill="none" stroke="#2563eb" stroke-width="2"/>
+<path d="M 34 80 Q 60 40 80 44 Q 100 48 100 80 Q 126 122 152 116 Q 178 110 216 80" fill="none" stroke="#7c3aed" stroke-width="1.4" stroke-dasharray="3 3"/>
+<text x="36" y="20" font-size="10" fill="#64748b">|ψ|²</text>
+<text x="150" y="150" font-size="10" fill="#64748b">无限深势阱中的驻波</text>
+</svg>''',
+"potential_well": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="140" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="140" x2="226" y2="140" stroke="#475569" stroke-width="1.2"/>
+<path d="M 40 30 L 70 30 L 70 122 L 190 122 L 190 30 L 220 30" fill="none" stroke="#d97706" stroke-width="2"/>
+<g stroke="#2563eb" stroke-width="1.6">
+<line x1="80" y1="104" x2="180" y2="104"/>
+<line x1="80" y1="80" x2="180" y2="80"/>
+<line x1="80" y1="60" x2="180" y2="60"/>
+</g>
+<text x="184" y="108" font-size="9" fill="#2563eb">n=1</text>
+<text x="184" y="84" font-size="9" fill="#2563eb">n=2</text>
+<text x="184" y="64" font-size="9" fill="#2563eb">n=3</text>
+<text x="34" y="152" font-size="10" fill="#64748b">束缚态能级分立 E∝n²</text>
+</svg>''',
+"tunneling": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="140" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="140" x2="226" y2="140" stroke="#475569" stroke-width="1.2"/>
+<path d="M 34 110 L 104 110 L 104 54 L 146 54 L 146 110 L 220 110" fill="none" stroke="#d97706" stroke-width="2"/>
+<path d="M 40 96 Q 60 90 80 94 Q 100 98 104 62 Q 125 40 146 62 Q 150 98 170 94 Q 195 90 218 96" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="104" y="48" font-size="10" fill="#d97706">势垒</text>
+<text x="150" y="94" font-size="10" fill="#2563eb">|ψ|²</text>
+<text x="40" y="150" font-size="10" fill="#64748b">T≈exp(−2κa) 隧道穿透</text>
+</svg>''',
+"hydrogen_orbital": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="80" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.4"/>
+<text x="44" y="84" font-size="10" fill="#2563eb">1s</text>
+<circle cx="150" cy="80" r="6" fill="#dc2626"/>
+<ellipse cx="150" cy="80" rx="34" ry="20" fill="#fef3c7" stroke="#d97706" stroke-width="1.2" opacity="0.8"/>
+<ellipse cx="150" cy="80" rx="20" ry="34" fill="none" stroke="#ea580c" stroke-width="1.2"/>
+<text x="140" y="122" font-size="10" fill="#b45309">2p</text>
+<text x="24" y="148" font-size="10" fill="#64748b">电子云与角分布</text>
+</svg>''',
+"sterngerlach": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="30" cy="80" r="8" fill="#0d9488"/>
+<text x="14" y="104" font-size="10" fill="#0d9488">银炉</text>
+<line x1="38" y1="80" x2="96" y2="80" stroke="#0d9488" stroke-width="1.6"/>
+<polygon points="96,80 87,76 87,84" fill="#0d9488"/>
+<rect x="96" y="40" width="30" height="80" fill="#ccfbf1" stroke="#0d9488" stroke-width="1.2"/>
+<text x="94" y="34" font-size="10" fill="#0d9488">非均匀磁场</text>
+<line x1="126" y1="72" x2="200" y2="46" stroke="#0d9488" stroke-width="1.4"/>
+<line x1="126" y1="88" x2="200" y2="114" stroke="#0d9488" stroke-width="1.4"/>
+<line x1="204" y1="16" x2="204" y2="144" stroke="#94a3b8" stroke-width="1.5"/>
+<circle cx="204" cy="46" r="3" fill="#0d9488"/>
+<circle cx="204" cy="114" r="3" fill="#0d9488"/>
+<text x="150" y="140" font-size="10" fill="#64748b">分裂为两条 → 自旋 ½</text>
+</svg>''',
+"spin_orbit": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="80" r="42" fill="none" stroke="#0d9488" stroke-width="1.2"/>
+<circle cx="120" cy="80" r="6" fill="#dc2626"/>
+<circle cx="120" cy="38" r="4.5" fill="#2563eb"/>
+<line x1="120" y1="42" x2="120" y2="66" stroke="#2563eb" stroke-width="1.4"/>
+<polygon points="120,66 116,58 124,58" fill="#2563eb"/>
+<text x="126" y="40" font-size="10" fill="#2563eb">自旋 s</text>
+<line x1="120" y1="80" x2="58" y2="104" stroke="#0d9488" stroke-width="1.4"/>
+<polygon points="58,104 68,101 64,94" fill="#0d9488"/>
+<text x="40" y="98" font-size="10" fill="#0d9488">轨道 l</text>
+<text x="120" y="146" font-size="10" fill="#64748b">自旋-轨道耦合 L·S</text>
+</svg>''',
+"fine_structure": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="34" y1="24" x2="34" y2="136" stroke="#475569" stroke-width="1.2"/>
+<line x1="34" y1="136" x2="226" y2="136" stroke="#475569" stroke-width="1.2"/>
+<line x1="60" y1="110" x2="200" y2="110" stroke="#0d9488" stroke-width="2"/>
+<line x1="60" y1="72" x2="200" y2="72" stroke="#0d9488" stroke-width="2"/>
+<line x1="60" y1="66" x2="200" y2="66" stroke="#2563eb" stroke-width="1.6"/>
+<text x="204" y="76" font-size="9" fill="#0d9488">2P₁/₂,₃/₂</text>
+<text x="204" y="114" font-size="9" fill="#0d9488">2S₁/₂</text>
+<line x1="130" y1="66" x2="130" y2="110" stroke="#dc2626" stroke-width="1.2"/>
+<line x1="160" y1="72" x2="160" y2="110" stroke="#f59e0b" stroke-width="1.2"/>
+<text x="40" y="20" font-size="10" fill="#64748b">E</text>
+<text x="44" y="152" font-size="10" fill="#64748b">精细结构双线（钠D线）</text>
+</svg>''',
+"alkali_spectrum": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="136" stroke="#475569" stroke-width="1.2"/>
+<g stroke="#0d9488" stroke-width="1.6">
+<line x1="44" y1="118" x2="150" y2="118"/>
+<line x1="44" y1="86" x2="150" y2="86"/>
+<line x1="44" y1="62" x2="150" y2="62"/>
+</g>
+<line x1="44" y1="98" x2="150" y2="98" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 3"/>
+<line x1="44" y1="74" x2="150" y2="74" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="154" y="122" font-size="9" fill="#0d9488">nS</text>
+<text x="154" y="102" font-size="9" fill="#2563eb">nP</text>
+<text x="154" y="90" font-size="9" fill="#0d9488">nD</text>
+<text x="154" y="78" font-size="9" fill="#2563eb">nF</text>
+<text x="40" y="152" font-size="10" fill="#64748b">碱金属：量子缺 Δ 使能级下移</text>
+</svg>''',
+"zeeman": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="136" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="136" x2="226" y2="136" stroke="#475569" stroke-width="1.2"/>
+<line x1="50" y1="60" x2="96" y2="60" stroke="#0d9488" stroke-width="2"/>
+<text x="40" y="56" font-size="9" fill="#0d9488">B=0</text>
+<g stroke="#2563eb" stroke-width="1.8">
+<line x1="140" y1="48" x2="210" y2="48"/>
+<line x1="140" y1="60" x2="210" y2="60"/>
+<line x1="140" y1="72" x2="210" y2="72"/>
+</g>
+<text x="120" y="34" font-size="10" fill="#2563eb">B≠0 塞曼分裂</text>
+<line x1="110" y1="60" x2="140" y2="60" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="40" y="152" font-size="10" fill="#64748b">ΔE = m_l μ_B B</text>
+</svg>''',
+"shells": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="80" r="10" fill="#dc2626"/>
+<circle cx="120" cy="80" r="30" fill="none" stroke="#7c3aed" stroke-width="1.2"/>
+<circle cx="120" cy="80" r="50" fill="none" stroke="#7c3aed" stroke-width="1.2"/>
+<circle cx="120" cy="80" r="68" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="146" y="72" font-size="10" fill="#7c3aed">K 2</text>
+<text x="168" y="72" font-size="10" fill="#7c3aed">L 8</text>
+<text x="188" y="80" font-size="10" fill="#7c3aed">M 18</text>
+<g fill="#2563eb">
+<circle cx="120" cy="50" r="3"/><circle cx="120" cy="110" r="3"/>
+<circle cx="90" cy="80" r="3"/><circle cx="150" cy="80" r="3"/>
+<circle cx="72" cy="80" r="3"/><circle cx="168" cy="80" r="3"/>
+</g>
+<text x="40" y="150" font-size="10" fill="#64748b">电子壳层最多容纳 2n²</text>
+</svg>''',
+"periodic_table": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#94a3b8" stroke-width="1">
+<rect x="20" y="40" width="20" height="18" fill="#fee2e2"/><rect x="40" y="40" width="20" height="18" fill="#fee2e2"/>
+<rect x="20" y="58" width="20" height="18" fill="#e0f2fe"/><rect x="40" y="58" width="20" height="18" fill="#e0f2fe"/>
+<rect x="20" y="76" width="20" height="18" fill="#e0f2fe"/><rect x="40" y="76" width="20" height="18" fill="#e0f2fe"/>
+<rect x="20" y="94" width="20" height="18" fill="#dcfce7"/><rect x="40" y="94" width="20" height="18" fill="#dcfce7"/>
+</g>
+<text x="24" y="53" font-size="9" fill="#dc2626">1s</text>
+<text x="24" y="71" font-size="9" fill="#2563eb">2s</text>
+<text x="44" y="71" font-size="9" fill="#2563eb">2p</text>
+<text x="24" y="89" font-size="9" fill="#2563eb">3s</text>
+<text x="44" y="89" font-size="9" fill="#2563eb">3p</text>
+<text x="24" y="107" font-size="9" fill="#16a34a">4s</text>
+<text x="80" y="50" font-size="10" fill="#64748b">周期律＝能级填充</text>
+<text x="80" y="66" font-size="10" fill="#64748b">ns→(n−2)f→(n−1)d→np</text>
+<text x="20" y="140" font-size="10" fill="#64748b">s 区 / p 区 / d 区 / f 区</text>
+</svg>''',
+"term_symbol": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="40" y="44" width="160" height="72" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+<text x="86" y="90" font-size="30" fill="#7c3aed">²P₃⁄₂</text>
+<text x="126" y="66" font-size="12" fill="#dc2626">← J</text>
+<text x="134" y="80" font-size="12" fill="#2563eb">← L</text>
+<text x="118" y="106" font-size="12" fill="#16a34a">← 2S+1</text>
+<text x="30" y="140" font-size="10" fill="#64748b">光谱项符号 ²ˢ⁺¹L_J</text>
+<text x="30" y="28" font-size="10" fill="#64748b">多重度 · 轨道 · 总角动量</text>
+</svg>''',
+"xray_tube": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="56" width="180" height="48" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="1.2"/>
+<rect x="44" y="62" width="8" height="36" fill="#94a3b8"/>
+<text x="34" y="112" font-size="10" fill="#475569">阴极</text>
+<rect x="176" y="60" width="14" height="40" fill="#0891b2"/>
+<text x="160" y="118" font-size="10" fill="#0891b2">靶（阳极）</text>
+<line x1="52" y1="80" x2="172" y2="80" stroke="#2563eb" stroke-width="1.6"/>
+<polygon points="172,80 163,76 163,84" fill="#2563eb"/>
+<text x="80" y="74" font-size="10" fill="#2563eb">高速电子</text>
+<line x1="190" y1="72" x2="224" y2="40" stroke="#0891b2" stroke-width="1.6"/>
+<polygon points="224,40 214,44 219,50" fill="#0891b2"/>
+<text x="196" y="58" font-size="10" fill="#0891b2">X射线</text>
+<text x="40" y="150" font-size="10" fill="#64748b">高压加速电子轰击靶材</text>
+</svg>''',
+"xray_spectrum": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="20" x2="30" y2="132" stroke="#475569" stroke-width="1.2"/>
+<line x1="30" y1="132" x2="226" y2="132" stroke="#475569" stroke-width="1.2"/>
+<text x="18" y="26" font-size="10" fill="#475569">I</text>
+<text x="212" y="146" font-size="10" fill="#475569">λ</text>
+<path d="M 40 132 C 60 60 74 44 90 46 C 106 48 108 120 116 124 C 124 126 128 30 136 30 C 144 30 148 124 156 124 C 170 124 200 128 220 130" fill="none" stroke="#0891b2" stroke-width="1.8"/>
+<line x1="90" y1="20" x2="90" y2="132" stroke="#dc2626" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="80" y="18" font-size="9" fill="#dc2626">λmin</text>
+<text x="124" y="26" font-size="9" fill="#0891b2">Kα Kβ 特征线</text>
+<text x="40" y="150" font-size="10" fill="#64748b">连续谱＋特征谱</text>
+</svg>''',
+"moseley": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="34" y1="20" x2="34" y2="132" stroke="#475569" stroke-width="1.2"/>
+<line x1="34" y1="132" x2="226" y2="132" stroke="#475569" stroke-width="1.2"/>
+<text x="8" y="26" font-size="10" fill="#475569">√ν</text>
+<text x="212" y="146" font-size="10" fill="#475569">Z</text>
+<line x1="46" y1="120" x2="216" y2="36" stroke="#0891b2" stroke-width="2"/>
+<circle cx="70" cy="110" r="2.5" fill="#0891b2"/>
+<circle cx="110" cy="86" r="2.5" fill="#0891b2"/>
+<circle cx="150" cy="62" r="2.5" fill="#0891b2"/>
+<circle cx="190" cy="44" r="2.5" fill="#0891b2"/>
+<text x="120" y="40" font-size="10" fill="#0891b2">直线 → √ν = a(Z−b)</text>
+<text x="40" y="150" font-size="10" fill="#64748b">莫塞莱定律确定元素序数</text>
+</svg>''',
+"compton": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<line x1="20" y1="100" x2="110" y2="100" stroke="#0891b2" stroke-width="1.8"/>
+<polygon points="110,100 101,96 101,104" fill="#0891b2"/>
+<circle cx="110" cy="100" r="9" fill="#e2e8f0" stroke="#475569" stroke-width="1.2"/>
+<text x="100" y="120" font-size="9" fill="#475569">电子</text>
+<text x="20" y="92" font-size="10" fill="#0891b2">入射光子 hν</text>
+<line x1="118" y1="94" x2="200" y2="56" stroke="#0891b2" stroke-width="1.6"/>
+<polygon points="200,56 190,58 194,66" fill="#0891b2"/>
+<text x="176" y="48" font-size="10" fill="#0891b2">散射光子 hν'</text>
+<line x1="116" y1="106" x2="200" y2="132" stroke="#2563eb" stroke-width="1.6"/>
+<polygon points="200,132 190,128 192,136" fill="#2563eb"/>
+<text x="164" y="146" font-size="10" fill="#2563eb">反冲电子</text>
+<text x="86" y="96" font-size="10" fill="#64748b">θ</text>
+</svg>''',
+"bragg": '''<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#0891b2" stroke-width="1.6">
+<line x1="30" y1="60" x2="210" y2="60"/>
+<line x1="30" y1="100" x2="210" y2="100"/>
+<line x1="30" y1="140" x2="210" y2="140"/>
+</g>
+<line x1="40" y1="20" x2="90" y2="60" stroke="#2563eb" stroke-width="1.6"/>
+<polygon points="90,60 80,58 84,50" fill="#2563eb"/>
+<line x1="90" y1="60" x2="58" y2="30" stroke="#2563eb" stroke-width="1.4" stroke-dasharray="4 3"/>
+<line x1="60" y1="60" x2="150" y2="42" stroke="#2563eb" stroke-width="1.6"/>
+<polygon points="150,42 140,44 144,52" fill="#2563eb"/>
+<text x="96" y="54" font-size="10" fill="#64748b">θ</text>
+<line x1="60" y1="60" x2="60" y2="100" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="64" y="84" font-size="10" fill="#94a3b8">d</text>
+<text x="150" y="130" font-size="10" fill="#0891b2">2d sinθ = kλ</text>
+</svg>''',
+}
+
+TAG_LABEL = {"def":"定 义","thm":"定 理","der":"推 导","exa":"例 子","app":"应 用","his":"注 记","note":"备 注"}
+
+CORE_FORMULAS = [
+    ("库仑力", "F = \\frac{1}{4\\pi\\varepsilon_0}\\frac{q_1 q_2}{r^2}", "卢瑟福模型中α粒子与原子核之间的库仑斥力"),
+    ("库仑势能", "U(r) = \\frac{1}{4\\pi\\varepsilon_0}\\frac{Ze\\cdot 2e}{r}", "α粒子在核库仑场中的势能"),
+    ("瞄准距与散射角", "b = \\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\cot\\frac{\\theta}{2}", "散射角由瞄准距唯一决定"),
+    ("卢瑟福散射公式", "\\frac{d\\sigma}{d\\Omega} = \\left(\\frac{Ze^2}{8\\pi\\varepsilon_0 E_\\alpha}\\right)^2\\frac{1}{\\sin^4(\\theta/2)}", "库仑散射的微分截面 ∝ sin⁻⁴(θ/2)"),
+    ("散射粒子数", "\\Delta N = N n t\\, d\\sigma", "薄箔散射的计数与截面成正比"),
+    ("最接近距离", "r_{\\min} = \\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\left(1+\\csc\\frac{\\theta}{2}\\right)", "对心碰撞时α粒子离核最近距离"),
+    ("原子核半径上限", "R \\lesssim r_{\\min}(\\theta=180^\\circ)", "由大角散射反推核的尺度"),
+    ("汤姆孙 e/m 测量", "\\frac{e}{m} = \\frac{E}{B^2 r}", "电磁场联合偏转测定电子比荷"),
+    ("密立根油滴", "q = \\frac{6\\pi\\eta v d}{U}", "油滴平衡法测量元电荷"),
+    ("光电效应方程", "h\\nu = W + E_k", "爱因斯坦光电方程，W 为逸出功"),
+    ("光子能量", "E = h\\nu = \\frac{hc}{\\lambda}", "光子的能量与频率成正比"),
+    ("光子动量", "p = \\frac{h}{\\lambda} = \\frac{E}{c}", "光子动量与波长成反比"),
+    ("光电效应红限", "\\nu_0 = \\frac{W}{h}", "能发生光电效应的最低频率"),
+    ("玻尔频率条件", "h\\nu = E_{n_2} - E_{n_1}", "跃迁发出的光子能量等于能级差"),
+    ("角动量量子化", "L = mvr = n\\hbar", "玻尔基本假设之一"),
+    ("玻尔半径", "a_0 = \\frac{4\\pi\\varepsilon_0\\hbar^2}{m_e e^2} = 0.0529\\ \\text{nm}", "氢原子基态轨道半径"),
+    ("氢原子能级", "E_n = -\\frac{m_e e^4}{8\\varepsilon_0^2 h^2}\\frac{1}{n^2} = -\\frac{13.6\\ \\text{eV}}{n^2}", "氢原子定态能量"),
+    ("轨道半径", "r_n = n^2 a_0", "氢原子第 n 条轨道半径"),
+    ("电子轨道速度", "v_n = \\frac{e^2}{2\\varepsilon_0 h n} = \\frac{c}{137 n}", "玻尔轨道上电子的速度"),
+    ("里德伯常数", "R_\\infty = \\frac{m_e e^4}{8\\varepsilon_0^2 h^3 c} = 1.097\\times10^7\\ \\text{m}^{-1}", "氢原子线系的理论极限常数"),
+    ("里德伯公式", "\\frac{1}{\\lambda} = R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)", "氢原子光谱波数公式"),
+    ("类氢离子能级", "E_n = -\\frac{Z^2}{n^2}\\times13.6\\ \\text{eV}", "电荷数为 Z 的类氢离子能级"),
+    ("里德伯公式推广", "\\frac{1}{\\lambda} = Z^2 R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)", "类氢离子光谱波数"),
+    ("巴尔末系", "\\frac{1}{\\lambda} = R\\left(\\frac{1}{2^2}-\\frac{1}{n^2}\\right),\\ n=3,4,\\dots", "氢原子可见光谱系"),
+    ("玻尔对应原理", "\\lim_{n\\to\\infty}\\Delta E \\to h\\nu_{\\text{经典}}", "大量子数下量子结果趋于经典"),
+    ("弗兰克-赫兹", "eU_1 = E_2 - E_1", "第一激发电位与激发能的关系"),
+    ("索末菲量子化", "\\oint p_r\\,dr = n_r h,\\quad \\oint p_\\varphi\\,d\\varphi = k h", "广义玻尔-索末菲量子化条件"),
+    ("德布罗意波长", "\\lambda = \\frac{h}{p} = \\frac{h}{mv}", "物质波波长与动量成反比"),
+    ("加速电子的物质波", "\\lambda = \\frac{h}{\\sqrt{2m_e e U}} = \\frac{1.226}{\\sqrt{U}}\\ \\text{nm}", "经电压 U 加速电子的德布罗意波长"),
+    ("布拉格条件（德布罗意）", "n\\lambda = 2d\\sin\\theta", "电子衍射验证物质波的波动性"),
+    ("不确定关系", "\\Delta x\\,\\Delta p_x \\ge \\frac{\\hbar}{2}", "海森堡位置-动量不确定关系"),
+    ("能量-时间不确定关系", "\\Delta E\\,\\Delta t \\ge \\frac{\\hbar}{2}", "能级寿命与谱线宽度的关系"),
+    ("薛定谔方程", "i\\hbar\\frac{\\partial\\psi}{\\partial t} = -\\frac{\\hbar^2}{2m}\\nabla^2\\psi + U\\psi", "量子力学基本动力学方程"),
+    ("定态薛定谔方程", "-\\frac{\\hbar^2}{2m}\\nabla^2\\psi + U\\psi = E\\psi", "定态问题求解的本征方程"),
+    ("波函数归一化", "\\int_{-\\infty}^{\\infty}|\\psi|^2\\,dx = 1", "概率密度的归一化条件"),
+    ("概率流密度", "\\mathbf{j} = \\frac{\\hbar}{2mi}(\\psi^*\\nabla\\psi - \\psi\\nabla\\psi^*)", "概率守恒的流密度"),
+    ("一维无限深势阱", "E_n = \\frac{n^2 h^2}{8mL^2} = \\frac{n^2\\pi^2\\hbar^2}{2mL^2}", "势阱中粒子的分立能级"),
+    ("一维势阱波函数", "\\psi_n = \\sqrt{\\frac{2}{L}}\\sin\\frac{n\\pi x}{L}", "无限深势阱的归一化本征函数"),
+    ("势垒透射系数", "T \\approx 16\\frac{E(U_0-E)}{U_0^2}e^{-2\\kappa a},\\ \\kappa=\\frac{\\sqrt{2m(U_0-E)}}{\\hbar}", "方势垒的隧道穿透概率"),
+    ("谐振子能级", "E_n = \\left(n+\\frac12\\right)\\hbar\\omega", "线性谐振子的等间距能级"),
+    ("氢原子能级（量子力学）", "E_n = -\\frac{m_e e^4}{8\\varepsilon_0^2 h^2}\\frac{1}{n^2}", "薛定谔方程给出的氢能级与玻尔一致"),
+    ("轨道角动量大小", "L = \\sqrt{l(l+1)}\\,\\hbar", "电子的轨道角动量量子化"),
+    ("角动量 z 分量", "L_z = m_l\\hbar,\\quad m_l = -l,\\dots,l", "轨道磁量子数与空间量子化"),
+    ("氢原子简并度", "g_n = n^2\\ (\\text{不计自旋})", "主量子数 n 对应的能级简并度"),
+    ("径向概率分布", "P(r)\\,dr = |R_{nl}|^2 r^2\\,dr", "电子在半径 r 处的径向概率"),
+    ("玻尔磁子", "\\mu_B = \\frac{e\\hbar}{2m_e} = 9.274\\times10^{-24}\\ \\text{J/T}", "原子磁矩的自然单位"),
+    ("自旋角动量", "S = \\sqrt{s(s+1)}\\,\\hbar,\\ s=\\tfrac12", "电子自旋角动量大小"),
+    ("自旋磁矩", "\\boldsymbol{\\mu}_s = -g_s\\frac{e}{2m_e}\\mathbf{S},\\ g_s\\approx2", "电子自旋的内禀磁矩"),
+    ("自旋磁量子数", "m_s = \\pm\\tfrac12", "自旋在磁场中的两个取向"),
+    ("总角动量", "J = \\sqrt{j(j+1)}\\,\\hbar,\\ j=l\\pm\\tfrac12", "自旋-轨道耦合后的总角动量"),
+    ("自旋轨道耦合能", "\\Delta E_{so} = \\frac{1}{2m_e^2 c^2}\\frac{1}{r}\\frac{dU}{dr}\\,\\mathbf{L}\\cdot\\mathbf{S}", "L·S 耦合引起能级分裂"),
+    ("L·S 期望值", "\\langle\\mathbf{L}\\cdot\\mathbf{S}\\rangle = \\frac{\\hbar^2}{2}[j(j+1)-l(l+1)-s(s+1)]", "由量子数计算耦合能"),
+    ("精细结构常数", "\\alpha = \\frac{e^2}{4\\pi\\varepsilon_0\\hbar c} \\approx \\frac{1}{137}", "表征电磁相互作用强度的无量纲常数"),
+    ("狄拉克精细结构", "E_{nj} = -\\frac{13.6\\ \\text{eV}}{n^2}\\left[1+\\frac{\\alpha^2}{n^2}\\left(\\frac{n}{j+\\tfrac12}-\\frac34\\right)\\right]", "相对论修正后的能级公式"),
+    ("碱金属能级", "E_{nl} = -\\frac{R hc}{(n-\\Delta_l)^2}", "量子缺 Δ_l 修正的碱金属能级"),
+    ("量子缺与贯穿", "\\Delta_l \\uparrow\\ (\\text{当}\\ l\\downarrow)", "角动量越小贯穿越深，量子缺越大"),
+    ("正常塞曼能移", "\\Delta E = m_l\\,\\mu_B B", "磁场中能级的洛伦兹分裂"),
+    ("塞曼频率分裂", "\\Delta\\nu = \\frac{\\mu_B B}{h} = 14\\,\\text{GHz/T}\\cdot B", "正常塞曼分裂的频率间隔"),
+    ("朗德 g 因子", "g_J = 1+\\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}", "反常塞曼效应中的有效磁矩因子"),
+    ("反常塞曼能移", "\\Delta E = g_J m_J\\,\\mu_B B", "包含自旋的塞曼能级分裂"),
+    ("斯特恩-盖拉赫", "F_z = \\mu_z\\frac{\\partial B}{\\partial z}", "非均匀磁场中磁矩受的力"),
+    ("泡利不相容原理", "\\text{同一量子态}(n,l,m_l,m_s)\\ \\text{至多一个电子}", "全同费米子反对称波函数的推论"),
+    ("电子壳层容量", "N_n = 2n^2", "主量子数 n 壳层最多容纳的电子数"),
+    ("次壳层容量", "N_l = 2(2l+1)", "给定 l 的支壳层电子数上限"),
+    ("原子光谱项", "^{2S+1}L_J", "由量子数 S、L、J 标记的原子能级"),
+    ("洪特规则一", "S\\ \\text{取最大}", "基态总自旋取可能的最大值"),
+    ("洪特规则二", "L\\ \\text{取最大}", "同自旋下轨道角动量取最大"),
+    ("洪特规则三", "J = |L-S|\\ (\\text{半满前}),\\ J=L+S\\ (\\text{半满后})", "确定基态 J 值"),
+    ("元素周期律", "\\text{周期长度}\\ 2,8,8,18,18,32,\\dots", "由能级填充次序决定的周期结构"),
+    ("X射线短波极限", "\\lambda_{\\min} = \\frac{hc}{eU} = \\frac{1240}{U(\\text{V})}\\ \\text{nm}", "杜安-亨特定律，轫致辐射最短波长"),
+    ("轫致辐射", "h\\nu_{\\max} = eU", "电子动能全部转化为一个光子"),
+    ("莫塞莱定律", "\\sqrt{\\nu} = a(Z-b)", "特征X射线频率与原子序数的关系"),
+    ("Kα 特征线", "\\frac{1}{\\lambda_{K\\alpha}} = R(Z-1)^2\\left(\\frac{1}{1^2}-\\frac{1}{2^2}\\right)", "Kα 线波数与原子序数的定量关系"),
+    ("布拉格公式", "2d\\sin\\theta = k\\lambda", "X射线在晶面上的相干衍射条件"),
+    ("康普顿位移", "\\Delta\\lambda = \\frac{h}{m_e c}(1-\\cos\\theta)", "散射光子波长的改变量"),
+    ("康普顿波长", "\\lambda_C = \\frac{h}{m_e c} = 2.43\\times10^{-3}\\ \\text{nm}", "电子的康普顿波长"),
+    ("X射线吸收", "I = I_0 e^{-\\mu x} = I_0 e^{-\\mu_m \\rho x}", "X射线在物质中的指数吸收"),
+    ("质量吸收系数", "\\mu_m = \\frac{\\mu}{\\rho}", "吸收系数与密度之比"),
+    ("吸收限", "\\mu\\ \\text{在}\\ \\lambda_K\\ \\text{处突变}", "K 壳层被激发时吸收的突变"),
+    ("X射线荧光", "E_{K\\alpha} = E_K - E_L", "内层空穴被外层电子填充发出特征辐射"),
+]
+
+def js_escape(s):
+    return s.replace("\\","\\\\").replace("`","\\`").replace("${","\\${")
+def fix_lt_math(s):
+    import re
+    return re.sub(r"\$\$[\s\S]*?\$\$|\$[^$\n]*?\$", lambda m: m.group(0).replace("<", "&lt;"), s)
+def defn(t, body): return f'<section class="la-kp-sec la-kp-def"><h5>定 义</h5><p><strong>{t}</strong></p>{body}</section>'
+def thm(t, body): return f'<section class="la-kp-sec la-kp-thm"><h5>定 理 · {t}</h5>{body}</section>'
+def der(body): return f'<section class="la-kp-sec la-kp-der"><h5>推 导</h5>{body}</section>'
+def exa(body): return f'<section class="la-kp-sec la-kp-exa"><h5>例 子</h5>{body}</section>'
+def app(body): return f'<section class="la-kp-sec la-kp-app"><h5>应 用</h5>{body}</section>'
+def note(body): return f'<section class="la-kp-sec la-kp-note"><h5>备 注</h5>{body}</section>'
+def his(body): return f'<section class="la-kp-sec la-kp-his"><h5>注 记</h5>{body}</section>'
+def fml(latex, caption=""):
+    cap = f'<span class="note">{caption}</span>' if caption else ""
+    return f'<div class="la-fml">$${latex}$$ {cap}</div>'
+def p(txt): return f'<p>{txt}</p>'
+def wrap(body): return f'<div class="la-kp">{body}</div>'
+
+ch1_sections = [
+{
+"name": "1.1 原子的早期模型与电子的发现",
+"color": "#dc2626",
+"desc": "阴极射线、电子的发现、电荷量子化与汤姆孙模型",
+"items": [
+{"id":"a1s1-1","name":"阴极射线与电子的发现","tags":["def","der","his"],"brief":"汤姆孙通过电磁偏转测出电子的比荷。",
+ "fig":"electron_discovery","figCap":"阴极射线管：电子束在电场与磁场中偏转，据此测量比荷 e/m",
+ "body": wrap(
+   defn("阴极射线与电子",p("低压气体放电时从阴极发出的射线称为<strong>阴极射线</strong>。汤姆孙（J. J. Thomson，1897）通过电磁偏转证明它是带负电的粒子流，并测出其比荷 $e/m$，这种粒子后来被命名为<strong>电子</strong>。"))+
+   der(p("<strong>比荷的测量原理：</strong>先在正交的电场 $E$、磁场 $B$ 中调节大小，使电子束不发生偏转，此时电场力与洛伦兹力平衡：")+
+   fml("eE = evB \\ \\Rightarrow\\ v = \\frac{E}{B}")+
+   p("然后撤去电场，只保留磁场，电子在磁场中作匀速圆周运动，洛伦兹力提供向心力：")+
+   fml("evB = \\frac{mv^2}{r}\\ \\Rightarrow\\ r = \\frac{mv}{eB}")+
+   p("把 $v=E/B$ 代入并消去 $v$，得到比荷：")+
+   fml("\\frac{e}{m} = \\frac{E}{B^2 r}")+
+   p("汤姆孙测得 $e/m \\approx 1.76\\times10^{11}\\,\\text{C/kg}$，比最轻的氢离子大近两千倍，说明电子质量远小于原子。"))+
+   note(p("电子的发现打破了原子不可分的观念，是原子物理学诞生的标志。"))
+ )},
+{"id":"a1s1-2","name":"密立根油滴实验与电荷量子化","tags":["der","exa"],"brief":"油滴实验证明电荷是基本电荷的整数倍。",
+ "body": wrap(
+   der(p("<strong>无电场时的平衡：</strong>油滴在重力作用下匀速下落，重力与空气浮力、斯托克斯粘滞阻力平衡，设油滴半径 $a$、密度 $\\rho$：")+
+   fml("\\frac{4}{3}\\pi a^3\\rho g = 6\\pi\\eta a v + \\frac{4}{3}\\pi a^3\\rho_{\\text{air}} g")+
+   p("由斯托克斯公式反解油滴半径：")+
+   fml("a = \\sqrt{\\frac{9\\eta v}{2(\\rho-\\rho_{\\text{air}})g}}")+
+   p("<strong>加电场使其静止：</strong>调节板间电压 $U$、板距 $d$，使电场力恰好平衡重力：")+
+   fml("q\\frac{U}{d} = \\frac{4}{3}\\pi a^3\\rho g\\ \\Rightarrow\\ q = \\frac{4\\pi a^3\\rho g d}{3U}")+
+   p("把由 $v$ 求得的 $a$ 代入即得油滴电荷 $q$。密立根重复测量上千次，发现所有 $q$ 都是同一个最小值的整数倍：")+
+   fml("q = n e,\\qquad e = 1.602\\times10^{-19}\\,\\text{C}"))+
+   exa(p("<strong>例：</strong>某油滴在无电场时下落速度 $v$、加电压 $U$ 后静止，由上式算得 $q\\approx3.2\\times10^{-19}\\,\\text{C}=2e$，为基本电荷的两倍。"))+
+   note(p("电荷量子化是自然界最基本的量子化现象之一，夸克带分数电荷，但自由状态下不以分数电荷出现。"))
+ )},
+{"id":"a1s1-3","name":"汤姆孙模型的困难","tags":["der","note"],"brief":"正电荷均匀分布的模型无法解释线状光谱。",
+ "fig":"thomson_model","figCap":"汤姆孙「西瓜模型」：正电荷均匀球内嵌镶着电子",
+ "body": wrap(
+   der(p("<strong>球内电场与电子振荡：</strong>汤姆孙模型把正电荷 $Ze$ 均匀分布在半径 $R$ 的球内，距球心 $r$ 处的电场由高斯定理给出 $E=\\dfrac{Ze\\,r}{4\\pi\\varepsilon_0 R^3}$。质量为 $m_e$ 的电子受到的恢复力为：")+
+   fml("F(r) = -eE = -\\frac{Ze^2 r}{4\\pi\\varepsilon_0 R^3}")+
+   p("这是简谐振动的形式，对应角频率：")+
+   fml("\\omega = \\sqrt{\\frac{Ze^2}{4\\pi\\varepsilon_0 m_e R^3}}")+
+   p("该频率只由正电荷球的半径决定，与电子的振幅无关，因而理论上应给出一条单一频率的谱线（最多因电子数不同而有几条）。"))+
+   note(p("但实验观测到氢原子有丰富而分立的线状光谱（巴尔末系等），且频率不满足上述单一值关系，说明「电子在正电荷球内简谐振动」的图像是错误的。"))
+ )},
+]},
+{
+"name": "1.2 α粒子散射实验",
+"color": "#b91c1c",
+"desc": "α粒子散射装置、现象与大角散射的定量估计",
+"items": [
+{"id":"a1s2-1","name":"α粒子散射实验与现象","tags":["def","der"],"brief":"卢瑟福用α粒子轰击金箔探测原子内部结构。",
+ "fig":"rutherford_scatter","figCap":"α粒子散射实验：绝大多数穿透，极少数发生大角散射",
+ "body": wrap(
+   defn("α粒子散射实验",p("1909—1911 年，卢瑟福指导学生盖革与马斯登用准直的 $\\alpha$ 粒子束（$E_\\alpha\\approx5\\,\\text{MeV}$）轰击厚约 $1\\,\\mu\\text{m}$ 的金箔，用可绕箔转动的闪烁屏记录不同角度上的散射粒子数。"))+
+   der(p("<strong>散射角与横向动量：</strong>入射 $\\alpha$ 粒子动量为 $p$，若在原子内部受到横向力 $F_\\perp$ 作用时间 $\\Delta t$，则散射角由横向动量转移决定：")+
+   fml("\\tan\\theta \\approx \\frac{\\Delta p_\\perp}{p} = \\frac{\\int F_\\perp\\,dt}{p}")+
+   p("实验发现：绝大多数 $\\alpha$ 粒子几乎沿原方向通过（偏转小于 $1^\\circ$），但约有 $1/8000$ 的粒子散射角超过 $90^\\circ$，甚至被反弹回来。"))+
+   note(p("卢瑟福对此感叹：这就像用炮弹去轰击一张纸，结果炮弹被反弹回来一样不可思议。"))
+ )},
+{"id":"a1s2-2","name":"大角散射的定量估计","tags":["der","exa"],"brief":"用汤姆孙模型估算最大散射角远小于观测值。",
+ "body": wrap(
+   der(p("<strong>均匀正电荷模型给出的最大偏转：</strong>设原子正电荷 $Ze$ 均匀分布在半径 $R\\sim10^{-10}\\,\\text{m}$ 的球内，$\\alpha$ 粒子电荷 $2e$。当它接近球表面时受到的最大库仑力为：")+
+   fml("F_{\\max} \\approx \\frac{2Ze^2}{4\\pi\\varepsilon_0 R^2}")+
+   p("穿过原子所需的时间约为穿越时间：")+
+   fml("\\Delta t \\approx \\frac{2R}{v}")+
+   p("于是最大横向动量转移为：")+
+   fml("\\Delta p_\\perp \\approx F_{\\max}\\,\\Delta t = \\frac{4Ze^2}{4\\pi\\varepsilon_0 R\\,v}")+
+   p("代入 $p = m_\\alpha v$，得最大散射角：")+
+   fml("\\tan\\theta_{\\max} \\approx \\frac{\\Delta p_\\perp}{p} = \\frac{2Ze^2}{4\\pi\\varepsilon_0 R E_\\alpha}")+
+   p("取金 $Z=79$、$R=10^{-10}\\,\\text{m}$、$E_\\alpha=5\\,\\text{MeV}$，算得 $\\theta_{\\max}\\sim10^{-4}\\ \\text{rad}$（约 $0.006^\\circ$），远小于观测到的大角散射。"))+
+   exa(p("<strong>结论：</strong>汤姆孙模型无法产生大角散射，说明原子的正电荷绝非均匀弥散，而是集中在极小的区域内。"))
+ )},
+{"id":"a1s2-3","name":"核式结构模型的提出","tags":["thm","der"],"brief":"只有把正电荷集中在原子核才能产生大角散射。",
+ "fig":"impact_parameter","figCap":"α粒子在核库仑场中的双曲线轨迹，瞄准距 b 决定散射角",
+ "body": wrap(
+   thm("卢瑟福核式模型",p("原子中心存在一个体积很小、集中了全部正电荷 $Ze$ 与几乎全部质量的<strong>原子核</strong>，电子在核外空间绕核运动。只有这样强的库仑场才能解释大角散射。"))+
+   der(p("<strong>由对心碰撞估计核的尺度：</strong>对心入射的 $\\alpha$ 粒子，当它到达离核最近距离 $r_{\\min}$ 时动能为零，全部动能转化为库仑势能：")+
+   fml("\\frac{2Ze^2}{4\\pi\\varepsilon_0 r_{\\min}} = E_\\alpha\\ \\Rightarrow\\ r_{\\min} = \\frac{2Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}")+
+   p("对金箔代入数值（$Z=79$、$E_\\alpha=5\\,\\text{MeV}$）得：")+
+   fml("r_{\\min} \\approx 4.6\\times10^{-14}\\,\\text{m}")+
+   p("大角散射（包括 $180^\\circ$ 反弹）确实发生，说明 $\\alpha$ 粒子能够接近核到这个距离，故核半径必小于它：")+
+   fml("R_{\\text{核}} \\lesssim 10^{-14}\\,\\text{m} \\ll R_{\\text{原子}}\\sim10^{-10}\\,\\text{m}"))+
+   note(p("核半径比原子半径小约四个数量级，原子内部绝大部分是「空的」，这解释了为何绝大多数 α 粒子径直穿过。"))
+ )},
+]},
+{
+"name": "1.3 卢瑟福散射公式",
+"color": "#ef4444",
+"desc": "库仑散射轨道、瞄准距与散射角的关系、卢瑟福散射公式",
+"items": [
+{"id":"a1s3-1","name":"库仑散射与瞄准距","tags":["der","thm"],"brief":"α粒子与核之间为有心库仑力，轨道为双曲线。",
+ "body": wrap(
+   thm("库仑散射的瞄准距公式",p("α粒子以瞄准距 $b$ 入射，被核库仑场散射，散射角 $\\theta$ 与 $b$ 一一对应：")+
+   fml("b = \\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\cot\\frac{\\theta}{2}")+
+   p("$b$ 越小散射角越大，$b\\to0$ 时 $\\theta\\to180^\\circ$（对心反弹）。"))+
+   der(p("<strong>推导：</strong>α粒子与核的相互作用是平方反比有心力，轨道为双曲线。角动量守恒与能量守恒给出运动积分：")+
+   fml("L = m v_0 b,\\qquad E_\\alpha = \\frac12 m v_0^2")+
+   p("对库仑有心力，双曲线的偏心率 $\\epsilon$ 可用守恒量表示为：")+
+   fml("\\epsilon = \\sqrt{1+\\frac{2E_\\alpha L^2}{m k^2}},\\qquad k = \\frac{2Ze^2}{4\\pi\\varepsilon_0}")+
+   p("代入 $L=mv_0b$、$2E_\\alpha L^2=4E_\\alpha^2b^2m$，得：")+
+   fml("\\epsilon = \\sqrt{1+\\frac{4E_\\alpha^2 b^2}{k^2}}")+
+   p("由双曲线几何，散射角与偏心率满足 $\\epsilon = \\csc(\\theta/2)$，于是 $\\csc^2(\\theta/2)-1=\\cot^2(\\theta/2)=\\dfrac{4E_\\alpha^2b^2}{k^2}$，开方即得瞄准距公式：")+
+   fml("b = \\frac{k}{2E_\\alpha}\\cot\\frac{\\theta}{2} = \\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\cot\\frac{\\theta}{2}"))+
+   note(p("散射角与瞄准距单调对应，这正是散射实验能够「以角定距」、从而反推原子内部结构的依据。"))
+ )},
+{"id":"a1s3-2","name":"卢瑟福散射公式","tags":["thm","der"],"brief":"微分截面与散射角的关系 ∝ sin⁻⁴(θ/2)。",
+ "fig":"rutherford_formula","figCap":"卢瑟福散射微分截面随散射角急剧下降（∝sin⁻⁴(θ/2)）",
+ "body": wrap(
+   thm("卢瑟福散射公式",p("α粒子被静止核库仑散射的微分截面为：")+
+   fml("\\frac{d\\sigma}{d\\Omega} = \\left(\\frac{Ze^2}{8\\pi\\varepsilon_0 E_\\alpha}\\right)^2\\frac{1}{\\sin^4(\\theta/2)}")+
+   p("它只依赖散射角与能量，与靶物质的具体结构无关，是库仑散射的普遍结果。"))+
+   der(p("<strong>推导：</strong>瞄准距在 $[b,b+db]$ 之间的粒子，对应散射角在 $[\\theta,\\theta+d\\theta]$，其入射环形面积即散射截面元：")+
+   fml("d\\sigma = 2\\pi b\\,|db|")+
+   p("由瞄准距公式 $b=C\\cot(\\theta/2)$（$C=\\dfrac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}$）求微分：")+
+   fml("db = -\\frac{C}{2}\\csc^2\\frac{\\theta}{2}\\,d\\theta")+
+   p("故 $d\\sigma = \\pi C^2\\cot(\\theta/2)\\csc^2(\\theta/2)\\,d\\theta$。散射立体角元为：")+
+   fml("d\\Omega = 2\\pi\\sin\\theta\\,d\\theta = 4\\pi\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}\\,d\\theta")+
+   p("两者相除并用 $\\cot(\\theta/2)/\\cos(\\theta/2)=1/\\sin(\\theta/2)$，即得：")+
+   fml("\\frac{d\\sigma}{d\\Omega} = \\frac{C^2}{4}\\frac{1}{\\sin^4(\\theta/2)} = \\left(\\frac{Ze^2}{8\\pi\\varepsilon_0 E_\\alpha}\\right)^2\\frac{1}{\\sin^4(\\theta/2)}"))+
+   note(p("公式中不含普朗克常数，纯属经典力学结果；但量子力学微扰论（玻恩近似）对库仑势给出完全相同的形式，这说明卢瑟福公式的普适性。"))
+ )},
+{"id":"a1s3-3","name":"最接近距离与核半径上限","tags":["der","exa"],"brief":"由大角散射确定α粒子能到达的最近距离。",
+ "body": wrap(
+   der(p("<strong>一般散射角下的最近距离：</strong>双曲线轨道上至焦点的最近距离为 $r_{\\min}=\\dfrac{d}{2}\\left(1+\\csc\\dfrac{\\theta}{2}\\right)$，其中 $d=\\dfrac{2Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}$。代入 $d$ 得：")+
+   fml("r_{\\min} = \\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\left(1+\\csc\\frac{\\theta}{2}\\right)")+
+   p("当 $\\theta=180^\\circ$（对心）时 $\\csc90^\\circ=1$，$r_{\\min}=2d/2=d$，与前述能量守恒结果一致；当 $\\theta=90^\\circ$ 时 $r_{\\min}=(1+\\sqrt2)d/2$。"))+
+   exa(p("<strong>例：</strong>卢瑟福用 $E_\\alpha=7.68\\,\\text{MeV}$ 的 α 粒子轰击金箔（$Z=79$），对 $180^\\circ$ 散射：")+
+   fml("r_{\\min} = \\frac{2\\times79\\times(1.6\\times10^{-19})^2}{4\\pi\\varepsilon_0\\times7.68\\times10^6\\times1.6\\times10^{-19}} \\approx 3.0\\times10^{-14}\\,\\text{m}")+
+   p("这给出金核半径的上限约为 $3\\times10^{-14}\\,\\text{m}$。") )+
+   note(p("用更高能量的 α 粒子可以探测更小的距离，但能量过高时核力开始作用，卢瑟福公式偏离，因此这一方法只能给出核半径的上限。"))
+ )},
+]},
+{
+"name": "1.4 散射截面与推导",
+"color": "#dc2626",
+"desc": "散射截面定义、散射粒子数公式与实验验证",
+"items": [
+{"id":"a1s4-1","name":"散射截面与微分截面","tags":["def","der"],"brief":"用等效面积描述散射概率。",
+ "body": wrap(
+   defn("散射截面",p("把靶核看成具有等效面积 $\\sigma$ 的靶，入射粒子落入该面积即发生散射，称为<strong>总散射截面</strong>。散射到某一方向单位立体角内的等效面积称为<strong>微分截面</strong> $\\dfrac{d\\sigma}{d\\Omega}$，单位为 $\\text{m}^2/\\text{sr}$。"))+
+   der(p("<strong>与瞄准距的联系：</strong>散射角大于某值 $\\theta$ 的粒子，对应瞄准距小于 $b(\\theta)$，其等效截面为：")+
+   fml("\\sigma(\\theta) = \\pi b^2(\\theta) = \\pi\\left(\\frac{Ze^2}{4\\pi\\varepsilon_0 E_\\alpha}\\right)^2\\cot^2\\frac{\\theta}{2}")+
+   p("对散射角求导并注意立体角关系 $d\\sigma = -2\\pi b\\,db$，可得微分截面：")+
+   fml("\\frac{d\\sigma}{d\\Omega} = \\frac{1}{2\\pi\\sin\\theta}\\left|\\frac{d\\sigma}{d\\theta}\\right|")+
+   p("代入后同样回到卢瑟福公式。总截面 $\\sigma_{tot}=\\pi b^2|_{b\\to\\infty}$ 发散，反映纯库仑力为长程力，实际中由原子电子的屏蔽切断积分。"))+
+   note(p("截面是理论与实验比较的核心量：实验中由计数率反推截面，再与理论公式对照。"))
+ )},
+{"id":"a1s4-2","name":"散射粒子数与实验验证","tags":["der","exa"],"brief":"单位时间散射到某角度的粒子数公式。",
+ "body": wrap(
+   der(p("<strong>计数公式：</strong>设入射粒子束强度为 $I_0$（每秒粒子数），靶箔单位体积内有 $n$ 个原子核，箔厚 $t$，探测器对靶点的立体角为 $d\\Omega$。单位时间散射到 $d\\Omega$ 的粒子数为：")+
+   fml("dN = I_0\\, n\\, t\\, d\\sigma = I_0\\, n\\, t\\left(\\frac{Ze^2}{8\\pi\\varepsilon_0 E_\\alpha}\\right)^2\\frac{d\\Omega}{\\sin^4(\\theta/2)}")+
+   p("实验中固定 $I_0,n,t,E_\\alpha$，测量不同角度 $\\theta$ 的计数 $dN$，应满足：")+
+   fml("dN\\cdot\\sin^4\\frac{\\theta}{2} = \\text{常数}")+
+   p("盖革与马斯登的测量证实了这一关系，且计数随箔厚、随 $Z^2$ 成正比，全面验证了卢瑟福公式。"))+
+   exa(p("<strong>例：</strong>散射角从 $60^\\circ$ 增大到 $90^\\circ$ 时，$\\sin^4(\\theta/2)$ 由 $\\sin^4 30^\\circ=(0.5)^4=0.0625$ 变为 $\\sin^4 45^\\circ=(0.707)^4=0.25$，计数率下降到原来的 $1/4$。"))+
+   note(p("实验还发现大角散射对靶物质原子序数极为敏感（∝Z²），这是判定正电荷集中程度的关键证据。"))
+ )},
+{"id":"a1s4-3","name":"卢瑟福公式的适用条件","tags":["note","der"],"brief":"公式成立的局限与修正。",
+ "body": wrap(
+   der(p("<strong>电子屏蔽的修正：</strong>原子核外的电子会屏蔽核电荷，使有效相互作用在距离大于原子半径时被截断。屏蔽长度约为 $a\\sim a_0 Z^{-1/3}$，当瞄准距 $b\\gtrsim a$ 时，卢瑟福公式失效，小角散射被压低。")+
+   fml("b\\gtrsim a\\sim a_0 Z^{-1/3}\\ \\Rightarrow\\ \\text{需用屏蔽库仑势}")+
+   p("用屏蔽势 $U(r)=\\dfrac{2Ze^2}{4\\pi\\varepsilon_0 r}e^{-r/a}$ 计算时，小角截面趋于有限值，总截面不再发散。"))+
+   note(p("卢瑟福公式的适用条件：① $\alpha$ 粒子能量适中，未进入核力作用范围；② 散射角不太小（未受电子屏蔽影响）；③ 靶核可视为静止（核质量远大于 α）；④ 单次散射（箔足够薄，避免多重散射）。此外，对高速粒子还须考虑相对论修正。"))
+ )},
+]},
+{
+"name": "1.5 卢瑟福模型的成功与困难",
+"color": "#b91c1c",
+"desc": "核式模型的成就、经典电磁理论的困难与原子稳定性",
+"items": [
+{"id":"a1s5-1","name":"卢瑟福模型的成功","tags":["his","der"],"brief":"核式结构奠定了原子物理的基础。",
+ "body": wrap(
+   his(p("卢瑟福核式模型是原子物理学的重要里程碑：它第一次把原子结构建立在定量的实验基础之上，正确揭示了原子由极小的带正电核心与核外电子组成，并首次估计出核的尺度（$\\sim10^{-14}\\,\\text{m}$）。"))+
+   der(p("<strong>定量成就：</strong>散射公式不仅解释了实验角分布，还正确预见了计数对能量、靶厚与原子序数的依赖关系：")+
+   fml("dN \\propto \\frac{Z^2 t}{E_\\alpha^2\\sin^4(\\theta/2)}")+
+   p("这一标度律被系统实验证实，说明 α 粒子与核的作用确为库仑力，核外电子对散射几乎无贡献（电子质量小、电荷少）。"))+
+   app(p("<strong>影响：</strong>核式模型成为后来玻尔模型与量子力学处理原子的出发点；核物理中「用散射探测结构」的思想也由此奠定，至今仍是高能物理的核心方法。"))+
+   note(p("卢瑟福散射不仅用于原子，还被用于探测核半径、测定薄膜厚度与成分（卢瑟福背散射谱 RBS）。"))
+ )},
+{"id":"a1s5-2","name":"卢瑟福模型的困难","tags":["der","note"],"brief":"经典电磁理论预示电子将迅速坠入核。",
+ "body": wrap(
+   der(p("<strong>加速电子辐射能量：</strong>核外电子绕核作圆周运动必然具有向心加速度 $a=v^2/r$。按经典电动力学，加速电荷辐射功率：")+
+   fml("P = \\frac{e^2 a^2}{6\\pi\\varepsilon_0 c^3} = \\frac{e^2}{6\\pi\\varepsilon_0 c^3}\\left(\\frac{v^2}{r}\\right)^2")+
+   p("电子不断损失能量，轨道半径应持续减小，最终在极短时间内（约 $10^{-11}\\,\\text{s}$）螺旋坠入核中。")+
+   fml("\\frac{dr}{dt} < 0\\ \\Rightarrow\\ \\text{原子应在}\\ \\sim10^{-11}\\,\\text{s}\\ \\text{内崩溃}")+
+   p("这与原子长期稳定存在的事实严重矛盾，说明经典力学加经典电动力学无法描述原子内部运动。"))+
+   note(p("除稳定性外，卢瑟福模型也无法说明：① 原子为何发出分立的线状光谱；② 不同原子的光谱规律；③ 原子的大小为何约为 $10^{-10}\\,\\text{m}$。这些困难直接催生了玻尔模型与量子力学。"))
+ )},
+{"id":"a1s5-3","name":"原子稳定性与经典理论的矛盾","tags":["der","his"],"brief":"连续辐射谱与线状光谱的矛盾。",
+ "body": wrap(
+   der(p("<strong>辐射频率的连续性问题：</strong>经典理论中，电子轨道半径连续缩小，旋转频率 $\\nu=\\dfrac{v}{2\\pi r}$ 随之连续变化，辐射频率也连续变化，应得到<strong>连续光谱</strong>：")+
+   fml("r(t)\\ \\text{连续}\\ \\Rightarrow\\ \\nu(t)=\\frac{v}{2\\pi r}\\ \\text{连续}\\ \\Rightarrow\\ \\text{连续谱}")+
+   p("然而实验观测到的原子光谱是分立的线状谱，频率满足里德伯公式的规律性，与经典预言截然不同。"))+
+   his(p("这一尖锐矛盾表明原子内部存在「量子化」的规律。1913 年玻尔以三条基本假设（定态、频率条件、角动量量子化）解决了稳定性与线状光谱问题，而完整的答案则要等到 1925—1926 年量子力学的建立。"))+
+   note(p("从卢瑟福到玻尔的历史说明：当经典理论失效时，往往需要引入全新的物理假设，而这些假设的正确性最终由量子力学从第一性原理给出。"))
+ )},
+]}
+]
+
+ch2_sections = [
+{
+"name": "2.1 氢原子光谱与里德伯公式",
+"color": "#ea580c",
+"desc": "氢原子线状光谱、波数、里德伯公式与各光谱系",
+"items": [
+{"id":"a2s1-1","name":"氢原子光谱的实验规律","tags":["def","der"],"brief":"氢光谱是分立的线状谱且波长满足规律。",
+ "fig":"emission_spectrum","figCap":"氢原子巴尔末系在可见光区的分立谱线 Hα、Hβ、Hγ、Hδ",
+ "body": wrap(
+   defn("氢原子光谱",p("氢原子受激发后发出分立的线状光谱，可见光区由巴尔末系组成，其后又陆续发现紫外区的莱曼系与红外区的帕邢系、布拉开系、普丰特系等。谱线的<strong>波数</strong> $\\tilde{\\nu}=1/\\lambda$ 满足简单规律。"))+
+   der(p("<strong>经验规律：</strong>巴尔末（1885）发现可见光谱线的波长可写成：")+
+   fml("\\lambda = 364.56\\,\\text{nm}\\cdot\\frac{n^2}{n^2-4},\\qquad n=3,4,5,\\dots")+
+   p("用波数表示，所有谱线可统一写成两个整数项之差：")+
+   fml("\\tilde{\\nu}=\\frac{1}{\\lambda}=R\\left(\\frac{1}{2^2}-\\frac{1}{n^2}\\right)")+
+   p("当 $n\\to\\infty$ 时波数趋于极限值 $R/4$，对应线系的<strong>线系限</strong>，此时原子刚好电离。"))+
+   note(p("光谱线的分立性是原子能量量子化最直接的宏观证据，正是它迫使人们放弃经典连续辐射的图像。"))
+ )},
+{"id":"a2s1-2","name":"里德伯公式与波数","tags":["thm","der"],"brief":"广义巴尔末公式统一描述所有氢光谱线。",
+ "fig":"rydberg","figCap":"氢原子能级与各谱线系：跃迁到低能级发出的谱线收敛于线系限",
+ "body": wrap(
+   thm("里德伯公式",p("氢原子的所有谱线波数可写成：")+
+   fml("\\tilde{\\nu}=\\frac{1}{\\lambda}=R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right),\\qquad n_2>n_1")+
+   p("$R$ 称为里德伯常数，$n_1$ 固定给出一个光谱系。"))+
+   der(p("<strong>里德伯常数的实验值：</strong>由巴尔末系 $H_\\alpha$ 线（$n_1=2,n_2=3$）实测波长 $\\lambda=656.28\\,\\text{nm}$ 反推：")+
+   fml("R = \\frac{1}{\\lambda\\left(\\frac{1}{4}-\\frac{1}{9}\\right)} = \\frac{36}{5\\lambda}")+
+   p("代入数值：")+
+   fml("R = \\frac{36}{5\\times656.28\\times10^{-9}\\,\\text{m}} \\approx 1.097\\times10^7\\,\\text{m}^{-1}")+
+   p("各光谱系对应的 $n_1$ 值为：莱曼系 $n_1=1$（紫外），巴尔末系 $n_1=2$（可见），帕邢系 $n_1=3$（近红外），依次类推。"))+
+   note(p("里德伯常数是原子物理中精度最高的常数之一，它的微小修正（有限核质量、精细结构）常用于检验基本物理理论。"))
+ )},
+{"id":"a2s1-3","name":"光谱系的规律与计算","tags":["der","exa"],"brief":"各光谱系波长与线系限的计算。",
+ "body": wrap(
+   der(p("<strong>莱曼系与巴尔末系：</strong>用里德伯公式，令 $n_1=1$ 与 $n_1=2$，可分别计算莱曼系与巴尔末系各谱线的波长：")+
+   fml("\\tilde{\\nu}_{n_1} = R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)\\ \\Rightarrow\\ \\lambda = \\frac{1}{\\tilde{\\nu}}")+
+   p("相邻谱线的间隔随 $n_2$ 增大而减小，谱线向线系限密集，这与实验完全一致。"))+
+   exa(p("<strong>例（巴尔末系 Hα）：</strong>$n_1=2,n_2=3$：")+
+   fml("\\tilde{\\nu}=1.097\\times10^7\\times\\left(\\frac14-\\frac19\\right)=1.524\\times10^6\\,\\text{m}^{-1}")+
+   fml("\\lambda=\\frac{1}{\\tilde{\\nu}}=656.3\\,\\text{nm}"))+
+   exa(p("<strong>例（莱曼系第一条）：</strong>$n_1=1,n_2=2$，$\\lambda=121.6\\,\\text{nm}$，位于真空紫外区，是天文学观测氢云的重要谱线。"))+
+   note(p("线系限波数 $R/n_1^2$ 对应从 $n_2\\to\\infty$（自由电子）跃迁到 $n_1$ 的光子，是电离所需的能量对应值。"))
+ )},
+]},
+{
+"name": "2.2 玻尔三条基本假设",
+"color": "#c2410c",
+"desc": "定态假设、频率条件与角动量量子化条件",
+"items": [
+{"id":"a2s2-1","name":"定态假设","tags":["def","der"],"brief":"电子只能在特定的稳定轨道上运动而不辐射。",
+ "body": wrap(
+   defn("定态假设",p("电子只能在一系列<strong>分立的稳定轨道</strong>上绕核运动，在这些<strong>定态</strong>上电子虽然作加速运动但不辐射电磁波，能量保持不变。"))+
+   der(p("<strong>解决稳定性问题：</strong>玻尔假设直接否定经典电动力学「加速电荷必辐射」的结论，规定定态上电子不辐射能量。于是轨道的能量是分立的：")+
+   fml("E = E_1,E_2,E_3,\\dots\\ \\text{（定态能级）}")+
+   p("只有电子在不同定态之间跳跃时才吸收或发射能量，从而避免了原子连续塌缩：")+
+   fml("\\text{定态上}\\ \\frac{dE}{dt}=0\\ \\Rightarrow\\ \\text{原子稳定存在}")+
+   p("原子通常处于能量最低的基态，只有吸收能量后才跃迁到激发态。"))+
+   note(p("定态假设是量子化概念在原子结构中的首次成功应用，它与普朗克能量量子化、爱因斯坦光量子假设一脉相承。"))
+ )},
+{"id":"a2s2-2","name":"频率条件","tags":["thm","der"],"brief":"跃迁辐射的光子频率由能级差决定。",
+ "body": wrap(
+   thm("玻尔频率条件",p("电子从高能级 $E_{n_2}$ 跃迁到低能级 $E_{n_1}$ 时，发射一个光子，其频率由能量守恒决定：")+
+   fml("h\\nu = E_{n_2}-E_{n_1}")+
+   p("反之，原子从低能级跃迁到高能级时吸收相同频率的光子。"))+
+   der(p("<strong>与里德伯公式的一致：</strong>把光子能量 $h\\nu=hc\\tilde{\\nu}$ 代入频率条件：")+
+   fml("\\tilde{\\nu}=\\frac{E_{n_2}-E_{n_1}}{hc}")+
+   p("若氢原子能级可写成 $E_n=-\\dfrac{Rhc}{n^2}$，则：")+
+   fml("\\tilde{\\nu}=\\frac{Rhc}{h c}\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)=R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)")+
+   p("这正是里德伯公式。可见只要给出一组分立的能级，其跃迁谱线自然满足光谱的实验规律。"))+
+   note(p("频率条件把光谱学（里德伯公式）与原子结构（能级）定量联系起来，是玻尔模型的核心桥梁。"))
+ )},
+{"id":"a2s2-3","name":"角动量量子化条件","tags":["der","thm"],"brief":"电子轨道角动量只能是 ħ 的整数倍。",
+ "body": wrap(
+   thm("角动量量子化",p("电子稳定轨道的角动量必须取 $\\hbar$ 的整数倍：")+
+   fml("L = m v r = n\\hbar,\\qquad n=1,2,3,\\dots")+
+   p("$n$ 称为主量子数，它决定了允许的轨道半径与能级。"))+
+   der(p("<strong>从驻波条件理解：</strong>由德布罗意关系 $\\lambda=h/(mv)$，把电子轨道上的运动看成闭合的驻波，要求轨道周长为波长整数倍：")+
+   fml("2\\pi r = n\\lambda = \\frac{n h}{m v}")+
+   p("整理得：")+
+   fml("m v r = \\frac{n h}{2\\pi}=n\\hbar")+
+   p("这正是角动量量子化条件，说明玻尔的量子化假设可由物质波的驻波图像自然得到。"))+
+   his(p("1913 年玻尔是作为独立假设提出该条件的；1924 年德布罗意物质波理论为其提供了物理图像，使其不再显得突兀。"))+
+   note(p("角动量量子化使轨道半径与能量都变成分立的，从而解决了原子稳定性与线状光谱两大困难。"))
+ )},
+]},
+{
+"name": "2.3 氢原子能级与轨道半径",
+"color": "#f97316",
+"desc": "由量子化条件导出玻尔半径、能级公式与电子速度",
+"items": [
+{"id":"a2s3-1","name":"轨道半径的量子化","tags":["der","thm"],"brief":"由库仑力提供向心力与量子化条件解出轨道半径。",
+ "fig":"bohr_model","figCap":"玻尔氢原子模型：电子在分立轨道上绕核运动，跃迁发出光子",
+ "body": wrap(
+   der(p("<strong>两条基本方程：</strong>氢原子中电子绕核作圆周运动，库仑力提供向心力：")+
+   fml("\\frac{e^2}{4\\pi\\varepsilon_0 r^2} = \\frac{m v^2}{r}")+
+   p("再由角动量量子化条件：")+
+   fml("m v r = n\\hbar")+
+   p("由第二式消去 $v$：$v=\\dfrac{n\\hbar}{m r}$，代入第一式：")+
+   fml("\\frac{e^2}{4\\pi\\varepsilon_0 r^2} = \\frac{m}{r}\\cdot\\frac{n^2\\hbar^2}{m^2 r^2}\\ \\Rightarrow\\ \\frac{e^2}{4\\pi\\varepsilon_0}=\\frac{n^2\\hbar^2}{m r}")+
+   p("解出轨道半径：")+
+   fml("r_n = \\frac{4\\pi\\varepsilon_0\\hbar^2}{m_e e^2}\\,n^2 = n^2 a_0\\approx n^2\\times0.0529\\,\\text{nm}"))+
+   note(p("基态（$n=1$）轨道半径 $a_0=0.0529\\,\\text{nm}$ 称为<strong>玻尔半径</strong>，是原子物理的基本长度单位，与分子动理论估计的原子尺寸量级一致。"))
+ )},
+{"id":"a2s3-2","name":"氢原子能级公式","tags":["der","thm"],"brief":"导出 E_n = −13.6 eV/n²。",
+ "fig":"energy_levels","figCap":"氢原子能级图：能量为负、随 n 增大而趋于零（电离限）",
+ "body": wrap(
+   der(p("<strong>总能量：</strong>电子的动能与库仑势能之和。由库仑力方程得 $mv^2=\\dfrac{e^2}{4\\pi\\varepsilon_0 r}$，故动能 $E_k=\\dfrac12mv^2=\\dfrac{e^2}{8\\pi\\varepsilon_0 r}$；势能 $E_p=-\\dfrac{e^2}{4\\pi\\varepsilon_0 r}$。于是：")+
+   fml("E = E_k + E_p = -\\frac{e^2}{8\\pi\\varepsilon_0 r}")+
+   p("把 $r=r_n=n^2a_0$ 代入：")+
+   fml("E_n = -\\frac{e^2}{8\\pi\\varepsilon_0 a_0}\\cdot\\frac{1}{n^2}")+
+   p("代入 $a_0=\\dfrac{4\\pi\\varepsilon_0\\hbar^2}{m_e e^2}$，得能级的闭合表达式：")+
+   fml("E_n = -\\frac{m_e e^4}{8\\varepsilon_0^2 h^2}\\cdot\\frac{1}{n^2} = -\\frac{13.6\\,\\text{eV}}{n^2}"))+
+   thm("氢原子能级公式",p("氢原子定态能量为 $E_n=-\\dfrac{13.6\\,\\text{eV}}{n^2}$，基态 $E_1=-13.6\\,\\text{eV}$，电离能（从基态到 $n\\to\\infty$）为 $13.6\\,\\text{eV}$，能级越高越密集。"))+
+   note(p("能量为负表示电子被束缚；$n\\to\\infty$ 时 $E\\to0$ 对应电离，此时电子成为自由电子。"))
+ )},
+{"id":"a2s3-3","name":"电子速度与能量关系","tags":["der","exa"],"brief":"各定态上电子的速度、动能与势能关系。",
+ "body": wrap(
+   der(p("<strong>电子速度：</strong>由 $v_n=\\dfrac{n\\hbar}{m_e r_n}=\\dfrac{n\\hbar}{m_e n^2 a_0}=\\dfrac{\\hbar}{m_e a_0 n}$，代入 $a_0$ 得：")+
+   fml("v_n = \\frac{e^2}{4\\pi\\varepsilon_0\\hbar}\\cdot\\frac{1}{n} = \\frac{\\alpha c}{n} = \\frac{c}{137\\,n}")+
+   p("其中 $\\alpha=\\dfrac{e^2}{4\\pi\\varepsilon_0\\hbar c}\\approx\\dfrac{1}{137}$ 为精细结构常数。基态电子速度约为光速的 $1/137$。"))+
+   exa(p("<strong>例（基态氢原子）：</strong>")+
+   fml("v_1 = \\frac{3\\times10^8}{137}\\approx2.2\\times10^6\\,\\text{m/s}")+
+   p("动能 $E_k=13.6\\,\\text{eV}$，势能 $E_p=-27.2\\,\\text{eV}$，总能量 $E_1=-13.6\\,\\text{eV}$，满足 $E_k=-E$、$E_p=2E$（维里定理）。"))+
+   note(p("$v_1/c\\approx1/137\\ll1$ 说明基态氢电子是非相对论的，玻尔模型的非相对论近似是合理的；但重元素内层电子速度接近光速，需要相对论修正。"))
+ )},
+]},
+{
+"name": "2.4 里德伯常数的计算与光谱系",
+"color": "#ea580c",
+"desc": "由玻尔模型计算里德伯常数、光谱系的定量结果与有限核质量修正",
+"items": [
+{"id":"a2s4-1","name":"里德伯常数的理论计算","tags":["der","thm"],"brief":"从能级公式导出里德伯常数。",
+ "body": wrap(
+   der(p("<strong>由能级差求波数：</strong>由频率条件 $h\\nu=E_{n_2}-E_{n_1}$ 与 $\\tilde{\\nu}=\\nu/c$，把能级公式代入：")+
+   fml("\\tilde{\\nu}=\\frac{E_{n_2}-E_{n_1}}{hc}=\\frac{m_e e^4}{8\\varepsilon_0^2 h^3 c}\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)")+
+   p("与里德伯公式对照，即得里德伯常数的理论表达式：")+
+   fml("R_\\infty = \\frac{m_e e^4}{8\\varepsilon_0^2 h^3 c}")+
+   p("代入常数 $m_e=9.11\\times10^{-31}\\,\\text{kg}$、$e=1.602\\times10^{-19}\\,\\text{C}$、$h=6.626\\times10^{-34}\\,\\text{J·s}$、$c=3\\times10^8\\,\\text{m/s}$：")+
+   fml("R_\\infty\\approx1.09737\\times10^7\\,\\text{m}^{-1}"))+
+   thm("里德伯常数理论值",p("玻尔模型给出的 $R_\\infty$ 与实验值 $1.09737\\times10^7\\,\\text{m}^{-1}$ 吻合到小数点后多位，这是玻尔模型最辉煌的成功，也是对其正确性的有力支持。"))+
+   note(p("里德伯常数由基本常数 $m_e,e,h,c,\\varepsilon_0$ 完全确定，体现了原子光谱规律可从第一性原理推导。"))
+ )},
+{"id":"a2s4-2","name":"光谱系的定量计算","tags":["der","exa"],"brief":"计算各光谱系的波长与线系限。",
+ "body": wrap(
+   der(p("<strong>线系限波数：</strong>对给定 $n_1$，当 $n_2\\to\\infty$ 时：")+
+   fml("\\tilde{\\nu}_\\infty=\\frac{R}{n_1^2},\\qquad \\lambda_\\infty=\\frac{n_1^2}{R}")+
+   p("对莱曼系 $n_1=1$，$\\lambda_\\infty=91.2\\,\\text{nm}$；巴尔末系 $n_1=2$，$\\lambda_\\infty=364.6\\,\\text{nm}$。"))+
+   exa(p("<strong>例（帕邢系第一条）：</strong>$n_1=3,n_2=4$：")+
+   fml("\\tilde{\\nu}=1.097\\times10^7\\left(\\frac19-\\frac1{16}\\right)=5.33\\times10^5\\,\\text{m}^{-1}")+
+   fml("\\lambda\\approx1875\\,\\text{nm}")+
+   p("位于红外区，是氢原子被激发到 $n=4$ 后跃迁到 $n=3$ 发出的谱线。"))+
+   exa(p("<strong>例（莱曼系第二条）：</strong>$n_1=1,n_2=3$，$\\lambda\\approx102.6\\,\\text{nm}$，为真空紫外谱线。"))+
+   note(p("各线系的重叠与线系限的连续性说明：当电子从自由态（连续正能量）跃迁到束缚态时，发出连续谱，与线系限相接。"))
+ )},
+{"id":"a2s4-3","name":"有限核质量修正与约化质量","tags":["der","note"],"brief":"用约化质量修正里德伯常数。",
+ "body": wrap(
+   der(p("<strong>约化质量的引入：</strong>前面把核视为固定不动，实际上电子与核绕共同质心运动。用一个质量为<strong>约化质量</strong>的粒子在固定势场中的运动等效代替：")+
+   fml("\\mu = \\frac{m_e M}{m_e+M}")+
+   p("把能级公式中的 $m_e$ 换成 $\\mu$，里德伯常数变为：")+
+   fml("R_M = R_\\infty\\frac{M}{m_e+M} = \\frac{R_\\infty}{1+m_e/M}")+
+   p("对氢原子 $M=m_p$，$m_e/M\\approx1/1836$，故 $R_H\\approx R_\\infty(1-1/1836)$，比 $R_\\infty$ 小约 $0.05\\%$。"))+
+   note(p("有限核质量修正使不同元素的里德伯常数略有不同，这正是区分氢与氘（重氢）光谱的依据（尤里 1932 年发现氘）。先令 $M\\to\\infty$ 得到的 $R_\\infty$ 称为无限大核质量下的里德伯常数。"))
+ )},
+]},
+{
+"name": "2.5 类氢离子与弗兰克-赫兹实验",
+"color": "#c2410c",
+"desc": "类氢离子光谱、弗兰克-赫兹实验与激发电位的测定",
+"items": [
+{"id":"a2s5-1","name":"类氢离子光谱","tags":["der","exa"],"brief":"电荷数 Z 的类氢离子能级与光谱。",
+ "body": wrap(
+   der(p("<strong>能级标度：</strong>对核电荷为 $Ze$、只有一个电子的类氢离子（He⁺、Li²⁺ 等），库仑力变为 $Ze^2/(4\\pi\\varepsilon_0r^2)$，重复玻尔推导可得：")+
+   fml("r_n = \\frac{n^2 a_0}{Z},\\qquad E_n = -\\frac{Z^2\\times13.6\\,\\text{eV}}{n^2}")+
+   p("光谱波数相应放大 $Z^2$ 倍：")+
+   fml("\\tilde{\\nu} = Z^2R\\left(\\frac{1}{n_1^2}-\\frac{1}{n_2^2}\\right)"))+
+   exa(p("<strong>例（He⁺ 莱曼系第一条）：</strong>$Z=2$，$n_1=1,n_2=2$：")+
+   fml("\\lambda = \\frac{1}{4R(1-1/4)} = \\frac{1}{3R}\\approx30.4\\,\\text{nm}")+
+   p("只有氢的莱曼系第一条（$121.6\\,\\text{nm}$）的四分之一，位于软 X 射线区。"))+
+   note(p("类氢离子公式直到重元素高次电离离子都非常精确，是天体物理与等离子体诊断中常用的工具。"))
+ )},
+{"id":"a2s5-2","name":"弗兰克-赫兹实验","tags":["def","der"],"brief":"用电子碰撞直接测出原子的激发能。",
+ "fig":"franck_hertz","figCap":"弗兰克-赫兹实验的电流-电压曲线：峰值间隔对应第一激发电位",
+ "body": wrap(
+   defn("弗兰克-赫兹实验",p("1914 年弗兰克与赫兹用低速电子轰击汞蒸气，测量阳极电流随加速电压的变化。当电子动能达到原子第一激发能时，发生非弹性碰撞把能量交给原子，电子动能骤减，电流出现周期性下降。"))+
+   der(p("<strong>能量守恒分析：</strong>电子被电压 $U$ 加速获得动能 $eU$。当 $eU$ 小于第一激发能 $E_2-E_1$ 时，碰撞是弹性的，电子几乎不损失能量，电流随电压增大而上升。")+
+   fml("eU < E_2-E_1:\\ \\text{弹性碰撞},\\ I\\ \\text{增大}")+
+   p("当 $eU$ 达到激发能时，电子与原子发生非弹性碰撞，把能量 $E_2-E_1$ 交给原子，自身动能几乎耗尽，无法克服反向拒斥电压到达阳极：")+
+   fml("eU_1 = E_2-E_1\\ \\Rightarrow\\ I\\ \\text{突然下降}")+
+   p("继续增大电压，电子在经历一次非弹性碰撞后重新被加速，可再次激发原子，于是电流出现周期性峰值，峰间距等于激发能。"))+
+   note(p("汞原子的第一激发电位实测约 $4.9\\,\\text{V}$，与光谱线 $\\lambda=253.7\\,\\text{nm}$ 对应的能量 $4.9\\,\\text{eV}$ 一致，直接证实了原子能级的分立性。"))
+ )},
+{"id":"a2s5-3","name":"弗兰克-赫兹实验的结果分析","tags":["der","note"],"brief":"由激发电位确定能级与验证玻尔理论。",
+ "body": wrap(
+   der(p("<strong>与光谱的对应对应：</strong>汞原子第一激发能 $E_2-E_1=4.9\\,\\text{eV}$，对应跃迁光子的波长：")+
+   fml("\\lambda = \\frac{hc}{E_2-E_1} = \\frac{1240\\,\\text{eV·nm}}{4.9\\,\\text{eV}}\\approx253\\,\\text{nm}")+
+   p("实验确实观测到这一紫外谱线，说明电子碰撞激发的能级就是光学跃迁的能级，两种独立实验方法互相印证。"))+
+   his(p("弗兰克-赫兹实验第一次直接证明了原子内部能量是量子化的（而不仅是解释光谱的假设），且支持了玻尔的定态假设，为此后量子力学的发展提供了重要实验证据，两人因此获得 1925 年诺贝尔物理学奖。"))+
+   note(p("现代版本的弗兰克-赫兹实验还可测出更高级激发电位，并研究电离电位；曲线形状还受拒斥电压、电子平均自由程、温度等因素影响。"))
+ )},
+]},
+{
+"name": "2.6 玻尔模型的局限与索末菲推广",
+"color": "#f97316",
+"desc": "玻尔模型的困难、索末菲椭圆轨道与空间量子化",
+ "items": [
+{"id":"a2s6-1","name":"玻尔模型的局限","tags":["note","der"],"brief":"玻尔模型只适用于氢与类氢离子。",
+ "body": wrap(
+   der(p("<strong>无法处理多电子原子：</strong>玻尔的推导只考虑了单个电子在核库仑场中的运动，对氦及更重的原子，电子之间的相互作用使问题无法解析求解：")+
+   fml("U = -\\frac{Ze^2}{4\\pi\\varepsilon_0 r_1}-\\frac{Ze^2}{4\\pi\\varepsilon_0 r_2}+\\frac{e^2}{4\\pi\\varepsilon_0 r_{12}}")+
+   p("这个三体问题在玻尔框架下无解，模型对氦的能级预言完全失败。"))+
+   note(p("玻尔模型的主要局限：① 只能处理氢与类氢离子，无法处理多电子原子与分子；② 不能解释谱线强度与选择定则；③ 无法解释精细结构与塞曼效应；④ 「轨道」图像与不确定关系矛盾，角动量量子化被当作独立假设而非推导结果。它的地位是从经典到量子的过渡理论，需要量子力学才能根本解决。"))
+ )},
+{"id":"a2s6-2","name":"索末菲推广与椭圆轨道","tags":["der","thm"],"brief":"引入椭圆轨道与相对论修正。",
+ "fig":"sommerfeld","figCap":"索末菲把玻尔圆轨道推广为椭圆轨道，并引入空间量子化",
+ "body": wrap(
+   der(p("<strong>广义量子化条件：</strong>玻尔-索末菲把量子化条件推广到多自由度系统，对每个周期运动的广义坐标作相空间积分：")+
+   fml("\\oint p_i\\,dq_i = n_i h")+
+   p("对氢原子的径向与角向运动分别量子化：")+
+   fml("\\oint p_r\\,dr = n_r h,\\qquad \\oint p_\\varphi\\,d\\varphi = k h")+
+   p("由此轨道由圆变为椭圆，长轴由主量子数 $n=n_r+k$ 决定，短轴由角量子数 $k$ 决定。能量公式仍为：")+
+   fml("E_n = -\\frac{13.6\\,\\text{eV}}{n^2}")+
+   p("即能量只依赖 $n$，同一 $n$ 下不同 $k$ 的椭圆轨道能量相同，出现<strong>简并</strong>；只有引入相对论质量修正后才分裂，解释了精细结构。"))+
+   note(p("索末菲还引入磁量子数 $m$ 描述轨道平面的空间取向，为空间量子化与塞曼效应提供了说明，这是角动量空间量子化概念的早期形态。"))
+ )},
+{"id":"a2s6-3","name":"对应原理与空间量子化","tags":["der","his"],"brief":"大量子数极限下量子结果趋于经典。",
+ "body": wrap(
+   der(p("<strong>对应原理：</strong>对大量子数 $n$，相邻能级差趋于：")+
+   fml("\\Delta E = E_{n+1}-E_n = \\frac{13.6\\,\\text{eV}}{n^2}\\left(1-\\frac{1}{(1+1/n)^2}\\right)\\approx\\frac{2\\times13.6\\,\\text{eV}}{n^3}")+
+   p("由频率条件，辐射频率 $\\nu=\\Delta E/h$ 趋于电子绕核的经典旋转频率：")+
+   fml("\\nu=\\frac{\\Delta E}{h}\\xrightarrow{n\\to\\infty}\\nu_{\\text{经典}}")+
+   p("这即玻尔对应原理：大量子数极限下量子跃迁的辐射频率与经典轨道辐射频率一致，量子理论在宏观极限下还原为经典理论。"))+
+   his(p("对应原理是玻尔指导量子理论建构的重要方法论：新的量子理论必须在经典极限下回到经典结果。它帮助海森堡建立了矩阵力学，是量子力学发展的重要桥梁。"))+
+   note(p("空间量子化则指角动量在磁场方向的分量 $L_z=m\\hbar$ 只能取分立值，斯特恩-盖拉赫实验与塞曼效应是其直接证据。"))
+ )},
+]}
+]
+
+ch3_sections = [
+{
+"name": "3.1 光的波粒二象性与光子",
+"color": "#d97706",
+"desc": "黑体辐射、光电效应、光子的能量与动量、波粒二象性",
+"items": [
+{"id":"a3s1-1","name":"黑体辐射与能量量子化","tags":["def","der"],"brief":"普朗克假设能量以 hν 为单位不连续交换。",
+ "body": wrap(
+   defn("黑体辐射",p("黑体是能完全吸收各种波长辐射的理想物体，其辐射只与温度有关。实验测得黑体辐射谱有峰值，且随温度升高向短波移动（维恩位移定律），经典理论（瑞利-金斯）在短波端发散，称为<strong>紫外灾难</strong>。"))+
+   der(p("<strong>普朗克的能量子假设：</strong>普朗克（1900）假设振子的能量不能连续变化，只能取分立值：")+
+   fml("E_n = n h\\nu,\\qquad n=0,1,2,\\dots")+
+   p("用玻尔兹曼分布求平均能量，由级数求和得：")+
+   fml("\\langle E\\rangle = \\frac{\\sum n h\\nu\\,e^{-nh\\nu/k_BT}}{\\sum e^{-nh\\nu/k_BT}} = \\frac{h\\nu}{e^{h\\nu/k_BT}-1}")+
+   p("由此得到普朗克公式，它在长波端回到瑞利-金斯，在短波端正确下降，消除了紫外灾难：")+
+   fml("u(\\nu,T) = \\frac{8\\pi h\\nu^3}{c^3}\\frac{1}{e^{h\\nu/k_BT}-1}"))+
+   note(p("能量量子化是量子论的开端，$h=6.626\\times10^{-34}\\,\\text{J·s}$ 为普朗克常数。"))
+ )},
+{"id":"a3s1-2","name":"光电效应与光子","tags":["der","thm"],"brief":"爱因斯坦用光量子解释光电效应的规律。",
+ "fig":"photon","figCap":"光电效应：光子把能量交给金属中的电子，电子克服逸出功逸出",
+ "body": wrap(
+   thm("爱因斯坦光电方程",p("光由能量为 $h\\nu$ 的<strong>光子</strong>组成，光子把全部能量交给电子，电子克服逸出功 $W$ 后剩余动能：")+
+   fml("h\\nu = W + E_{k,\\max}")+
+   p("只有当 $h\\nu>W$ 时才可能逸出，存在红限频率 $\\nu_0=W/h$。"))+
+   der(p("<strong>实验规律的导出：</strong>由光电方程 $E_{k,\\max}=h\\nu-W$ 可解释以下规律：")+
+   p("① 饱和光电流与光强成正比——光强越大，单位时间光子数越多，逸出电子数越多；")+
+   fml("I_{sat}\\propto \\text{光强}")+
+   p("② 遏止电压 $U_0$ 与频率线性、与光强无关——由 $eU_0=h\\nu-W$ 得：")+
+   fml("U_0 = \\frac{h}{e}\\nu-\\frac{W}{e}")+
+   p("③ 存在红限频率——$\\nu_0=W/h$，低于此频率无论光强多大都不能逸出；④ 光电发射无延迟——单个光子即可瞬间激发电子。这些都与光的波动说相矛盾，只有光量子假说才能全部解释。"))+
+   note(p("爱因斯坦因光电效应研究获 1921 年诺贝尔物理学奖，密立根 1916 年的精密实验验证了该方程。"))
+ )},
+{"id":"a3s1-3","name":"光的波粒二象性","tags":["der","note"],"brief":"光子具有能量与动量，体现粒子性与波动性。",
+ "body": wrap(
+   der(p("<strong>光子的能量与动量：</strong>由光量子假设与相对论关系，光子的能量、动量满足：")+
+   fml("E = h\\nu = \\frac{hc}{\\lambda},\\qquad p = \\frac{E}{c} = \\frac{h}{\\lambda}")+
+   p("光子具有确定的能量与动量，与实物粒子碰撞时遵循能量与动量守恒，显示出粒子性。"))+
+   der(p("<strong>波动性的一面：</strong>光的干涉、衍射与偏振现象只能用波动性解释，波长 $\\lambda$ 与波数 $k$ 描述其波动特征：")+
+   fml("k = \\frac{2\\pi}{\\lambda},\\qquad \\omega = 2\\pi\\nu,\\qquad p=\\hbar k,\\ E=\\hbar\\omega")+
+   p("粒子性量（$E,p$）与波动性量（$\\omega,k$）由 $\\hbar$ 联系，这正是波粒二象性的数学表达。"))+
+   note(p("光的波粒二象性表明：微观客体既不是经典波也不是经典粒子，其行为由量子力学统一描述，光子行为不能用经典轨迹理解，而由概率波描述（如单光子双缝干涉）。"))
+ )},
+]},
+{
+"name": "3.2 德布罗意物质波",
+"color": "#b45309",
+"desc": "物质波假设、德布罗意波长、电子衍射实验与物质波的统计解释",
+"items": [
+{"id":"a3s2-1","name":"德布罗意物质波假设","tags":["thm","der"],"brief":"实物粒子也具有波动性，波长 λ=h/p。",
+ "body": wrap(
+   thm("德布罗意假设",p("德布罗意（1924）提出：一切实物粒子都伴随波，称为<strong>物质波</strong>（德布罗意波），其波长与动量、频率与能量的关系与光子相同：")+
+   fml("\\lambda = \\frac{h}{p},\\qquad \\nu = \\frac{E}{h}")+
+   p("这使物质与光在波粒二象性上统一起来。"))+
+   der(p("<strong>由相对论导出：</strong>对能量 $E$、动量 $p$ 的相对论粒子，$E^2=p^2c^2+m_0^2c^4$，相速度与群速度：")+
+   fml("v_p = \\frac{\\omega}{k}=\\frac{E}{p},\\qquad v_g=\\frac{d\\omega}{dk}=\\frac{dE}{dp}=\\frac{pc^2}{E}=v")+
+   p("群速度恰等于粒子运动速度，说明物质波波包的运动与粒子运动一致。对非相对论粒子 $E=p^2/2m$：")+
+   fml("\\lambda = \\frac{h}{p} = \\frac{h}{\\sqrt{2mE_k}}"))+
+   note(p("德布罗意假设的提出基于对称性思考：既然光具有波粒二象性，实物粒子也可能如此。三年后电子衍射实验证实了它，他因此获得 1929 年诺贝尔物理学奖。"))
+ )},
+{"id":"a3s2-2","name":"德布罗意波长的计算与电子衍射","tags":["der","exa"],"brief":"计算加速电子的波长并与实验对照。",
+ "fig":"debroglie","figCap":"德布罗意物质波：电子在轨道上形成驻波，波动性与粒子性统一",
+ "body": wrap(
+   der(p("<strong>加速电子的德布罗意波长：</strong>电子经电压 $U$ 加速，动能 $E_k=eU$，非相对论下 $p=\\sqrt{2m_e eU}$，故：")+
+   fml("\\lambda = \\frac{h}{\\sqrt{2m_e e U}}")+
+   p("代入常数得工程常用公式：")+
+   fml("\\lambda = \\sqrt{\\frac{150}{U}}\\,\\text{Å} = \\frac{1.226}{\\sqrt{U(\\text{V})}}\\,\\text{nm}"))+
+   exa(p("<strong>例：</strong>$U=100\\,\\text{V}$ 时 $\\lambda=0.123\\,\\text{nm}$；$U=1\\,\\text{V}$ 时 $\\lambda=1.23\\,\\text{nm}$。前者与晶体原子间距同量级，故可用晶体作衍射光栅。"))+
+   der(p("<strong>戴维孙-革末实验：</strong>1927 年用 $54\\,\\text{eV}$ 电子束轰击镍单晶，测得衍射极大满足布拉格条件：")+
+   fml("n\\lambda = 2d\\sin\\theta")+
+   p("由实验角度反推的波长与德布罗意公式计算值一致，直接证实了物质波的存在。"))+
+   note(p("此后质子、中子、原子、分子甚至大分子都实现了衍射，物质波的普遍性得到确认，电子显微镜正是基于电子的短波长获得高分辨率。"))
+ )},
+{"id":"a3s2-3","name":"物质波的统计解释","tags":["der","note"],"brief":"物质波是概率波，强度代表粒子出现的概率。",
+ "body": wrap(
+   der(p("<strong>波恩的统计解释：</strong>物质波不是某种物理量的振动，而是<strong>概率波</strong>。波函数的模平方代表粒子在空间某处出现的概率密度：")+
+   fml("dw = |\\psi(\\mathbf{r},t)|^2\\,d^3r")+
+   p("单电子双缝实验中，电子一个一个地通过双缝，屏上先出现随机亮点，累积足够多电子后形成干涉条纹，说明干涉是单个电子的概率分布，而非电子之间的相互作用。"))+
+   der(p("<strong>振幅与粒子数的关系：</strong>波强度 $|\\psi|^2$ 越大，在该处探测到粒子的概率越大；对 $N$ 个全同粒子，$N|\\psi|^2$ 代表粒子数的空间分布：")+
+   fml("N(\\mathbf{r}) = N|\\psi(\\mathbf{r})|^2")+
+   p("这解释了电子衍射图样与光的衍射图样形式上的一致（都遵从叠加原理）。"))+
+   note(p("概率解释使量子力学成为统计性理论：它不预言单个粒子的确定轨迹，只预言测量结果的概率分布，这与经典决定论有本质区别。"))
+ )},
+]},
+{
+"name": "3.3 不确定关系",
+"color": "#f59e0b",
+"desc": "位置-动量不确定关系、能量-时间不确定关系及其应用",
+"items": [
+{"id":"a3s3-1","name":"位置与动量的不确定关系","tags":["der","def"],"brief":"Δx·Δp ≥ ħ/2 是量子力学的基本特征。",
+ "fig":"uncertainty","figCap":"波包越窄（Δx 小），其动量谱越宽（Δp 大）",
+ "body": wrap(
+   defn("不确定关系",p("海森堡（1927）指出：粒子的位置与动量不能同时被精确确定，二者不确定度的乘积有下限：")+
+   fml("\\Delta x\\,\\Delta p_x \\ge \\frac{\\hbar}{2}")+
+   p("类似地 $\\Delta y\\Delta p_y\\ge\\hbar/2$、$\\Delta z\\Delta p_z\\ge\\hbar/2$。这不是仪器精度的限制，而是微观客体的内禀属性。"))+
+   der(p("<strong>由波包与傅里叶变换导出：</strong>一个空间宽度为 $\\Delta x$ 的波包，其波数展宽满足 $\\Delta x\\,\\Delta k\\gtrsim1/2$。由 $p=\\hbar k$ 得 $\\Delta p=\\hbar\\Delta k$，于是：")+
+   fml("\\Delta x\\,\\Delta p = \\hbar\\,\\Delta x\\,\\Delta k \\gtrsim \\frac{\\hbar}{2}")+
+   p("波包越窄（$\\Delta x$ 越小），动量成分越宽（$\\Delta p$ 越大），这正是不确定关系的数学根源。对高斯波包取等号。"))+
+   note(p("不确定关系是量子力学的基本原理，它不是「测量干扰」造成的，而是波粒二象性的必然结果。它说明用经典轨道描述微观粒子在原则上不成立。"))
+ )},
+{"id":"a3s3-2","name":"不确定关系的应用与估算","tags":["der","exa"],"brief":"用不确定关系估算原子能量尺度。",
+ "body": wrap(
+   der(p("<strong>估算氢原子基态能量：</strong>设电子被限制在尺度 $a$ 内，$\\Delta x\\sim a$，则 $\\Delta p\\sim\\hbar/a$，取 $p\\sim\\Delta p$，总能量近似为：")+
+   fml("E \\approx \\frac{p^2}{2m_e}-\\frac{e^2}{4\\pi\\varepsilon_0 a}\\approx \\frac{\\hbar^2}{2m_e a^2}-\\frac{e^2}{4\\pi\\varepsilon_0 a}")+
+   p("令 $dE/da=0$ 求最小值：")+
+   fml("\\frac{dE}{da}=-\\frac{\\hbar^2}{m_e a^3}+\\frac{e^2}{4\\pi\\varepsilon_0 a^2}=0\\ \\Rightarrow\\ a=\\frac{4\\pi\\varepsilon_0\\hbar^2}{m_e e^2}=a_0")+
+   p("代回得基态能量：")+
+   fml("E_{\\min} = -\\frac{m_e e^4}{8\\varepsilon_0^2 h^2} = -13.6\\,\\text{eV}"))+
+   exa(p("<strong>例（电子不能落入核内）：</strong>若电子被限制在核尺度 $\\Delta x\\sim10^{-15}\\,\\text{m}$，则 $p\\sim\\hbar/\\Delta x$，动能约 $\\hbar^2/(2m_e\\Delta x^2)\\sim10^9\\,\\text{eV}$，远大于库仑吸引能，故电子不可能稳定存在于核内。"))+
+   note(p("不确定关系可以快速给出原子尺度、零点能、核结合能等的数量级估计，是理解量子现象的重要工具。"))
+ )},
+{"id":"a3s3-3","name":"能量-时间不确定关系","tags":["der","note"],"brief":"ΔE·Δt ≥ ħ/2 联系能级寿命与谱线宽度。",
+ "body": wrap(
+   der(p("<strong>能级寿命与自然宽度：</strong>一个寿命为 $\\tau$ 的激发态，其能量不确定度为：")+
+   fml("\\Delta E \\ge \\frac{\\hbar}{2\\tau}")+
+   p("这导致该能级发出的谱线有自然宽度 $\\Delta\\nu=\\Delta E/h$：")+
+   fml("\\Delta\\nu \\approx \\frac{1}{2\\pi\\tau}")+
+   p("寿命越长，谱线越窄；基态寿命无穷（稳定），故基态能级无自然宽度。"))+
+   exa(p("<strong>例：</strong>某激发态寿命 $\\tau=10^{-8}\\,\\text{s}$，则自然线宽 $\\Delta\\nu\\approx1.6\\times10^7\\,\\text{Hz}$，对应波长宽度约 $10^{-5}\\,\\text{nm}$，远小于多普勒加宽。"))+
+   note(p("能量-时间不确定关系还用于解释虚粒子的产生与湮灭、粒子共振态的宽度以及隧道效应中的能量暂不守恒，是量子场论的重要工具。它与其他不确定关系在地位上略有不同（时间在量子力学中不是算符）。"))
+ )},
+]},
+{
+"name": "3.4 波函数与薛定谔方程",
+"color": "#d97706",
+"desc": "波函数的性质、薛定谔方程的建立与定态问题",
+"items": [
+{"id":"a3s4-1","name":"波函数及其统计解释","tags":["def","der"],"brief":"波函数完整描述量子态，模方为概率密度。",
+ "fig":"wavefunction","figCap":"无限深势阱中的定态波函数：节点数与量子数 n 对应",
+ "body": wrap(
+   defn("波函数",p("量子力学用<strong>波函数</strong> $\\psi(\\mathbf{r},t)$ 描述微观粒子的状态。它是复函数，其模平方 $|\\psi|^2$ 表示粒子在 $\\mathbf{r}$ 处出现的概率密度，概率总和对全空间归一：")+
+   fml("\\int|\\psi(\\mathbf{r},t)|^2\\,d^3r = 1")+
+   p("波函数必须满足单值、有限、连续（及其一阶导数连续）的标准条件。"))+
+   der(p("<strong>归一化与概率守恒：</strong>由薛定谔方程可导出概率守恒方程：")+
+   fml("\\frac{\\partial\\rho}{\\partial t}+\\nabla\\cdot\\mathbf{j}=0,\\quad \\rho=|\\psi|^2")+
+   p("其中概率流密度为：")+
+   fml("\\mathbf{j} = \\frac{\\hbar}{2mi}\\left(\\psi^*\\nabla\\psi-\\psi\\nabla\\psi^*\\right)")+
+   p("这保证了归一化不随时间改变，概率总和不生不灭，体现粒子数守恒。"))+
+   note(p("波函数本身不可直接观测，只有 $|\\psi|^2$ 及其导出的可观测量的期望值才有物理意义；波函数的相位则在干涉、相位差中有可观测效应。"))
+ )},
+{"id":"a3s4-2","name":"薛定谔方程的建立","tags":["der","thm"],"brief":"由德布罗意波与能量关系构造基本方程。",
+ "body": wrap(
+   thm("薛定谔方程",p("非相对论量子力学的基本方程为：")+
+   fml("i\\hbar\\frac{\\partial\\psi}{\\partial t} = \\left[-\\frac{\\hbar^2}{2m}\\nabla^2+U(\\mathbf{r},t)\\right]\\psi")+
+   p("它描述波函数随时间演化，是量子力学的动力学方程，地位相当于经典力学中的牛顿第二定律。"))+
+   der(p("<strong>从自由粒子波函数构造：</strong>自由粒子平面波为 $\\psi=Ae^{i(\\mathbf{k}\\cdot\\mathbf{r}-\\omega t)}$，由 $E=\\hbar\\omega$、$\\mathbf p=\\hbar\\mathbf k$：")+
+   fml("i\\hbar\\frac{\\partial\\psi}{\\partial t}=\\hbar\\omega\\,\\psi=E\\psi")+
+   p("又对空间求二阶导：")+
+   fml("-\\frac{\\hbar^2}{2m}\\nabla^2\\psi=\\frac{\\hbar^2k^2}{2m}\\psi=\\frac{p^2}{2m}\\psi")+
+   p("对自由粒子 $E=p^2/2m$，故 $i\\hbar\\partial_t\\psi=-\\frac{\\hbar^2}{2m}\\nabla^2\\psi$。把经典能量关系 $E=p^2/2m+U$ 作算符替换 $E\\to i\\hbar\\partial_t$、$\\mathbf p\\to-i\\hbar\\nabla$，即得含势能的薛定谔方程。"))+
+   note(p("薛定谔方程是线性齐次方程，其解满足叠加原理，这保证了量子力学中干涉与叠加现象的成立。"))
+ )},
+{"id":"a3s4-3","name":"定态薛定谔方程与本征值问题","tags":["der","thm"],"brief":"分离时间变量得到能量本征方程。",
+ "body": wrap(
+   der(p("<strong>分离变量：</strong>若势能 $U(\\mathbf r)$ 不显含时间，令 $\\psi(\\mathbf{r},t)=\\phi(\\mathbf{r})f(t)$，代入薛定谔方程并除以 $\\phi f$：")+
+   fml("i\\hbar\\frac{1}{f}\\frac{df}{dt} = \\frac{1}{\\phi}\\left[-\\frac{\\hbar^2}{2m}\\nabla^2\\phi+U\\phi\\right]")+
+   p("左边只依赖 $t$、右边只依赖 $\\mathbf r$，故两边同等于常数 $E$。时间部分解得振荡因子：")+
+   fml("f(t)=e^{-iEt/\\hbar}")+
+   p("空间部分即定态薛定谔方程：")+
+   fml("-\\frac{\\hbar^2}{2m}\\nabla^2\\phi+U\\phi=E\\phi"))+
+   thm("定态薛定谔方程",p("定态问题化为算符 $\\hat H=-\\frac{\\hbar^2}{2m}\\nabla^2+U$ 的本征值问题，$E$ 为本征值（能量），$\\phi$ 为本征函数（定态波函数）。定态下概率密度 $|\\psi|^2=|\\phi|^2$ 不随时间变化。"))+
+   note(p("束缚态（如势阱中粒子）给出离散本征值谱，散射态给出连续谱。定态问题是原子、分子结构计算的核心。"))
+ )},
+]},
+{
+"name": "3.5 一维势阱、势垒与隧道效应",
+"color": "#b45309",
+"desc": "无限深势阱、势垒穿透与隧道效应及其应用",
+"items": [
+{"id":"a3s5-1","name":"一维无限深势阱","tags":["der","thm"],"brief":"势阱中粒子的能量只能取分立值。",
+ "fig":"potential_well","figCap":"一维势阱中的束缚态能级：E ∝ n²，最低能量不为零",
+ "body": wrap(
+   thm("无限深势阱能级",p("宽度为 $L$ 的一维无限深势阱（$0<x<L$ 内 $U=0$，边界外 $U\\to\\infty$）中，粒子的能级与波函数为：")+
+   fml("E_n = \\frac{n^2\\pi^2\\hbar^2}{2mL^2},\\qquad \\psi_n=\\sqrt{\\frac{2}{L}}\\sin\\frac{n\\pi x}{L},\\ n=1,2,\\dots")+
+   p("能量最低的基态 $E_1\\neq0$，称为零点能。"))+
+   der(p("<strong>求解：</strong>阱内 $U=0$，定态方程为 $\\phi''=-k^2\\phi$（$k^2=2mE/\\hbar^2$），通解为 $\\phi=A\\sin kx+B\\cos kx$。由边界条件 $\\phi(0)=0$ 得 $B=0$；由 $\\phi(L)=0$ 得 $kL=n\\pi$：")+
+   fml("k_n=\\frac{n\\pi}{L}\\ \\Rightarrow\\ E_n=\\frac{\\hbar^2k_n^2}{2m}=\\frac{n^2\\pi^2\\hbar^2}{2mL^2}")+
+   p("由归一化 $\\int_0^L|\\phi|^2dx=1$ 得 $A=\\sqrt{2/L}$。"))+
+   exa(p("<strong>例：</strong>若电子被限制在 $L=0.1\\,\\text{nm}$（原子尺度），$E_1=\\dfrac{\\pi^2\\hbar^2}{2m_eL^2}\\approx37.6\\,\\text{eV}$，与原子能级同量级，说明量子限制效应显著。"))+
+   note(p("能级间隔随 $L$ 减小而增大：$\\Delta E\\propto1/L^2$。这正是量子点（纳米晶）尺寸决定发光颜色的原理。"))
+ )},
+{"id":"a3s5-2","name":"一维势垒与隧道效应","tags":["der","thm"],"brief":"粒子能穿过高于其能量的势垒。",
+ "fig":"tunneling","figCap":"势垒穿透：波函数在势垒内指数衰减，仍有部分振幅到达另一侧",
+ "body": wrap(
+   der(p("<strong>分区求解：</strong>设势垒宽度 $a$、高度 $U_0$，入射能量 $E<U_0$。在势垒区（Ⅱ）内定态方程为：")+
+   fml("\\phi'' = \\kappa^2\\phi,\\qquad \\kappa=\\frac{\\sqrt{2m(U_0-E)}}{\\hbar}")+
+   p("其解为指数形式 $\\phi_{II}=Ce^{\\kappa x}+De^{-\\kappa x}$，波函数在势垒内指数衰减但仍不为零，故在势垒另一侧仍有透射波。在势垒外（Ⅰ、Ⅲ）为平面波。"))+
+   thm("透射系数",p("对宽势垒（$\\kappa a\\gg1$），透射系数近似为：")+
+   fml("T \\approx 16\\frac{E(U_0-E)}{U_0^2}\\,e^{-2\\kappa a}")+
+   p("可见 $T$ 随势垒宽度 $a$ 与 $\\sqrt{U_0-E}$ 指数衰减，但原则上不为零，这就是<strong>隧道效应</strong>。"))+
+   der(p("<strong>指数因子的来源：</strong>由边界条件匹配波函数及其导数，可得透射振幅正比于势垒内的衰减因子 $e^{-\\kappa a}$，透射系数正比于其平方：")+
+   fml("T\\propto e^{-2\\kappa a}=e^{-\\frac{2a}{\\hbar}\\sqrt{2m(U_0-E)}}")+
+   p("经典粒子能量不足时无法越过势垒，但量子粒子可以「穿透」，这是纯量子效应。"))+
+   note(p("隧道效应已被大量实验证实，它不是绕过势垒，而是波函数在经典禁区中指数衰减后仍有振幅。"))
+ )},
+{"id":"a3s5-3","name":"隧道效应的应用","tags":["der","app"],"brief":"α衰变、扫描隧道显微镜与隧道二极管。",
+ "body": wrap(
+   der(p("<strong>伽莫夫 α 衰变理论：</strong>α粒子被核力束缚在核内势阱中，但它有一定概率穿透库仑势垒逃逸。透射概率为：")+
+   fml("T\\propto e^{-2\\int\\kappa\\,dr}=e^{-G},\\qquad \\kappa=\\frac{\\sqrt{2m(V(r)-E)}}{\\hbar}")+
+   p("由库仑势 $V(r)=\\dfrac{2Ze^2}{4\\pi\\varepsilon_0 r}$ 计算积分 $G$，得衰变常数 $\\lambda\\propto e^{-G}$，从而导出盖革-努塔尔定律：")+
+   fml("\\log\\lambda = A-B\\frac{Z}{\\sqrt{E_\\alpha}}"))+
+   app(p("<strong>其他应用：</strong>① 扫描隧道显微镜（STM）利用针尖与样品间的隧道电流 $I\\propto e^{-2\\kappa d}$，对间距 $d$ 极其敏感，可达到原子级分辨率；② 隧道二极管利用重掺杂 PN 结的隧穿特性；③ 约瑟夫森结中的库珀对隧穿用于超导量子干涉仪；④ 半导体器件中的隧穿漏电流是尺寸缩小的限制因素。"))+
+   note(p("隧道效应中粒子「借」能量穿越势垒后归还，遵循能量-时间不确定关系 $\\Delta E\\Delta t\\sim\\hbar$，不违反能量守恒。"))
+ )},
+]},
+{
+"name": "3.6 氢原子的量子力学处理",
+"color": "#f59e0b",
+"desc": "中心力场问题、三个量子数、角动量与电子云",
+"items": [
+{"id":"a3s6-1","name":"氢原子薛定谔方程与量子数","tags":["der","thm"],"brief":"求解中心力场问题得到 n、l、m 三个量子数。",
+ "fig":"hydrogen_orbital","figCap":"氢原子电子云与角分布：1s 球对称，2p 有方向性",
+ "body": wrap(
+   der(p("<strong>分离变量：</strong>氢原子中电子在核库仑势 $U(r)=-\\dfrac{e^2}{4\\pi\\varepsilon_0 r}$ 中运动，势能只依赖 $r$。在球坐标下令 $\\psi=R(r)Y(\\theta,\\varphi)$，球谐函数部分给出两个量子数 $l,m_l$，径向方程给出主量子数 $n$：")+
+   fml("\\psi_{nlm}(r,\\theta,\\varphi)=R_{nl}(r)\\,Y_{lm}(\\theta,\\varphi)")+
+   p("径向方程的解在束缚条件下要求能量取分立值，最终得到与玻尔模型相同的结果：")+
+   fml("E_n=-\\frac{m_e e^4}{8\\varepsilon_0^2 h^2}\\frac{1}{n^2}=-\\frac{13.6\\,\\text{eV}}{n^2}"))+
+   thm("三个量子数",p("氢原子定态由三个量子数标记：主量子数 $n=1,2,\\dots$；轨道角动量量子数 $l=0,1,\\dots,n-1$；磁量子数 $m_l=-l,\\dots,l$。给定量子数组合的能级简并度为 $n^2$（不计自旋）。"))+
+   note(p("量子力学给出与玻尔相同的能量公式，但图像完全不同：不存在确定轨道，只有由 $|\\psi|^2$ 描述的电子云概率分布。"))
+ )},
+{"id":"a3s6-2","name":"氢原子波函数与电子云","tags":["der","exa"],"brief":"基态波函数、径向概率分布与电子云图像。",
+ "body": wrap(
+   der(p("<strong>基态波函数：</strong>对 $n=1,l=0,m=0$，径向波函数为：")+
+   fml("R_{10}(r)=2\\left(\\frac{1}{a_0}\\right)^{3/2}e^{-r/a_0}")+
+   p("概率密度 $|\\psi|^2$ 只依赖 $r$，呈球对称指数衰减。考虑球壳体积 $4\\pi r^2dr$，径向概率分布为：")+
+   fml("P(r)=|R_{10}|^2r^2 = \\frac{4}{a_0^3}r^2e^{-2r/a_0}")+
+   p("令 $dP/dr=0$ 求得最概然半径：")+
+   fml("r = a_0")+
+   p("即玻尔半径对应最可能找到电子的半径，但概率分布在 $r=a_0$ 附近有宽度，并非确定轨道。"))+
+   exa(p("<strong>例（径向概率的峰值）：</strong>对 $1s$ 态 $P(r)$ 在 $r=a_0=0.0529\\,\\text{nm}$ 处取极大，电子「最常出现」在玻尔半径处，与玻尔模型图像呼应但含义不同。"))+
+   note(p("电子云图即 $|\\psi|^2$ 的等值面或密度图，$s$ 态球对称，$p$ 态呈哑铃形，$d$ 态更复杂，这些形状决定了化学键的方向性。"))
+ )},
+{"id":"a3s6-3","name":"角动量与空间量子化","tags":["der","thm"],"brief":"角动量大小与取向都是量子化的。",
+ "body": wrap(
+   thm("角动量量子化",p("轨道角动量的大小与 z 分量为：")+
+   fml("L=\\sqrt{l(l+1)}\\,\\hbar,\\qquad L_z=m_l\\hbar")+
+   p("$l$ 决定角动量大小，$m_l$ 决定其在 z 方向的投影，称为<strong>空间量子化</strong>。"))+
+   der(p("<strong>由球谐函数本征值：</strong>角动量平方算符 $\\hat L^2$ 与 $\\hat L_z$ 的共同本征函数为球谐函数 $Y_{lm}$，满足本征方程：")+
+   fml("\\hat L^2Y_{lm}=l(l+1)\\hbar^2Y_{lm},\\qquad \\hat L_zY_{lm}=m\\hbar\\,Y_{lm}")+
+   p("由于 $L_z$ 的最大值为 $l\\hbar$，而 $L$ 的大小为 $\\sqrt{l(l+1)}\\hbar>l\\hbar$，故角动量矢量不能与 z 轴重合，只能取 $2l+1$ 个分立取向。"))+
+   note(p("注意：$l=0$ 态角动量为零，与玻尔「轨道」图像矛盾，量子力学中 $s$ 态电子没有轨道角动量，这再次说明玻尔轨道图像只是近似的经典类比。空间量子化由塞曼效应和斯特恩-盖拉赫实验证实。"))
+ )},
+]}
+]
+
+ch4_sections = [
+{
+"name": "4.1 斯特恩-盖拉赫实验",
+"color": "#0d9488",
+"desc": "非均匀磁场中的原子束分裂与空间量子化的直接验证",
+"items": [
+{"id":"a4s1-1","name":"斯特恩-盖拉赫实验","tags":["def","der"],"brief":"用非均匀磁场使原子束按磁矩取向分裂。",
+ "fig":"sterngerlach","figCap":"斯特恩-盖拉赫实验：银原子束在非均匀磁场中分裂为两条",
+ "body": wrap(
+   defn("斯特恩-盖拉赫实验",p("1922 年斯特恩与盖拉赫让银原子束通过强非均匀磁场，原子因具有磁矩而受到与磁场梯度成正比的偏转力，在屏上分裂成离散的几条，从而直接验证了空间量子化。"))+
+   der(p("<strong>磁矩在非均匀场中的受力：</strong>磁矩 $\\boldsymbol\\mu$ 在磁场 $\\mathbf B$ 中受的力为 $\\mathbf F=\\nabla(\\boldsymbol\\mu\\cdot\\mathbf B)$，对非均匀场沿 z 方向展开：")+
+   fml("F_z = \\frac{\\partial}{\\partial z}(\\mu_z B_z)=\\mu_z\\frac{\\partial B_z}{\\partial z}")+
+   p("若磁矩取向连续分布，屏上应得到连续的一片；若空间量子化成立，$\\mu_z$ 取分立值，则应得到分立的束斑。"))+
+   note(p("实验装置包括银炉（产生原子束）、准直狭缝、非均匀磁场（一个刀刃形磁极与一个平面磁极）和探测屏，原子在屏上的堆积由显微镜或化学方法读出。"))
+ )},
+{"id":"a4s1-2","name":"实验结果与空间量子化","tags":["der","note"],"brief":"分裂为两条而非奇数条，揭示自旋的存在。",
+ "body": wrap(
+   der(p("<strong>结果与预期：</strong>实验观察到原子束分裂为对称的两条，而非玻尔-索末菲理论预期的 $2l+1$ 条（奇数条）。")+
+   fml("N_{\\text{条}} = 2l+1\\ \\text{（理论预期，奇数）}")+
+   p("基态银原子的轨道角动量为零（$l=0$），若只有轨道磁矩，则不应分裂。实际分裂为两条，说明存在一种只能取两个取向的内禀角动量——电子自旋。"))+
+   der(p("<strong>由束斑分离估计磁矩：</strong>原子在磁场区停留时间 $t=L/v$，偏转位移：")+
+   fml("z = \\frac{1}{2}\\frac{F_z}{M}t^2 = \\frac{\\mu_z\\,\\partial B_z/\\partial z}{2M}\\left(\\frac{L}{v}\\right)^2")+
+   p("由实测位移反推的 $\\mu_z$ 恰为一个玻尔磁子 $\\mu_B$，与自旋磁矩的预言一致。"))+
+   note(p("银原子分裂为两条对应 $m_s=\\pm\\tfrac12$，证明了自旋角量子数 $s=\\tfrac12$，且其磁矩反常地大（$g_s\\approx2$）。"))
+ )},
+{"id":"a4s1-3","name":"自旋假设的实验依据","tags":["der","exa"],"brief":"碱金属双线、反常塞曼与斯特恩-盖拉赫共同指向自旋。",
+ "body": wrap(
+   der(p("<strong>三条独立证据：</strong>① 斯特恩-盖拉赫实验：基态银原子束分裂为两条，$l=0$ 却有磁矩；② 碱金属光谱的精细结构双线（如钠 D 线），源于角动量取两个值；③ 反常塞曼效应：谱线分裂数目与朗德 g 因子不为整数，无法用轨道磁矩解释。")+
+   fml("l=0\\ \\text{却分裂为}\\ 2\\ \\text{条}\\ \\Rightarrow\\ s=\\tfrac12")+
+   p("只有引入自旋角动量 $s=\\tfrac12$（取值 $m_s=\\pm\\tfrac12$）及相应的自旋磁矩，才能统一解释这三种现象。"))+
+   exa(p("<strong>例（银原子）：</strong>基态为 $5s\\ ^2S_{1/2}$，$l=0,s=1/2,j=1/2$，在非均匀磁场中分裂为 $m_j=\\pm1/2$ 两条，与实验一致。"))+
+   note(p("自旋是电子的内禀属性，没有经典对应；它由狄拉克相对论量子力学自然给出，$g_s\\approx2$ 也与狄拉克预言的 $g=2$ 相符（实验值 $2.0023$，由量子电动力学修正）。"))
+ )},
+]},
+{
+"name": "4.2 电子自旋与自旋量子数",
+"color": "#0f766e",
+"desc": "自旋假设、自旋角动量与磁矩、自旋量子数与 g 因子",
+"items": [
+{"id":"a4s2-1","name":"电子自旋假设","tags":["def","der"],"brief":"电子具有内禀角动量 s=1/2。",
+ "body": wrap(
+   defn("电子自旋",p("乌伦贝克与古兹米特（1925）提出：电子除轨道运动外还具有内禀角动量，称为<strong>自旋</strong>，其角动量量子数 $s=\\tfrac12$，自旋磁量子数 $m_s=\\pm\\tfrac12$，相应的自旋磁矩为：")+
+   fml("\\mu_{s,z} = -g_s\\,m_s\\,\\mu_B = \\mp g_s\\frac{\\mu_B}{2}")+
+   p("其中 $\\mu_B=\\dfrac{e\\hbar}{2m_e}$ 为玻尔磁子，$g_s\\approx2$ 为自旋 g 因子。"))+
+   der(p("<strong>为什么需要自旋：</strong>① 斯特恩-盖拉赫实验显示基态原子有磁矩且分裂为两条；② 碱金属光谱的双线结构需要第四个自由度；③ 泡利不相容原理需要第四个量子数来区分同一轨道上的两个电子。三条证据都要求引入 $m_s=\\pm\\tfrac12$。")+
+   fml("n,\\ l,\\ m_l,\\ m_s\\ \\text{四个量子数唯一确定一个电子的状态}"))+
+   note(p("自旋角动量是内禀的，不与空间运动对应，$|\\mathbf S|=\\sqrt{s(s+1)}\\hbar=\\dfrac{\\sqrt3}{2}\\hbar$，而 $S_z=\\pm\\dfrac{\\hbar}{2}$。"))
+ )},
+{"id":"a4s2-2","name":"自旋角动量与自旋磁矩","tags":["der","thm"],"brief":"自旋角动量的性质与玻尔磁子。",
+ "body": wrap(
+   thm("自旋角动量",p("电子的自旋角动量大小与 z 分量：")+
+   fml("S=\\sqrt{s(s+1)}\\,\\hbar,\\qquad S_z=m_s\\hbar=\\pm\\frac{\\hbar}{2}")+
+   p("自旋磁矩与自旋角动量方向相反（电子带负电），且有反常倍率 $g_s$：")+
+   fml("\\boldsymbol\\mu_s=-g_s\\frac{e}{2m_e}\\mathbf S,\\qquad g_s\\approx2"))+
+   der(p("<strong>玻尔磁子：</strong>用玻尔模型的最简情形估计原子磁矩的量级，即电子在半径 $a_0$ 的轨道上以速度 $v$ 运动时对应的磁矩：")+
+   fml("\\mu = I\\cdot A = \\frac{e v}{2\\pi a_0}\\cdot\\pi a_0^2=\\frac{e v a_0}{2}")+
+   p("由角动量 $L=m_e v a_0=\\hbar$ 得 $v a_0=\\hbar/m_e$，代入：")+
+   fml("\\mu_B=\\frac{e\\hbar}{2m_e}=9.274\\times10^{-24}\\,\\text{J/T}")+
+   p("这就是原子磁矩的自然单位。自旋磁矩大小约为一个玻尔磁子。"))+
+   note(p("自旋 g 因子 $g_s$ 略大于 2（$2.002319$），偏差由量子电动力学（QED）的真空极化与自能修正给出，是目前检验 QED 最精确的量之一。"))
+ )},
+{"id":"a4s2-3","name":"自旋量子数与角动量叠加","tags":["der","note"],"brief":"自旋与轨道角动量的耦合规则。",
+ "body": wrap(
+   der(p("<strong>角动量耦合：</strong>电子同时具有轨道角动量 $\\mathbf L$ 与自旋角动量 $\\mathbf S$，二者耦合为总角动量 $\\mathbf J=\\mathbf L+\\mathbf S$。总角动量量子数取：")+
+   fml("j = l+s\\ \\text{或}\\ l-s = l\\pm\\tfrac12\\ (l\\neq0)")+
+   p("当 $l=0$ 时只有 $j=s=1/2$。总角动量的 z 分量为：")+
+   fml("J_z=m_j\\hbar,\\qquad m_j=-j,\\dots,j")+
+   p("共 $2j+1$ 个取向。"))+
+   der(p("<strong>角动量大小的合成：</strong>由 $\\mathbf J=\\mathbf L+\\mathbf S$ 平方得：")+
+   fml("J^2=L^2+S^2+2\\mathbf L\\cdot\\mathbf S")+
+   p("取本征值：")+
+   fml("j(j+1)=l(l+1)+s(s+1)+2\\langle\\mathbf L\\cdot\\mathbf S\\rangle/\\hbar^2")+
+   p("由此可解出 $\\langle\\mathbf L\\cdot\\mathbf S\\rangle$，这正是自旋-轨道耦合能的计算基础。"))+
+   note(p("角动量耦合遵循普遍规则：两个角动量 $j_1,j_2$ 合成后总角动量取 $|j_1-j_2|$ 到 $j_1+j_2$ 的每个值。这套规则来自角动量算符的对易关系。"))
+ )},
+]},
+{
+"name": "4.3 自旋轨道耦合",
+"color": "#14b8a6",
+"desc": "自旋轨道耦合的物理起源、L·S 耦合能与总角动量",
+"items": [
+{"id":"a4s3-1","name":"自旋轨道耦合的物理起源","tags":["der"],"brief":"电子感受到的内磁场与其自旋磁矩相互作用。",
+ "fig":"spin_orbit","figCap":"自旋-轨道耦合：电子的轨道运动产生内磁场，与其自旋磁矩相互作用",
+ "body": wrap(
+   der(p("<strong>从电子静止系看：</strong>在电子自身的静止系中，带正电的核绕电子运动，等效于一个电流环，在电子处产生磁场：")+
+   fml("\\mathbf B = -\\frac{1}{c^2}\\mathbf v\\times\\mathbf E")+
+   p("核在电子处产生的电场为径向，$\\mathbf E=\\dfrac{Ze}{4\\pi\\varepsilon_0 r^2}\\hat{\\mathbf r}$，故：")+
+   fml("B = \\frac{Ze\\,v}{4\\pi\\varepsilon_0 c^2 r^2}")+
+   p("把 $v=L/(m_e r)$ 代入，得内磁场与轨道角动量的关系：")+
+   fml("\\mathbf B = \\frac{Ze}{4\\pi\\varepsilon_0 m_e c^2 r^3}\\mathbf L"))+
+   der(p("<strong>相互作用能：</strong>自旋磁矩在该磁场中的势能为：")+
+   fml("\\Delta E = -\\boldsymbol\\mu_s\\cdot\\mathbf B = g_s\\frac{e}{2m_e}\\mathbf S\\cdot\\mathbf B")+
+   p("代入 $\\mathbf B$ 并计入相对论修正的一半（托马斯进动），得：")+
+   fml("\\Delta E_{so} = \\frac{1}{2m_e^2c^2}\\frac{1}{r}\\frac{dU}{dr}\\mathbf L\\cdot\\mathbf S,\\qquad U=-\\frac{Ze^2}{4\\pi\\varepsilon_0 r}"))+
+   note(p("自旋-轨道耦合本质上是相对论效应，量级为 $\\alpha^2$ 修正，故它导致的能级分裂称为<strong>精细结构</strong>。$Z$ 越大，耦合越强（∝Z⁴），故重元素精细结构分裂显著。"))
+ )},
+{"id":"a4s3-2","name":"L·S 耦合能与能级分裂","tags":["der","thm"],"brief":"由量子数计算耦合能得到能级分裂值。",
+ "body": wrap(
+   der(p("<strong>L·S 的期望值：</strong>自旋-轨道耦合能正比于 $\\langle\\mathbf L\\cdot\\mathbf S\\rangle$。由 $\\mathbf J^2=(\\mathbf L+\\mathbf S)^2$ 得：")+
+   fml("\\langle\\mathbf L\\cdot\\mathbf S\\rangle=\\frac{\\hbar^2}{2}\\left[j(j+1)-l(l+1)-s(s+1)\\right]")+
+   p("对给定的 $l$，$j$ 取 $l+\\tfrac12$ 与 $l-\\tfrac12$ 两个值时，该期望值不同，导致能级分裂。"))+
+   der(p("<strong>分裂间距：</strong>对钠原子 $3p$ 态（$l=1,s=1/2$），两个 $j$ 值对应的能量差：")+
+   fml("\\Delta E(j=l+\\tfrac12)-\\Delta E(j=l-\\tfrac12) \\propto (l+1)\\hbar^2")+
+   p("一般地，耦合能可写成：")+
+   fml("\\Delta E_{so}=a\\,\\frac{\\hbar^2}{2}[j(j+1)-l(l+1)-s(s+1)]")+
+   p("其中 $a$ 为随 $n,l$ 变化的耦合常数。"))+
+   thm("朗德间隔定则",p("同一多重态内相邻能级间距之比等于相应总角动量量子数中较大者之比：")+
+   fml("\\frac{\\Delta E_{j\\to j+1}}{\\Delta E_{j+1\\to j+2}}=\\frac{j+1}{j+2}")+
+   p("这是 LS 耦合下自旋-轨道相互作用的普遍规律，已被大量光谱数据证实。"))+
+   note(p("自旋-轨道耦合使原本简并的能级按 $j$ 分裂，形成精细结构双重线（碱金属）或多重线（多电子原子）。"))
+ )},
+{"id":"a4s3-3","name":"总角动量与选择定则","tags":["der","note"],"brief":"总角动量量子数与电偶极跃迁选择定则。",
+ "body": wrap(
+   der(p("<strong>总角动量：</strong>电子（或多个电子）的总角动量 $\\mathbf J=\\mathbf L+\\mathbf S$，其量子数 $j$ 取 $l\\pm\\tfrac12$，大小与投影为：")+
+   fml("J=\\sqrt{j(j+1)}\\,\\hbar,\\qquad J_z=m_j\\hbar")+
+   p("在无外场时，能量依赖 $j$ 而与 $m_j$ 无关（$2j+1$ 重简并）；加外磁场后 $m_j$ 分裂，即塞曼效应。"))+
+   der(p("<strong>电偶极选择定则：</strong>光子带有一个单位的角动量，电偶极跃迁要求：")+
+   fml("\\Delta l=\\pm1,\\qquad \\Delta j=0,\\pm1,\\qquad \\Delta m_j=0,\\pm1")+
+   p("同时要求宇称改变。自旋在电偶极跃迁中不变：$\\Delta s=0$。"))+
+   note(p("选择定则决定了哪些谱线可以出现，是光谱分析的重要工具；违反选择定则的谱线（如禁线）只能通过高阶过程（磁偶极、电四极）出现，强度极弱。"))
+ )},
+]},
+{
+"name": "4.4 精细结构与狄拉克能级",
+"color": "#0d9488",
+"desc": "精细结构常数、相对论修正与狄拉克能级公式",
+"items": [
+{"id":"a4s4-1","name":"精细结构常数与相对论修正","tags":["der"],"brief":"相对论效应使能级产生 α² 量级的修正。",
+ "fig":"fine_structure","figCap":"精细结构：钠 3p 态分裂为 2P₁/₂ 与 2P₃/₂，D 线成为双线",
+ "body": wrap(
+   der(p("<strong>精细结构常数：</strong>由基本常数组合成的无量纲常数：")+
+   fml("\\alpha=\\frac{e^2}{4\\pi\\varepsilon_0\\hbar c}\\approx\\frac{1}{137.036}")+
+   p("它表征电磁相互作用的强度，也等于玻尔模型中基态电子速度与光速之比：")+
+   fml("\\frac{v_1}{c}=\\alpha"))+
+   der(p("<strong>相对论修正的来源：</strong>相对论效应对能级的修正为 $\\alpha^2$ 量级，包含三项：① 电子质量随速度变化（动能相对论修正）；② 自旋-轨道耦合；③ 达文项（$l=0$ 态的额外修正）。三者之和给出：")+
+   fml("E_{nj}=E_n\\left[1+\\frac{\\alpha^2}{n^2}\\left(\\frac{n}{j+\\tfrac12}-\\frac34\\right)\\right]+O(\\alpha^4)"))+
+   note(p("$\\alpha^2\\approx5.3\\times10^{-5}$，故精细结构分裂相对主能级约 $10^{-4}$ 量级；但能级越深（$Z$ 越大）修正越显著。"))
+ )},
+{"id":"a4s4-2","name":"狄拉克能级公式","tags":["der","thm"],"brief":"相对论量子力学给出依赖 n 和 j 的能级。",
+ "body": wrap(
+   thm("狄拉克精细结构公式",p("狄拉克方程严格解给出氢原子能级（到 $\\alpha^2$ 阶）：")+
+   fml("E_{nj}=-\\frac{13.6\\,\\text{eV}}{n^2}\\left[1+\\frac{\\alpha^2}{n^2}\\left(\\frac{n}{j+\\tfrac12}-\\frac34\\right)\\right]")+
+   p("能级依赖 $n$ 与 $j$，而与 $l$ 无关，故相同 $n,j$ 不同 $l$ 的态仍简并（如 $2s_{1/2}$ 与 $2p_{1/2}$）。"))+
+   der(p("<strong>简并结构：</strong>对 $n=2$，可能的总角动量 $j=1/2$（来自 $2s_{1/2}$ 与 $2p_{1/2}$）与 $j=3/2$（来自 $2p_{3/2}$）。分裂量为：")+
+   fml("\\Delta E_{2p_{3/2}}-\\Delta E_{2p_{1/2}}=\\frac{13.6\\,\\text{eV}}{n^3}\\alpha^2\\cdot(\\dots)\\sim10^{-4}\\,\\text{eV}")+
+   p("这解释了钠 D 线（$3p\\to3s$）的双线结构：$3p_{1/2},3p_{3/2}$ 分裂约 $2.1\\,\\text{meV}$，对应波长 $589.0$ 与 $589.6\\,\\text{nm}$。"))+
+   note(p("狄拉克公式成功统一了自旋与相对论，是量子电动力学的先声。它预言的 $2s_{1/2}$ 与 $2p_{1/2}$ 严格简并，后被兰姆位移实验否定。"))
+ )},
+{"id":"a4s4-3","name":"兰姆位移与超精细结构","tags":["der","note"],"brief":"高于狄拉克理论的更精细能级修正。",
+ "body": wrap(
+   der(p("<strong>兰姆位移：</strong>1947 年兰姆与卢瑟福用微波共振方法测出氢原子 $2s_{1/2}$ 与 $2p_{1/2}$ 能级并不严格简并，存在约 $1058\\,\\text{MHz}$（$4.4\\times10^{-6}\\,\\text{eV}$）的微小分裂：")+
+   fml("\\nu(2s_{1/2})-\\nu(2p_{1/2})\\approx1058\\,\\text{MHz}")+
+   p("这来源于电子与真空电磁场涨落的相互作用（自能）以及真空极化，属于量子电动力学（QED）效应，无法由狄拉克方程解释。"))+
+   der(p("<strong>超精细结构：</strong>电子的总角动量 $\\mathbf J$ 与核自旋 $\\mathbf I$ 耦合为 $\\mathbf F=\\mathbf I+\\mathbf J$，产生更小的能级分裂，量级为 $m_e/M$ 倍：")+
+   fml("\\Delta E_{hfs}\\propto \\frac{m_e}{M}\\alpha^2\\ \\text{Ry}")+
+   p("氢原子基态的超精细分裂对应著名的 $21\\,\\text{cm}$ 谱线（$1420\\,\\text{MHz}$），是射电天文学观测中性氢的重要手段。"))+
+   note(p("能级结构的层级：主能级（~eV）→ 精细结构（$\\alpha^2$，~meV）→ 兰姆位移（QED，~$\\mu$eV）→ 超精细结构（~$\\mu$eV 以下）。每一层都对应更精细的物理效应。"))
+ )},
+]},
+{
+"name": "4.5 碱金属原子光谱与量子缺",
+"color": "#0f766e",
+"desc": "碱金属原子结构、量子缺、能级公式与精细结构",
+"items": [
+{"id":"a4s5-1","name":"碱金属原子的结构特点","tags":["def","der"],"brief":"价电子在原子实场中运动，能级依赖 l。",
+ "fig":"alkali_spectrum","figCap":"碱金属能级：s、p、d、f 能级因量子缺不同而下移",
+ "body": wrap(
+   defn("碱金属原子结构",p("碱金属原子（Li、Na、K、Rb、Cs）的最外层只有一个价电子，内层电子与核构成<strong>原子实</strong>。价电子在原子实的有效库仑场中运动，其能级与氢原子类似但不完全相同。"))+
+   der(p("<strong>有效核电荷与极化：</strong>价电子看到的有效核电荷 $Z^*=Z-\\sigma$（$\\sigma$ 为屏蔽常数）。此外原子实还会被价电子极化，产生附加吸引势：")+
+   fml("U(r)=-\\frac{Z^*e^2}{4\\pi\\varepsilon_0 r}-\\frac{C e^2}{4\\pi\\varepsilon_0 r^4}")+
+   p("角动量越小的轨道（$s<p<d<f$）越深入原子实内部，感受到更强的吸引与极化效应，能量越低。因此碱金属能级不仅依赖 $n$，还依赖 $l$，出现<strong>能级倒转</strong>次序：$n s<n p<n d<n f$。"))+
+   note(p("氢原子能级只依赖 $n$（库仑势的特殊简并），碱金属则因原子实存在而解除这一简并，这与多电子原子的一般情形一致。"))
+ )},
+{"id":"a4s5-2","name":"量子缺与能级公式","tags":["der","thm"],"brief":"用有效量子数 n−Δ 修正能级公式。",
+ "body": wrap(
+   thm("碱金属能级公式",p("碱金属原子的能级可用有效主量子数表示：")+
+   fml("E_{nl}=-\\frac{R hc}{(n-\\Delta_l)^2}")+
+   p("其中 $n^*=n-\\Delta_l$ 称为<strong>有效量子数</strong>，$\\Delta_l$ 为<strong>量子缺</strong>，只与 $l$ 有关（$\\Delta_s>\\Delta_p>\\Delta_d>\\Delta_f\\approx0$）。"))+
+   der(p("<strong>量子缺的物理意义：</strong>由里德伯公式，谱线波数可写成两个有效量子数之差：")+
+   fml("\\tilde{\\nu}=R\\left(\\frac{1}{n_1^{*2}}-\\frac{1}{n_2^{*2}}\\right)")+
+   p("量子缺越大表示该轨道越深入原子实、受到的附加吸引越强、能量下移越多。故 $s$ 态能量最低（$\\Delta_s\\approx1$ 量级），$f$ 态几乎与氢相同（$\\Delta_f\\approx0$）。"))+
+   exa(p("<strong>例（钠原子）：</strong>$\\Delta_s\\approx1.35$、$\\Delta_p\\approx0.86$、$\\Delta_d\\approx0.01$。故钠的 $3s$ 态能量显著低于氢的 $n=3$ 态，$3d$ 态则接近氢。"))+
+   note(p("量子缺可由光谱数据反推，是研究原子实结构与电子贯穿程度的重要实验参数；它随 $n$ 略有变化，精确处理需用量子亏损理论。"))
+ )},
+{"id":"a4s5-3","name":"碱金属光谱与精细结构","tags":["der","exa"],"brief":"主谱线系的形成与精细结构双线。",
+ "body": wrap(
+   der(p("<strong>主要谱线系：</strong>碱金属光谱由价电子在不同 $l$ 能级间跃迁形成，主要谱线系有：主线系（$np\\to ns$）、漫线系（$nd\\to3p$）、锐线系（$ns\\to3p$）与基线系（$nf\\to3d$）。由选择定则 $\\Delta l=\\pm1$ 决定。")+
+   fml("\\Delta l=\\pm1,\\qquad \\Delta j=0,\\pm1"))+
+   der(p("<strong>精细结构双线：</strong>由于自旋-轨道耦合，$p$ 态（$l=1$）分裂为 $j=1/2,3/2$ 两个能级（$^2P_{1/2},^2P_{3/2}$），故主线系与锐线系的谱线都是双线。由朗德间隔定则分裂间距满足：")+
+   fml("\\frac{\\Delta E(^2P_{3/2}\\to^2S_{1/2})-\\text{基准}}{\\dots}\\propto(l+1)")+
+   exa(p("<strong>例（钠 D 线）：</strong>著名的钠双线 D₁（$589.6\\,\\text{nm}$，$^2P_{1/2}\\to^2S_{1/2}$）与 D₂（$589.0\\,\\text{nm}$，$^2P_{3/2}\\to^2S_{1/2}$），分裂对应能量差约 $2.1\\,\\text{meV}$，是城市路灯黄光的来源。"))+
+   note(p("碱金属光谱的精细结构是自旋假设的重要实验依据，也验证了自旋-轨道耦合的量子理论。$Z$ 更大的碱金属（如 Cs）分裂更大；主线系与锐线系谱线为双线，漫线系为三线。")))
+ )},
+]},
+{
+"name": "4.6 塞曼效应",
+"color": "#14b8a6",
+"desc": "正常塞曼效应、反常塞曼效应与朗德 g 因子",
+"items": [
+{"id":"a4s6-1","name":"正常塞曼效应","tags":["der","thm"],"brief":"磁场使谱线分裂为等间距三条。",
+ "fig":"zeeman","figCap":"塞曼效应：无磁场时一条能级在磁场中按 m_j 分裂为多条",
+ "body": wrap(
+   thm("正常塞曼效应",p("原子在磁场中，磁矩与磁场相互作用，能级发生移动：")+
+   fml("\\Delta E = -\\boldsymbol\\mu\\cdot\\mathbf B = m_l\\,\\mu_B B")+
+   p("对自旋为零（$S=0$）的体系，$m_l$ 有 $2l+1$ 个取值，故能级分裂为等间距的 $2l+1$ 条。"))+
+   der(p("<strong>谱线分裂：</strong>考虑跃迁选择定则 $\\Delta m_l=0,\\pm1$，谱线在原波数 $\\tilde\\nu_0$ 两侧分裂为三条：")+
+   fml("\\Delta\\tilde{\\nu}=\\Delta m_l\\,\\frac{\\mu_B B}{hc} = (0,\\pm1)\\,\\frac{\\mu_B B}{hc}")+
+   p("分裂间隔（以频率计）为：")+
+   fml("\\Delta\\nu=\\frac{\\mu_B B}{h}=14\\,\\text{GHz/T}\\times B")+
+   p("中间的 $\\pi$ 线偏振、两侧的 $\\sigma$ 线偏振，间隔相等。"))+
+   note(p("正常塞曼效应是洛伦兹经典电子论可以解释的（1896 年塞曼发现、洛伦兹解释），两人因此获 1902 年诺贝尔物理学奖；它适用于总自旋为零的原子（如氦单重态、锌等）。"))
+ )},
+{"id":"a4s6-2","name":"反常塞曼效应与朗德 g 因子","tags":["der"],"brief":"有自旋时分裂不寻常，需引入朗德 g 因子。",
+ "body": wrap(
+   der(p("<strong>反常分裂：</strong>当 $S\\neq0$ 时，原子总磁矩是轨道磁矩与自旋磁矩的合成，二者 g 因子不同（$g_l=1,g_s\\approx2$），磁矩与总角动量 $\\mathbf J$ 不平行。其有效磁矩的 z 分量为：")+
+   fml("\\mu_z = -g_J\\,m_J\\,\\mu_B")+
+   p("能级移动与谱线分裂不再等间距，分裂条数也更多，故称为<strong>反常塞曼效应</strong>。"))+
+   der(p("<strong>朗德 g 因子的推导：</strong>由矢量模型，磁矩在 $\\mathbf J$ 方向的分量为 $\\mu_J=\\mu_L\\cos(\\mathbf L,\\mathbf J)+\\mu_S\\cos(\\mathbf S,\\mathbf J)$，用角动量期望值代入可得：")+
+   fml("g_J = 1+\\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}")+
+   p("能级分裂为：")+
+   fml("\\Delta E = g_J\\,m_J\\,\\mu_B B,\\qquad m_J=-J,\\dots,J"))+
+   note(p("朗德 g 因子统一描述了轨道与自旋对磁矩的贡献，是原子磁光效应（塞曼、磁共振）的核心参数。$g_J$ 可为分数，这正是「反常」之所在，它最终由自旋的发现（$g_s\\approx2$）得到解释。"))
+ )},
+{"id":"a4s6-3","name":"塞曼效应的应用","tags":["der","app"],"brief":"塞曼效应在测量磁场与天体物理中的应用。",
+ "body": wrap(
+   der(p("<strong>测磁场的原理：</strong>由分裂间隔 $\\Delta\\nu=g_J m_J\\mu_B B/h$ 反解磁场：")+
+   fml("B=\\frac{h\\,\\Delta\\nu}{g_J\\,m_J\\,\\mu_B}")+
+   p("测量谱线的分裂量即可确定磁场强度，这是天体物理中测量太阳与恒星表面磁场（塞曼分裂法）的基本方法。"))+
+   app(p("<strong>主要应用：</strong>① 太阳磁场测量：太阳黑子区域谱线明显塞曼分裂，据此绘制太阳磁图；② 激光物理：塞曼效应用于原子能级 Zeeman 减速与磁光陷阱（冷却原子）；③ 磁共振：电子自旋共振（ESR）与核磁共振（NMR）本质上是在磁场中测量 $\\Delta m\\hbar\\omega=\\mu B$ 的能级分裂；④ 光谱分析：由分裂图样确定原子态的 $L,S,J$ 量子数。"))+
+   note(p("塞曼效应还提供了「反常」到「正常」统一理解：当 $S=0$ 时 $g_J=1$，反常公式自动退化为正常塞曼效应。"))
+ )},
+]}
+]
+
+ch5_sections = [
+{
+"name": "5.1 全同粒子与波函数对称性",
+"color": "#7c3aed",
+"desc": "全同粒子的不可区分性、交换对称性与费米/玻色统计",
+"items": [
+{"id":"a5s1-1","name":"全同粒子的不可区分性","tags":["def","der"],"brief":"同类微观粒子原则上无法区分，交换不改变状态。",
+ "body": wrap(
+   defn("全同粒子",p("质量、电荷、自旋等内禀属性完全相同的粒子称为<strong>全同粒子</strong>。量子力学中全同粒子原则上不可区分，交换两个粒子不会产生新的、可观测的物理状态，只有 $|\\psi|^2$ 才有意义。"))+
+   der(p("<strong>不可区分性的后果：</strong>设两粒子分别处于单粒子态 $\\phi_a$、$\\phi_b$，交换前、后的波函数 $\\psi(1,2)$ 与 $\\psi(2,1)$ 描述同一物理状态，只能相差一个模为 1 的相位因子：")+
+   fml("\\psi(2,1)=\\lambda\\,\\psi(1,2),\\qquad |\\lambda|=1")+
+   p("再交换一次回到原状：$\\psi(1,2)=\\lambda^2\\psi(1,2)$，故 $\\lambda^2=1$，即 $\\lambda=\\pm1$。说明全同粒子的波函数只能是对称的或反对称的。"))+
+   note(p("不可区分性是量子统计（费米-狄拉克、玻色-爱因斯坦）与经典玻尔兹曼统计差异的根源，也是泡利原理与元素周期表存在的基础。"))
+ )},
+{"id":"a5s1-2","name":"波函数的交换对称性","tags":["der","thm"],"brief":"费米子波函数反对称，玻色子对称。",
+ "body": wrap(
+   thm("交换对称性",p("全同粒子体系的总波函数在任意两粒子交换下必须是对称的（玻色子）或反对称的（费米子）：")+
+   fml("\\psi(2,1)=+\\psi(1,2)\\ (\\text{玻色子}),\\qquad \\psi(2,1)=-\\psi(1,2)\\ (\\text{费米子})")+
+   p("这一性质与粒子的自旋相联系，是量子力学的普遍原理。"))+
+   der(p("<strong>构造反对称波函数：</strong>对两费米子，用单粒子态 $\\phi_a,\\phi_b$ 组合：")+
+   fml("\\psi_{anti}=\\frac{1}{\\sqrt2}\\left[\\phi_a(1)\\phi_b(2)-\\phi_b(1)\\phi_a(2)\\right]")+
+   p("若两粒子处于同一单粒子态（$a=b$），则 $\\psi_{anti}=0$，即该状态不存在——这就是泡利不相容原理的最初形式。推广到 $N$ 个费米子即为<strong>斯莱特行列式</strong>：")+
+   fml("\\psi=\\frac{1}{\\sqrt{N!}}\\det\\left[\\phi_i(j)\\right]"))+
+   note(p("行列式的性质自动保证反对称性：交换两列（两粒子）变号，两行相同（两粒子同态）则为零，这正是泡利原理的数学表述。"))
+ )},
+{"id":"a5s1-3","name":"费米子与玻色子","tags":["der","note"],"brief":"按自旋半整数或整数分为两类。",
+ "body": wrap(
+   der(p("<strong>分类规则（自旋-统计定理）：</strong>自旋为半整数的粒子（费米子，如电子、质子、中子、μ子）服从反对称波函数与费米-狄拉克统计，每个量子态最多容纳一个粒子：")+
+   fml("s=\\tfrac12,\\tfrac32,\\dots\\ \\Rightarrow\\ \\text{费米子},\\ n_i\\le1")+
+   p("自旋为整数的粒子（玻色子，如光子、声子、α粒子、氦-4 原子）服从对称波函数与玻色-爱因斯坦统计，同一状态可容纳任意多粒子：")+
+   fml("s=0,1,2,\\dots\\ \\Rightarrow\\ \\text{玻色子},\\ n_i=0,1,2,\\dots"))+
+   note(p("复合粒子的统计性质由所含费米子数决定：奇数个费米子组成费米子（如氦-3 原子），偶数个组成玻色子（如氦-4 原子、氘核）。这解释了液氦-4 的超流性与液氦-3 的差异。"))
+ )},
+]},
+{
+"name": "5.2 泡利不相容原理",
+"color": "#6d28d9",
+"desc": "泡利原理的表述、量子力学基础与电子排布",
+"items": [
+{"id":"a5s2-1","name":"泡利不相容原理","tags":["thm","der"],"brief":"同一原子中不能有两个电子处于完全相同的量子态。",
+ "body": wrap(
+   thm("泡利不相容原理",p("原子中不能有两个或更多电子占据同一量子态，即不能有四个量子数 $n,l,m_l,m_s$ 完全相同的电子：")+
+   fml("(n,l,m_l,m_s)\\ \\text{每个组合至多容纳一个电子}")+
+   p("这由费米子波函数的反对称性保证，是泡利（1925）为解释光谱与周期表提出的。"))+
+   der(p("<strong>量子力学基础：</strong>多电子原子的总波函数必须是反对称的。若两电子处于同一空间轨道 $\\phi_{nlm}$，则空间部分对称，要求自旋部分反对称：")+
+   fml("\\psi=\\phi_{nlm}(1)\\phi_{nlm}(2)\\cdot\\frac{1}{\\sqrt2}[\\alpha(1)\\beta(2)-\\beta(1)\\alpha(2)]")+
+   p("故同一轨道至多容纳自旋相反的两个电子，$m_s=+\\tfrac12$ 与 $-\\tfrac12$。若再加上相同的 $m_s$，则波函数为零，状态不存在。"))+
+   note(p("泡利原理是理解元素周期表、金属导电、白矮星与中子星支撑（费米压强）以及固体能带结构的基础。"))
+ )},
+{"id":"a5s2-2","name":"泡利原理与壳层容量","tags":["der","exa"],"brief":"由泡利原理导出壳层与次壳层容量。",
+ "body": wrap(
+   der(p("<strong>次壳层容量：</strong>给定 $l$，$m_l$ 有 $2l+1$ 个取值，每个 $m_l$ 又可容纳 $m_s=\\pm\\tfrac12$ 两个电子，故次壳层最多容纳：")+
+   fml("N_l=2(2l+1)")+
+   p("依次得 $s$ 层 2 个、$p$ 层 6 个、$d$ 层 10 个、$f$ 层 14 个电子。"))+
+   der(p("<strong>壳层容量：</strong>主量子数 $n$ 对应 $l=0,1,\\dots,n-1$，故壳层容量为：")+
+   fml("N_n=\\sum_{l=0}^{n-1}2(2l+1)=2n^2")+
+   p("即 K 层 2、L 层 8、M 层 18、N 层 32。"))+
+   exa(p("<strong>例：</strong>钠原子核外 11 个电子的排布为 $1s^2\\,2s^2\\,2p^6\\,3s^1$，最外层一个价电子决定其化学性质；氩（18 个电子）填满 $3p$ 层，形成稳定闭壳层。"))+
+   note(p("壳层容量 $2n^2$ 只是上限，实际填充还须遵循能量最低原理（顺序）与洪特规则（自旋取向），且受能级交错影响。"))
+ )},
+{"id":"a5s2-3","name":"泡利原理与电子排布","tags":["der","note"],"brief":"能量最低原理、泡利原理与洪特规则共同决定排布。",
+ "body": wrap(
+   der(p("<strong>三条排布规则：</strong>① 泡利不相容原理：每个量子态至多一个电子；② 能量最低原理：电子优先占据能量最低的可用状态；③ 洪特规则：同一支壳层内电子优先以平行自旋分占不同轨道。三者共同确定基态电子排布。")+
+   fml("E_{1s}<E_{2s}<E_{2p}<E_{3s}<E_{3p}<E_{4s}<E_{3d}<\\dots")+
+   p("能级交错（$4s<3d$）使周期表的填充顺序为 $1s\\,2s\\,2p\\,3s\\,3p\\,4s\\,3d\\,4p\\,5s\\dots$，即 $n+l$ 规则：$n+l$ 小的先填，相同则 $n$ 小的先填。"))+
+   note(p("正是泡利原理阻止所有电子挤进最低能级，才使原子具有体积、物质稳定存在；若电子是玻色子，所有电子都会塌缩到 $1s$，物质将无法稳定。"))
+ )},
+]},
+{
+"name": "5.3 电子壳层与元素周期表",
+"color": "#8b5cf6",
+"desc": "壳层结构、能级填充顺序与元素周期表的分区",
+"items": [
+{"id":"a5s3-1","name":"电子壳层与次壳层结构","tags":["def","der"],"brief":"用 n 和 l 标记壳层与次壳层。",
+ "fig":"shells","figCap":"原子壳层结构：K、L、M 层最多容纳 2n² 个电子",
+ "body": wrap(
+   defn("壳层与次壳层",p("电子在原子中的状态用主量子数 $n$ 划分<strong>壳层</strong>（K、L、M、N…），用角量子数 $l$ 划分<strong>次壳层</strong>（$s,p,d,f$）。同一壳层内能量相近，不同次壳层因贯穿与屏蔽略有差别。"))+
+   der(p("<strong>每层电子数：</strong>由泡利原理，第 $n$ 壳层可容纳 $2n^2$ 个电子，各次壳层容量为 $2(2l+1)$：")+
+   fml("K(n=1):2,\\quad L(n=2):8,\\quad M(n=3):18,\\quad N(n=4):32")+
+   p("每层的电子又按 $l$ 分为 $s,p,d,f$ 支壳层，例如 $n=3$ 可分为 $3s^2,3p^6,3d^{10}$。"))+
+   note(p("壳层与次壳层的填充形成元素化学性质的周期性：最外层电子数相同（同族元素）时化学性质相似，这正是周期表的本质。"))
+ )},
+{"id":"a5s3-2","name":"能级填充次序与周期表","tags":["der","app"],"brief":"由 n+l 规则确定填充顺序形成周期。",
+ "fig":"periodic_table","figCap":"元素周期表按能级填充次序分区：s 区、p 区、d 区、f 区",
+ "body": wrap(
+   der(p("<strong>填充顺序（构造原理）：</strong>按 $n+l$ 从小到大填充，$n+l$ 相同则 $n$ 小的先填：")+
+   fml("1s,2s,2p,3s,3p,4s,3d,4p,5s,4d,5p,6s,4f,5d,6p,\\dots")+
+   p("按此顺序每填入 2、8、8、18、18、32 个电子便完成一个周期（其中第 6、7 周期含镧系、锕系）。这解释周期长度序列：")+
+   fml("2,8,8,18,18,32,\\dots")+
+   p("稀有气体（He、Ne、Ar、Kr、Xe）对应 $p$ 支壳层填满的闭壳层结构，化学性质最稳定。"))+
+   app(p("<strong>应用：</strong>由构造原理可以写出任何元素基态的电子排布，进而解释化合价、电离能、原子半径等性质的周期性变化。"))
+ )},
+{"id":"a5s3-3","name":"周期表的分区","tags":["der","note"],"brief":"按最后填入电子的支壳层划分区域。",
+ "body": wrap(
+   der(p("<strong>四个区域：</strong>按最后填入电子的 $l$ 值可将元素分为：")+
+   fml("s\\ \\text{区}:\\ ns^{1-2};\\quad p\\ \\text{区}:\\ np^{1-6};\\quad d\\ \\text{区}:\\ (n-1)d^{1-10};\\quad f\\ \\text{区}:\\ (n-2)f^{1-14}")+
+   p("$s$ 区为 IA、IIA 族活泼金属；$p$ 区含非金属与稀有气体；$d$ 区为过渡金属，性质多样；$f$ 区为稀土元素，化学性质相近。"))+
+   der(p("<strong>与周期表结构对应：</strong>每个周期以 $ns^1$（碱金属）开始，以 $np^6$（稀有气体）结束；过渡金属填充 $d$ 壳层，稀土填充 $f$ 壳层。周期的长度由该周期新填充的支壳层容量决定：")+
+   fml("s\\ \\text{区}:2,\\ p\\ \\text{区}:6,\\ d\\ \\text{区}:10,\\ f\\ \\text{区}:14")+
+   p("例如第 4 周期包含 $4s$、$3d$、$4p$ 共 $2+10+6=18$ 个元素。"))+
+   note(p("周期表的分区由量子力学自然给出，是原子结构理论最直观的成就之一；这也说明化学的周期性根源于量子力学。"))
+ )},
+]},
+{
+"name": "5.4 原子基态的确定与洪特规则",
+"color": "#7c3aed",
+"desc": "洪特规则、基态光谱项的确定与实例",
+"items": [
+{"id":"a5s4-1","name":"洪特规则","tags":["thm","der"],"brief":"确定基态总自旋、轨道角动量与总角动量的经验规则。",
+ "body": wrap(
+   thm("洪特规则",p("确定原子基态的方法（按优先级）：① 总自旋 $S$ 取最大（自旋平行）；② 在 $S$ 最大前提下 $L$ 取最大；③ 在 $L,S$ 确定后，$J$ 取值由壳层填充情况决定。"))+
+   der(p("<strong>规则三的表述：</strong>对少于半充满的支壳层（电子数 $<2l+1$）取 $J=|L-S|$（倒转多重态）；对半充满及以上取 $J=L+S$（正常多重态）：")+
+   fml("J=|L-S|\\ (\\text{不足半满}),\\qquad J=L+S\\ (\\text{半满及以上})")+
+   p("三条规则来自电子间的库仑排斥（自旋平行时交换能更低）与自旋-轨道耦合，可由多体量子力学给出物理解释。"))+
+   note(p("洪特规则只对基态成立，对激发态的确定需用更精细的能量计算。它是光谱学与磁学分析的基本工具。"))
+ )},
+{"id":"a5s4-2","name":"基态光谱项的确定方法","tags":["der","exa"],"brief":"用洪特规则逐步确定基态的 L、S、J。",
+ "body": wrap(
+   der(p("<strong>确定步骤：</strong>① 写出基态电子排布，重点关注未满支壳层的电子；② 由自旋平行取最大值得 $S$；③ 在同一自旋下使 $\\sum m_l$ 最大得 $L$；④ 由壳层填充情况确定 $J$；⑤ 写出光谱项 $^{2S+1}L_J$。"))+
+   fml("S=\\tfrac12\\sum(\\text{未成对电子数}),\\qquad L=\\left|\\sum m_l\\right|")+
+   p("其中 $m_l$ 按同一自旋方向尽可能取大值分配。")+
+   exa(p("<strong>例（碳原子）：</strong>基态 $1s^2 2s^2 2p^2$，两个 $2p$ 电子。由洪特规则一 $S=1$（自旋平行）；由规则二两个电子分别占 $m_l=1$ 与 $m_l=0$，$L=1$（P 态）；$2p$ 为不足半满（2<3），故 $J=|L-S|=0$。基态光谱项为 $^3P_0$。"))+
+   note(p("碳原子基态 $^3P_0$ 与光谱实验一致，验证了洪特规则的正确性。确定基态光谱项是分析材料磁性与光谱的起点。"))
+ )},
+{"id":"a5s4-3","name":"基态确定的更多实例","tags":["der","exa"],"brief":"氧、氮、铁等原子基态的确定。",
+ "body": wrap(
+   exa(p("<strong>氮原子：</strong>$2p^3$，三个电子自旋平行 $S=3/2$；$m_l$ 取 $1,0,-1$，$L=0$（S 态）；半充满取 $J=L+S=3/2$。基态为 $^4S_{3/2}$。"))+
+   exa(p("<strong>氧原子：</strong>$2p^4$，$S=1$；$m_l$ 分配为 $1,0,-1,1$，$\\sum m_l=1$，$L=1$（P）；超过半满取 $J=L+S=2$。基态为 $^3P_2$。"))+
+   der(p("<strong>一般规律：</strong>对闭壳层（满壳层）原子，$L=S=J=0$，基态为 $^1S_0$，如 He、Ne、Ar 等稀有气体。")+
+   fml("L=S=0\\ \\Rightarrow\\ ^1S_0\\ (\\text{闭壳层})")+
+   p("对过渡金属 $d$ 壳层未满的原子，洪特规则给出高自旋基态，这解释了铁的强磁性。"))+
+   note(p("铁基态 $3d^6 4s^2$ 的 $d$ 壳层有 4 个未成对电子（高自旋），是铁磁性的微观来源；洪特规则是理解过渡金属磁性的基础。"))
+ )},
+]},
+{
+"name": "5.5 原子光谱项与能级",
+"color": "#6d28d9",
+"desc": "LS 耦合、光谱项符号、能级与选择定则",
+"items": [
+{"id":"a5s5-1","name":"原子光谱项与 LS 耦合","tags":["der"],"brief":"多电子原子用 LS 耦合给出光谱项。",
+ "fig":"term_symbol","figCap":"光谱项符号 ²ˢ⁺¹L_J 的构成：多重度、轨道量子数、总角动量",
+ "body": wrap(
+   der(p("<strong>LS 耦合（罗素-桑德斯耦合）：</strong>对轻原子，各电子的自旋先合成总自旋 $\\mathbf S=\\sum\\mathbf s_i$，轨道角动量合成 $\\mathbf L=\\sum\\mathbf l_i$，然后 $\\mathbf S$ 与 $\\mathbf L$ 耦合成总角动量 $\\mathbf J=\\mathbf L+\\mathbf S$：")+
+   fml("S=\\sum s_i,\\qquad L=\\sum l_i,\\qquad J=|L-S|,\\dots,L+S")+
+   p("对应光谱项符号为 $^{2S+1}L_J$，其中 $L$ 用大写字母表示：$L=0,1,2,3,\\dots$ 对应 $S,P,D,F,\\dots$。"))+
+   der(p("<strong>多重度：</strong>$2S+1$ 称为多重度，表示自旋多重度（单个态的 $J$ 分裂条数）。例如 $S=0$ 为单重态 $^1L$，$S=1$ 为三重态 $^3L$（含 $J=L-1,L,L+1$ 三个能级）。")+
+   fml("^{2S+1}L_J:\\quad {}^1S_0,\\ {}^2P_{3/2},\\ {}^3P_0,\\ {}^4S_{3/2}"))+
+   note(p("重元素（如铅、铀）$Z$ 大，自旋-轨道耦合强，须用 $jj$ 耦合（先合成每个电子的 $j_i$，再合成 $J$），LS 耦合失效。"))
+ )},
+{"id":"a5s5-2","name":"光谱项与能级","tags":["der","thm"],"brief":"由光谱项确定能级与能量次序。",
+ "body": wrap(
+   thm("光谱项与能级",p("一个光谱项 $^{2S+1}L$ 对应一组能级，不同 $J$ 的能级因自旋-轨道耦合而分裂，能量次序由洪特规则三决定，分裂间距满足朗德间隔定则。"))+
+   der(p("<strong>由 L·S 耦合能确定次序：</strong>耦合能为：")+
+   fml("\\Delta E_{so}=a\\,\\frac{\\hbar^2}{2}[J(J+1)-L(L+1)-S(S+1)]")+
+   p("若 $a>0$（不足半满），$J$ 越小能量越低，为倒转多重态；若 $a<0$（超过半满），$J$ 越大能量越低，为正常多重态。"))+
+   exa(p("<strong>例（碳原子光谱项）：</strong>$^3P$ 项分裂为 $^3P_0,{}^3P_1,{}^3P_2$ 三个能级，由洪特规则三（不足半满）知 $^3P_0$ 最低，与实验一致。"))+
+   note(p("同一光谱项内部的 $J$ 分裂称为精细结构，量级由自旋-轨道耦合决定；不同光谱项之间的能量差则主要来自电子间库仑作用，量级大得多。"))
+ )},
+{"id":"a5s5-3","name":"选择定则与光谱分析","tags":["der","note"],"brief":"电偶极跃迁的选择定则与光谱项的应用。",
+ "body": wrap(
+   der(p("<strong>LS 耦合下的电偶极选择定则：</strong>")+
+   fml("\\Delta S=0,\\quad \\Delta L=0,\\pm1,\\quad \\Delta J=0,\\pm1\\ (J=0\\to J=0\\ \\text{禁止})")+
+   p("同时要求宇称改变（$\\sum l_i$ 的奇偶性改变）。这些规则限制了哪些光谱项之间可以发生辐射跃迁。"))+
+   der(p("<strong>光谱分析应用：</strong>通过分析原子光谱中出现的谱线，可以确定原子所处的光谱项与能级结构。例如由谱线的分裂图样反推 $J$，由多重度反推 $S$，从而确定原子的电子组态：")+
+   fml("N_{\\text{分裂条数}}=2J+1\\ \\Rightarrow\\ J,\\qquad \\text{多重度}=2S+1\\ \\Rightarrow\\ S"))+
+   note(p("光谱项是连接原子结构与光谱实验的桥梁。天体光谱中识别的谱线（如太阳光谱、星云光谱）都通过光谱项分析确定元素的电离态与激发态。违反选择定则的「禁线」在稀薄星云中因无碰撞退激发而有较强出现，是重要的天文诊断工具。"))
+ )},
+]},
+{
+"name": "5.6 元素周期律的量子解释",
+"color": "#8b5cf6",
+"desc": "周期性的量子力学解释、元素性质变化与反常情形",
+"items": [
+{"id":"a5s6-1","name":"元素周期律的量子解释","tags":["der"],"brief":"周期性来源于电子壳层的周期性填充。",
+ "body": wrap(
+   der(p("<strong>周期性的根源：</strong>元素化学性质的周期性来自最外层电子排布的周期性。当次壳层填满（闭壳层）时体系特别稳定，对应稀有气体；下一周期从新的 $ns^1$ 开始，重复类似的化学行为：")+
+   fml("\\text{闭壳层}\\ (ns^2 np^6)\\ \\Leftrightarrow\\ \\text{稀有气体，化学惰性}")+
+   p("因此同族元素具有相同的最外层电子数（价电子构型），化学性质相似，例如碱金属均为 $ns^1$、卤素均为 $np^5$。"))+
+   der(p("<strong>周期长度：</strong>由泡利原理给的壳层容量决定。每完成一组 $(n-1)d$、$ns$、$np$ 支壳层的填充即构成一个周期，长度分别为 2、8、8、18、18、32：")+
+   fml("T_k = 2n^2\\ \\text{（对完整壳层）}\\ \\text{或}\\ \\text{支壳层容量之和}"))+
+   note(p("周期律的量子解释是量子力学对化学最深刻的影响之一：它说明化学的规律性可以完全还原为原子中电子的量子态结构，尤其是泡利不相容原理。"))
+ )},
+{"id":"a5s6-2","name":"元素性质的周期性变化","tags":["der","exa"],"brief":"原子半径、电离能、电负性的周期性。",
+ "body": wrap(
+   der(p("<strong>原子半径：</strong>同一周期从左到右，核电荷增加而电子填入同一壳层，有效核电荷增大，半径减小；同一族从上到下，壳层数增加，半径增大：")+
+   fml("r\\ \\text{同周期减小},\\qquad r\\ \\text{同族增大}")+
+   p("半径变化趋势可由有效核电荷 $Z^*=Z-\\sigma$ 与主量子数 $n$ 的竞争解释。"))+
+   exa(p("<strong>电离能的周期性：</strong>电离能随原子序数呈周期性振荡，稀有气体最高（闭壳层稳定），碱金属最低（易失一个电子）。第一电离能在每个周期内总体上升，但因 $ns^2$、$np^3$ 的半满与全满稳定性而出现局部反常。"))+
+   der(p("<strong>电负性：</strong>电负性同周期增大、同族减小，与原子半径及有效核电荷的趋势一致，决定了化学键的极性与化合物的性质。")+
+   fml("\\chi\\ \\text{同周期增大},\\qquad \\chi\\ \\text{同族减小}"))+
+   note(p("元素性质的周期性变化都可以从电子排布与有效核电荷的变化得到定性乃至半定量的解释，这是原子物理与化学的交汇点。"))
+ )},
+{"id":"a5s6-3","name":"反常电子排布及其原因","tags":["der","note"],"brief":"半满与全满稳定性导致排布例外。",
+ "body": wrap(
+   der(p("<strong>半满与全满更稳定：</strong>某些元素的基态排布偏离构造原理，根源在于全满（$p^6,d^{10}$）与半满（$p^3,d^5$）支壳层的交换能更低、球对称性更好。例如铬与铜：")+
+   fml("_{24}\\text{Cr}:\\ 3d^5 4s^1\\ (\\text{而非}\\ 3d^4 4s^2)")+
+   fml("_{29}\\text{Cu}:\\ 3d^{10} 4s^1\\ (\\text{而非}\\ 3d^9 4s^2)")+
+   p("$d^5$、$d^{10}$ 的半满与全满结构使交换能降低，抵消了把 $4s$ 电子移入 $3d$ 所需能量。"))+
+   der(p("<strong>镧系收缩：</strong>镧系元素的 $4f$ 电子对核电荷屏蔽不完全，使有效核电荷随原子序数缓慢增加，导致原子半径逐渐收缩（镧系收缩），进而影响其后过渡金属的性质：")+
+   fml("r\\ \\text{随}\\ Z\\ \\text{缓慢减小}\\ \\Rightarrow\\ \\text{镧系收缩}"))+
+   note(p("反常排布虽属个别，但它们可由更精确的多体能量计算（交换能、关联能、相对论效应）定量解释，说明构造原理只是近似的经验规律。"))
+ )},
+]}
+]
+
+ch6_sections = [
+{
+"name": "6.1 X射线的产生",
+"color": "#0891b2",
+"desc": "X射线管、X射线的性质与伦琴的发现",
+"items": [
+{"id":"a6s1-1","name":"X射线的产生与X射线管","tags":["def","der"],"brief":"高速电子轰击靶材产生X射线。",
+ "fig":"xray_tube","figCap":"X射线管：阴极发射的电子被高压加速后轰击金属靶，产生X射线",
+ "body": wrap(
+   defn("X射线管",p("X射线管由阴极（发射电子的灯丝）与阳极（金属靶，常为 W、Mo、Cu）组成，管内高真空，两极间加几十千伏的高压。电子被加速后轰击靶材，骤然减速时辐射出 X 射线。"))+
+   der(p("<strong>电子的能量：</strong>电子经电压 $U$ 加速获得动能：")+
+   fml("E_k = eU")+
+   p("这部分动能一部分转化为 X 射线（连续谱与特征谱），其余变为热。要产生 X 射线，电子的动能必须足够大，通常需 $U>10^4\\,\\text{V}$。"))+
+   der(p("<strong>产生机制：</strong>X 射线的产生有两种机制：① 高速电子在靶核库仑场中减速，发出<strong>轫致辐射</strong>（连续谱）；② 高能电子把靶原子内层电子打出，外层电子跃入填充时发出<strong>特征辐射</strong>（线状谱）。")+
+   fml("eU\\ \\Rightarrow\\ \\text{连续谱}+\\text{特征谱}"))+
+   note(p("X 射线波长约 $0.01\\sim10\\,\\text{nm}$，位于紫外与 γ 射线之间；其光子能量大（keV 量级），穿透力强，是医学成像与晶体结构分析的重要工具。"))
+ )},
+{"id":"a6s1-2","name":"X射线的性质","tags":["def","note"],"brief":"X射线是高能电磁波，具有波动性与粒子性。",
+ "body": wrap(
+   defn("X射线的本质",p("X 射线是波长很短的电磁波，由伦琴（1895）发现（因性质未明故称 X 射线）。它由高速电子撞击物质时产生，具有波动性（可衍射、偏振）与粒子性（光电效应、康普顿散射）。"))+
+   der(p("<strong>粒子性参数：</strong>X 射线光子的能量与动量：")+
+   fml("E = h\\nu = \\frac{hc}{\\lambda},\\qquad p=\\frac{h}{\\lambda}")+
+   p("对 $\\lambda=0.1\\,\\text{nm}$ 的 X 射线，光子能量约 $12.4\\,\\text{keV}$，足以电离内层电子，故有强穿透性与生物效应。"))+
+   note(p("X 射线的性质：① 直线传播、穿透能力强（与物质密度和原子序数有关）；② 能使荧光物质发光、使照相底片感光、使气体电离；③ 有衍射与干涉现象（证明其波动性）；④ 有康普顿散射现象（证明其粒子性）；⑤ 有生物效应（可用于放疗，也需防护）。"))
+ )},
+{"id":"a6s1-3","name":"伦琴的发现与X射线的本质","tags":["his","der"],"brief":"X射线是继光之后又一种电磁波。",
+ "body": wrap(
+   his(p("1895 年伦琴在研究阴极射线时，发现一种能穿透黑纸使荧光屏发光的未知射线，命名为 X 射线（X 代表未知）。他因这一发现获得首届诺贝尔物理学奖（1901）。伦琴还拍摄了著名的人手骨胳照片，开创了医学影像诊断。"))+
+   der(p("<strong>波动性的证实：</strong>既然 X 射线是电磁波，就应具有衍射现象。1912 年劳厄提出用晶体作三维光栅，实验观察到 X 射线衍射图样，证明 X 射线是波长约 $0.1\\,\\text{nm}$ 的电磁波。")+
+   fml("\\lambda\\sim0.1\\,\\text{nm}\\sim \\text{晶体原子间距}")+
+   p("随后布拉格父子建立了 X 射线晶体结构分析的方法，劳厄与布拉格父子分别获得 1914、1915 年诺贝尔物理学奖。"))+
+   note(p("X 射线的发现与衍射实验把电磁波谱扩展到极短波段，并开启了晶体学的新纪元；它与电子的发现、放射性的发现共同标志着现代物理的开端。"))
+ )},
+]},
+{
+"name": "6.2 连续谱与轫致辐射",
+"color": "#0e7490",
+"desc": "连续谱的机制、短波极限与强度分布",
+"items": [
+{"id":"a6s2-1","name":"连续谱与轫致辐射","tags":["der","thm"],"brief":"电子减速产生的连续X射线谱。",
+ "fig":"xray_spectrum","figCap":"X射线谱：连续谱叠加特征线，短波极限 λmin 由加速电压决定",
+ "body": wrap(
+   thm("轫致辐射连续谱",p("高速电子在靶核库仑场中减速（加速度改变），按经典电动力学必辐射电磁波；由于每次减速程度不同，辐射的光子能量连续分布，形成<strong>连续谱</strong>。"))+
+   der(p("<strong>连续性的来源：</strong>电子与不同瞄准距、不同核多次碰撞，损失的能量 $h\\nu$ 各不相同，可连续地从 0 分布到最大动能 $eU$，故谱线连续：")+
+   fml("0<h\\nu\\le eU")+
+   p("连续谱的强度分布由入射电子能量与靶材料共同决定：总强度约正比于 $ZU^2$，即靶原子序数越大、加速电压越高，连续谱越强。"))+
+   der(p("<strong>强度与靶材、电压的关系：</strong>")+
+   fml("I_{cont}\\propto Z\\,U^2")+
+   p("高 $Z$ 靶材（如钨）产生更强、更硬的连续谱，这是医用 X 射线管常用钨靶的原因；同时须用冷却与旋转阳极技术散热。"))+
+   note(p("轫致辐射（bremsstrahlung）意为「制动辐射」，不仅出现在 X 射线管中，也是同步辐射、核反应中 γ 射线产生的重要机制。"))
+ )},
+{"id":"a6s2-2","name":"短波极限与杜安-亨特定律","tags":["der","exa"],"brief":"连续谱存在由加速电压决定的短波极限。",
+ "body": wrap(
+   der(p("<strong>最短波长：</strong>若电子在一次碰撞中把全部动能转化为一个光子，则光子能量最大、波长最短：")+
+   fml("h\\nu_{\\max}=eU\\ \\Rightarrow\\ \\lambda_{\\min}=\\frac{hc}{eU}")+
+   p("代入数值（$hc=1240\\,\\text{eV·nm}$）：")+
+   fml("\\lambda_{\\min}=\\frac{1240}{U(\\text{V})}\\,\\text{nm}"))+
+   thm("杜安-亨特定律",p("连续谱的短波极限只依赖加速电压 $U$，与靶材料无关，由 $\\lambda_{\\min}=hc/(eU)$ 给出。这一定律由量子理论解释：单个光子不能获得超过一个电子全部动能 $eU$ 的能量。"))+
+   exa(p("<strong>例：</strong>$U=50\\,\\text{kV}$ 时 $\\lambda_{\\min}=1240/50000\\approx0.0248\\,\\text{nm}$，对应光子能量 $50\\,\\text{keV}$。无论靶是钨还是铜，短波极限都相同。"))+
+   note(p("短波极限是量子论的重要验证之一：经典电磁理论无法解释为何存在一个由电压决定的尖锐极限，而光子假设给出简洁的推导。反之，由实测 $\\lambda_{\\min}$ 与 $U$ 可测普朗克常数 $h$。"))
+ )},
+{"id":"a6s2-3","name":"连续谱的强度分布与效率","tags":["der","note"],"brief":"连续谱峰值与总效率的规律。",
+ "body": wrap(
+   der(p("<strong>强度分布的规律：</strong>连续谱在某一波长处有强度峰值，峰值波长约为短波极限的 $1.5\\sim2$ 倍：")+
+   fml("\\lambda_{peak}\\approx1.5\\,\\lambda_{\\min}")+
+   p("随加速电压升高，整个连续谱向短波移动且强度增大，短波极限同步左移；随靶原子序数增大，连续谱强度近似线性增大。"))+
+   der(p("<strong>能量转换效率：</strong>电子动能中转化为 X 射线的比例很小，绝大部分变为热：")+
+   fml("\\eta\\approx\\frac{ZU}{10^9}\\ \\text{（}U\\ \\text{以 V 计）}")+
+   p("例如 $U=100\\,\\text{kV}$ 的钨靶，效率约 $1\\%$，因此 X 射线管需强冷却，诊断设备常用旋转阳极以分散热负荷。"))+
+   note(p("连续谱是「背景」，特征谱叠加其上。医用成像利用连续谱的宽带穿透；晶体衍射实验则利用连续谱的某一波长或单色化后的特征线。"))
+ )},
+]},
+{
+"name": "6.3 特征谱与莫塞莱定律",
+"color": "#06b6d4",
+"desc": "特征X射线的机制、莫塞莱定律及其意义",
+"items": [
+{"id":"a6s3-1","name":"特征谱的产生机制","tags":["der","thm"],"brief":"内层空穴被填充时发出特征X射线。",
+ "body": wrap(
+   der(p("<strong>内层电离与跃迁：</strong>当加速电子的动能超过内层电子的结合能时，可把靶原子 K 层（$n=1$）电子打出，形成空穴。外层电子（如 L 层）跃入填充，能量差以光子形式发出：")+
+   fml("h\\nu=E_{K}-E_{L}")+
+   p("由于内层能级由靶原子的电子结构决定，故辐射频率是特定原子的「指纹」，称为<strong>特征 X 射线</strong>。"))+
+   thm("特征谱的性质",p("特征 X 射线的波长只与靶元素的原子序数有关，与加速电压无关（只要电压足以电离内层）。命名规则：跃迁到 K 层的称 K 系（Kα、Kβ…），跃迁到 L 层的称 L 系，其中 Kα 对应 $L\\to K$、Kβ 对应 $M\\to K$。"))+
+   note(p("特征谱叠加在连续谱之上，表现为几个尖锐的峰。由于内层能级不受化学环境显著影响，特征 X 射线可用于元素的定性与定量分析（如 X 射线荧光谱、电子探针）。"))
+ )},
+{"id":"a6s3-2","name":"莫塞莱定律","tags":["der","exa"],"brief":"特征X射线频率的平方根与原子序数线性相关。",
+ "fig":"moseley","figCap":"莫塞莱定律：√ν 与原子序数 Z 成线性关系",
+ "body": wrap(
+   der(p("<strong>莫塞莱的发现：</strong>1913 年莫塞莱测量不同元素 Kα 线的频率，发现频率的平方根与原子序数 $Z$ 成线性关系：")+
+   fml("\\sqrt{\\nu}=a(Z-b)")+
+   p("其中 $b$ 为屏蔽常数（Kα 线 $b\\approx1$），$a$ 由里德伯常数等决定。"))+
+   der(p("<strong>由玻尔模型导出 Kα 公式：</strong>Kα 对应 $n=2\\to1$ 的跃迁。由于 K 层有一个电子被电离，其余一个电子对核电荷的屏蔽使有效核电荷约为 $Z-1$。用类氢离子公式：")+
+   fml("\\frac{1}{\\lambda_{K\\alpha}}=R(Z-1)^2\\left(\\frac{1}{1^2}-\\frac{1}{2^2}\\right)=\\frac{3}{4}R(Z-1)^2")+
+   p("由 $c/\\lambda=\\nu$ 即得 $\\sqrt{\\nu}\\propto(Z-1)$，与莫塞莱的实验规律一致。"))+
+   exa(p("<strong>例（铜 Kα）：</strong>$Z=29$，$\\lambda_{K\\alpha}=\\dfrac{1}{(3/4)R\\times28^2}\\approx0.154\\,\\text{nm}$，与实测 $0.154\\,\\text{nm}$ 吻合，是常用 X 射线衍射源。"))+
+   note(p("莫塞莱定律最初用于确定元素在周期表中的真正位置（原子序数），纠正了仅按原子量排序的错误，并预言了当时尚未发现的元素。"))
+ )},
+{"id":"a6s3-3","name":"莫塞莱定律的意义与应用","tags":["der","app"],"brief":"莫塞莱定律确定原子序数与元素分析。",
+ "body": wrap(
+   der(p("<strong>确定原子序数的物理意义：</strong>由 $\\sqrt{\\nu}=a(Z-b)$，测得特征 X 射线频率即可唯一确定元素的原子序数，说明原子序数 $Z$ 就是核电荷数，是元素的真正标志，而非原子量：")+
+   fml("Z=\\frac{\\sqrt{\\nu}}{a}+b")+
+   p("这为周期表提供了正确的物理基础，也解释了为何按原子序数（而非原子量）排列时元素性质呈现完美的周期性。"))+
+   app(p("<strong>分析方法：</strong>① X 射线荧光分析（XRF）：用 X 射线激发样品，测量特征谱线强度与波长，可无损、快速地进行元素定性与定量分析，广泛用于考古、环境、材料检测；② 电子探针与能谱（EDS/WDS）：在电镜中分析微区成分；③ 天体物理：由天体 X 射线谱识别元素与电离态。"))+
+   note(p("特征 X 射线的能量随 $Z$ 增大迅速提高（∝Z²），故重元素的 K 线能量很高，需要更高电压激发；这决定了不同元素的分析适用范围。"))
+ )},
+]},
+{
+"name": "6.4 X射线的吸收与散射",
+"color": "#0891b2",
+"desc": "朗伯-比尔定律、质量吸收系数、吸收限与X射线荧光",
+"items": [
+{"id":"a6s4-1","name":"X射线的吸收规律","tags":["der","thm"],"brief":"X射线强度随厚度指数衰减。",
+ "body": wrap(
+   thm("X射线吸收定律",p("X 射线通过物质时强度按指数衰减：")+
+   fml("I=I_0e^{-\\mu x}=I_0e^{-\\mu_m\\rho x}")+
+   p("其中 $\\mu$ 为线性吸收系数，$\\mu_m=\\mu/\\rho$ 为质量吸收系数（与物质状态无关，便于列表），$\\rho$ 为密度，$x$ 为厚度。"))+
+   der(p("<strong>推导：</strong>在厚度 $dx$ 的薄层内，减少的强度正比于入射强度与该层内的原子数：")+
+   fml("-dI=\\mu I\\,dx\\ \\Rightarrow\\ \\int_{I_0}^{I}\\frac{dI'}{I'}=-\\mu\\int_0^x dx'")+
+   p("积分即得 $I=I_0e^{-\\mu x}$。以质量吸收系数表示可消除密度依赖：$\\mu_m=\\mu/\\rho$。"))+
+   der(p("<strong>半值层：</strong>使强度减半的厚度称为半值层 $d_{1/2}$，满足：")+
+   fml("d_{1/2}=\\frac{\\ln2}{\\mu}"))+
+   note(p("X 射线的吸收主要来自光电效应（内层电子被激发）与散射（含康普顿）；吸收系数随波长与原子序数强烈变化，是医学成像（骨与组织对比）与屏蔽计算的基础。"))
+ )},
+{"id":"a6s4-2","name":"吸收限与质量吸收系数","tags":["der","exa"],"brief":"吸收系数随波长变化并在吸收限处突变。",
+ "body": wrap(
+   der(p("<strong>吸收系数随波长与原子序数的变化：</strong>光电吸收的质量吸收系数近似满足：")+
+   fml("\\mu_m\\propto Z^3\\lambda^3")+
+   p("波长越长、原子序数越大，吸收越强。这解释了为何低能 X 射线更易被吸收，也解释了骨（含钙、$Z$ 较大）比软组织对 X 射线吸收强，从而形成影像对比。"))+
+   der(p("<strong>吸收限：</strong>当入射光子能量恰好等于某内层电子的结合能时，该层电子被激发，吸收系数突然增大，曲线上出现明显的突变，称为<strong>吸收限</strong>（K 限、L 限）：")+
+   fml("h\\nu_K=E_K\\ \\Rightarrow\\ \\lambda_K=\\frac{hc}{E_K}")+
+   p("当 $\\lambda$ 略短于 $\\lambda_K$ 时能激发 K 层电子，吸收骤增；略长时不能激发 K 层，吸收骤降，故形成台阶。"))+
+   exa(p("<strong>例：</strong>钨的 K 吸收限约 $0.178\\,\\text{nm}$。要激发钨的 K 系特征线，X 射线管电压须使光子能量超过 K 层结合能（约 $69.5\\,\\text{keV}$），即 $U>69.5\\,\\text{kV}$。"))+
+   note(p("利用吸收限两侧吸收系数的巨大差异，可在 X 射线衍射中选择合适的滤波片（如用 Zr 滤去 Mo 的连续谱）获得准单色光。"))
+ )},
+{"id":"a6s4-3","name":"X射线的散射与荧光","tags":["der","note"],"brief":"散射包括相干与不相干两类，并伴随荧光。",
+ "body": wrap(
+   der(p("<strong>散射的分类：</strong>X 射线与物质作用时除吸收外还有散射：① 相干散射（瑞利散射、汤姆孙散射）：光子与束缚电子弹性碰撞，波长不变，是晶体衍射的基础；② 不相干散射（康普顿散射）：光子与自由电子非弹性碰撞，波长变长，见下节。")+
+   fml("\\text{相干}\\ \\lambda\\ \\text{不变};\\qquad \\text{康普顿}\\ \\lambda' >\\lambda")+
+   p("散射强度与电子密度有关，是 X 射线晶体学观测衍射信号的基础。"))+
+   der(p("<strong>X 射线荧光：</strong>原子内层电子被 X 射线电离后，外层电子跃迁填充会发出特征 X 射线（荧光）。荧光频率仍满足莫塞莱定律：")+
+   fml("\\frac{1}{\\lambda_{K\\alpha}}=R(Z-1)^2\\left(1-\\frac14\\right)")+
+   note(p("X 射线荧光分析（XRF）利用荧光的波长与强度确定元素组成，因无需破坏样品而被广泛用于文物鉴定、合金分析与环境监测；但须留意基体效应与重叠峰的干扰。")))
+ )},
+]},
+{
+"name": "6.5 康普顿效应",
+"color": "#0e7490",
+"desc": "康普顿散射的实验规律、康普顿位移推导与物理意义",
+"items": [
+{"id":"a6s5-1","name":"康普顿效应的实验规律","tags":["der"],"brief":"散射X射线波长变长且随散射角变化。",
+ "fig":"compton","figCap":"康普顿散射：光子与电子弹性碰撞，散射光子波长变长，电子反冲",
+ "body": wrap(
+   defn("康普顿效应",p("1923 年康普顿发现，单色 X 射线被石墨等物质散射后，散射光中除有原波长 $\\lambda_0$ 的成分外，还出现波长变长的成分 $\\lambda>\\lambda_0$，且波长改变量随散射角增大而增大。这种现象无法用经典波动理论解释。"))+
+   der(p("<strong>实验规律：</strong>波长的改变量 $\\Delta\\lambda=\\lambda-\\lambda_0$ 只与散射角 $\\theta$ 有关，与入射波长及散射物质无关：")+
+   fml("\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)")+
+   p("其中 $\\lambda_C=\\dfrac{h}{m_ec}$ 为康普顿波长。同时伴随反冲电子，其动能由能量守恒决定。"))+
+   der(p("<strong>定性说明：</strong>经典理论预言散射光是入射光的受迫振动辐射，频率不变；只有把 X 射线视为光子，与自由电子作弹性碰撞并遵循能量与动量守恒，才能得到波长变长的结论。"))+
+   note(p("散射角 $\\theta=90^\\circ$ 时 $\\Delta\\lambda=\\lambda_C=2.43\\times10^{-3}\\,\\text{nm}$；$\\theta=180^\\circ$ 时 $\\Delta\\lambda=2\\lambda_C$。对可见光，$\\lambda_C$ 极小而相对变化可忽略，故康普顿效应只在 X 射线波段显著。"))
+ )},
+{"id":"a6s5-2","name":"康普顿位移的推导","tags":["der","thm"],"brief":"由能量与动量守恒导出 Δλ 公式。",
+ "body": wrap(
+   der(p("<strong>碰撞模型：</strong>入射光子（能量 $h\\nu$、动量 $h/\\lambda$）与静止自由电子（静止能量 $m_ec^2$）碰撞，散射光子以角 $\\theta$ 出射，电子以角 $\\varphi$、动量 $p$ 反冲。"))+
+   der(p("<strong>能量守恒：</strong>")+
+   fml("h\\nu+m_ec^2=h\\nu'+\\sqrt{p^2c^2+m_e^2c^4}")+
+   p("<strong>动量守恒：</strong>沿入射方向与垂直方向分别为：")+
+   fml("\\frac{h}{\\lambda}=\\frac{h}{\\lambda'}\\cos\\theta+p\\cos\\varphi")+
+   fml("0=\\frac{h}{\\lambda'}\\sin\\theta-p\\sin\\varphi")+
+   p("由动量两式消去 $\\varphi$ 得 $p^2c^2$ 的表达式，与由能量式解得的 $p^2c^2$ 相等，消去 $p$ 后整理得：")+
+   fml("\\lambda'-\\lambda=\\frac{h}{m_ec}(1-\\cos\\theta)"))+
+   thm("康普顿位移公式",p("散射光波长的改变量为：")+
+   fml("\\Delta\\lambda=\\frac{h}{m_ec}(1-\\cos\\theta)=\\lambda_C(1-\\cos\\theta)")+
+   p("其中 $\\lambda_C=\\dfrac{h}{m_ec}=2.43\\times10^{-3}\\,\\text{nm}$ 为电子的康普顿波长。"))+
+   note(p("推导只用到了光子假设与能量、动量守恒，不需要任何新假设，因此康普顿效应是光量子假设最直接、最强有力的证据之一，康普顿因此获 1927 年诺贝尔物理学奖。"))
+ )},
+{"id":"a6s5-3","name":"康普顿效应的意义","tags":["der","note"],"brief":"证明光子具有动量，波的粒子性得以直接验证。",
+ "body": wrap(
+   der(p("<strong>光子动量的验证：</strong>康普顿位移公式的推导直接使用了光子动量 $p=h/\\lambda$，实验与公式的高度一致证明光子确实携带动量，光的粒子性得到严格证实：")+
+   fml("p=\\frac{h}{\\lambda}")+
+   p("这是一次真正的「光子-电子弹性碰撞」，与光电效应（能量验证）共同构成光量子论的实验基础。"))+
+   der(p("<strong>反冲电子的观测：</strong>由能量守恒可计算反冲电子动能：")+
+   fml("E_k=h(\\nu-\\nu')=\\frac{hc\\,\\Delta\\lambda}{\\lambda\\lambda'}")+
+   p("实验观测到与散射光子同时出现的反冲电子，且角度与能量满足守恒关系，进一步确认碰撞图像的可靠性。"))+
+   note(p("康普顿散射在应用上也很重要：X 射线与 γ 射线的散射与衰减计算、康普顿背散射成像、正电子发射断层成像（PET）中的康普顿散射修正都依赖这一理论。"))
+ )},
+]},
+{
+"name": "6.6 X射线的衍射与应用",
+"color": "#06b6d4",
+"desc": "布拉格公式、X射线晶体衍射与X射线的广泛应用",
+"items": [
+{"id":"a6s6-1","name":"X射线衍射与布拉格公式","tags":["der","thm"],"brief":"晶体作光栅使X射线相干衍射。",
+ "fig":"bragg","figCap":"布拉格衍射：相邻晶面反射光的光程差为 2d sinθ，等于波长整数倍时加强",
+ "body": wrap(
+   thm("布拉格公式",p("X 射线被晶体中平行的原子面（晶面间距 $d$）反射，相邻晶面反射光的光程差等于波长整数倍时相干加强：")+
+   fml("2d\\sin\\theta=k\\lambda,\\qquad k=1,2,3,\\dots")+
+   p("$\\theta$ 为掠射角，$k$ 为衍射级次。"))+
+   der(p("<strong>光程差的推导：</strong>X 射线以掠射角 $\\theta$ 入射到相邻两个晶面，下层光线多走两段路径，每段为 $d\\sin\\theta$，故总光程差：")+
+   fml("\\Delta=2d\\sin\\theta")+
+   p("当 $\\Delta=k\\lambda$ 时两反射波同相加强，出现衍射极大。"))+
+   der(p("<strong>劳厄环：</strong>实际晶体是三维光栅，单色 X 射线照射固定晶体时，只有满足布拉格条件的晶面族产生衍射，在底片上形成分立的斑点（劳厄斑）；粉末样品则因各晶粒取向随机而形成同心圆环（德拜-谢乐环）。")+
+   fml("d=\\frac{k\\lambda}{2\\sin\\theta}"))+
+   note(p("布拉格公式是 X 射线晶体学的基石：已知波长可测晶面间距（晶体结构分析），已知晶面间距可测未知 X 射线波长（X 射线光谱学）。"))
+ )},
+{"id":"a6s6-2","name":"X射线衍射的应用","tags":["der","app"],"brief":"测定晶体结构、鉴定物相与分析应力。",
+ "body": wrap(
+   der(p("<strong>结构测定的原理：</strong>由布拉格公式测得各晶面族的间距 $d$ 与衍射强度，可反推晶胞参数与原子排列，从而确定晶体结构：")+
+   fml("\\sin\\theta_k=\\frac{k\\lambda}{2d}\\ \\Rightarrow\\ d")+
+   p("衍射斑的方向给出晶胞尺寸与对称性，衍射斑的强度给出原子在晶胞中的位置（含相位问题）。"))+
+   app(p("<strong>主要应用：</strong>① 单晶衍射测定蛋白质、配合物等复杂分子结构（如 DNA 双螺旋、血红蛋白结构）；② 粉末衍射（XRD）鉴定物相、测定晶格常数与晶粒尺寸；③ 应力与织构分析；④ 薄膜与界面结构分析；⑤ 小角散射研究纳米尺度结构。"))+
+   note(p("X 射线衍射是现代材料科学、化学、生物学最核心的结构分析手段之一，与之类似的中子衍射、电子衍射在磁性结构与表面分析中互为补充。"))
+ )},
+{"id":"a6s6-3","name":"X射线的广泛应用与安全","tags":["der","app"],"brief":"从医学成像到天体物理的广泛应用。",
+ "body": wrap(
+   der(p("<strong>成像对比度的推导：</strong>设软组织的线性吸收系数为 $\\mu_1$、骨为 $\\mu_2>\\mu_1$，两者厚度均为 $x$，则透射强度分别为：")+
+   fml("I_1=I_0e^{-\\mu_1 x},\\qquad I_2=I_0e^{-\\mu_2 x}")+
+   p("两者对比度可写为：")+
+   fml("\\frac{I_1-I_2}{I_1}=1-e^{-(\\mu_2-\\mu_1)x}")+
+   p("吸收系数差 $\\mu_2-\\mu_1$ 越大，对比度越高；这正是骨（含钙、$Z$ 大、$\\mu$ 大）在 X 射线影像中呈现高对比的原因。低能 X 射线可提高软组织对比，但会被更多吸收而增加剂量，故实际成像须在对比度与剂量之间折衷。"))+
+   app(p("<strong>医学与生物学：</strong>X 射线透视与 CT 成像利用不同组织吸收系数差异重建三维图像；放疗利用 X 射线对快速分裂细胞的杀伤作用治疗肿瘤；X 射线晶体学研究生物大分子结构。"))+
+   app(p("<strong>工业与科研：</strong>X 射线探伤检测焊缝与铸件缺陷；X 射线荧光光谱（XRF）进行元素分析；X 射线光电子能谱（XPS）分析表面成分与化学态；同步辐射光源提供高亮度的可调谐 X 射线，广泛用于物理、化学、材料与生命科学。"))+
+   app(p("<strong>天体物理：</strong>X 射线天文观测（如钱德拉、XMM-牛顿望远镜）研究黑洞吸积盘、中子星、星系团高温气体与超新星遗迹，因地球大气吸收 X 射线，观测须在大气层外进行。"))+
+   note(p("X 射线电离能力强，过量照射会损伤生物组织，须严格防护（铅屏蔽、限制剂量、时间-距离-屏蔽三原则）；放射性工作人员有严格的剂量限值。X 射线的发现与应用史也提醒我们科学成果的双刃性。"))
+ )},
+]}
+]
+
+CHAPTERS = [
+    {"id":"a-ch1","num":"第一章","title":"卢瑟福模型","en":"RUTHERFORD MODEL",
+     "desc":"原子的早期模型与电子的发现、α粒子散射实验、卢瑟福散射公式、散射截面与推导、卢瑟福模型的成功与困难。",
+     "sections": ch1_sections},
+    {"id":"a-ch2","num":"第二章","title":"玻尔模型","en":"BOHR MODEL",
+     "desc":"氢原子光谱与里德伯公式、玻尔三条基本假设、氢原子能级与轨道半径、里德伯常数的计算与光谱系、类氢离子与弗兰克-赫兹实验、玻尔模型的局限与索末菲推广。",
+     "sections": ch2_sections},
+    {"id":"a-ch3","num":"第三章","title":"量子力学导论","en":"INTRODUCTION TO QUANTUM MECHANICS",
+     "desc":"光的波粒二象性与光子、德布罗意物质波、不确定关系、波函数与薛定谔方程、一维势阱与隧道效应、氢原子的量子力学处理。",
+     "sections": ch3_sections},
+    {"id":"a-ch4","num":"第四章","title":"电子自旋与原子精细结构","en":"SPIN & FINE STRUCTURE",
+     "desc":"斯特恩-盖拉赫实验、电子自旋与自旋量子数、自旋轨道耦合、精细结构与狄拉克能级、碱金属原子光谱与量子缺、塞曼效应。",
+     "sections": ch4_sections},
+    {"id":"a-ch5","num":"第五章","title":"泡利不相容原理","en":"PAULI EXCLUSION PRINCIPLE",
+     "desc":"全同粒子与波函数对称性、泡利不相容原理、电子壳层与元素周期表、原子基态的确定与洪特规则、原子光谱项与能级、元素周期律的量子解释。",
+     "sections": ch5_sections},
+    {"id":"a-ch6","num":"第六章","title":"X射线","en":"X-RAYS",
+     "desc":"X射线的产生、连续谱与轫致辐射、特征谱与莫塞莱定律、X射线的吸收与散射、康普顿效应、X射线的衍射与应用。",
+     "sections": ch6_sections},
+]
+
+total_items = sum(sum(len(s["items"]) for s in ch["sections"]) for ch in CHAPTERS)
+print(f"Total items: {total_items}")
+
+
+def fix_lt_text(s):
+    return s.replace("<", "&lt;")
+def fix_svg_lt(s):
+    import re
+    return re.sub(r"<(?!/?(?:svg|g|defs|line|rect|circle|ellipse|path|polygon|polyline|text|tspan|use|marker|linearGradient|radialGradient|stop|clipPath|symbol|pattern|mask|filter|title|desc|animate|animateTransform|image|style)\b)([A-Za-z])", r"&lt;\1", s)
+
+def gen_html():
+    data_lines = []
+    for ch in CHAPTERS:
+        sec_strs = []
+        for sec in ch["sections"]:
+            item_strs = []
+            for it in sec["items"]:
+                tags_js = json.dumps(it["tags"], ensure_ascii=False)
+                body_esc = js_escape(fix_lt_math(it["body"]))
+                fig_field = f",fig:{json.dumps(it.get('fig',''),ensure_ascii=False)}" if it.get("fig") else ""
+                figcap_field = f",figCap:{json.dumps(fix_lt_text(it.get('figCap','')),ensure_ascii=False)}" if it.get("figCap") else ""
+                item_strs.append(
+                    f"{{id:'{it['id']}',name:{json.dumps(it['name'],ensure_ascii=False)},"
+                    f"tags:{tags_js},brief:{json.dumps(fix_lt_text(it['brief']),ensure_ascii=False)},"
+                    f"body:`{body_esc}`{fig_field}{figcap_field}}}"
+                )
+            sec_strs.append(
+                f"{{name:{json.dumps(sec['name'],ensure_ascii=False)},"
+                f"color:'{sec['color']}',desc:{json.dumps(sec['desc'],ensure_ascii=False)},"
+                f"items:[{','.join(item_strs)}]}}"
+            )
+        data_lines.append(
+            f"{{id:'{ch['id']}',num:{json.dumps(ch['num'],ensure_ascii=False)},"
+            f"title:{json.dumps(ch['title'],ensure_ascii=False)},en:'{ch['en']}',"
+            f"desc:{json.dumps(ch['desc'],ensure_ascii=False)},"
+            f"sections:[{','.join(sec_strs)}]}}"
+        )
+    la_data = "[" + ",".join(data_lines) + "]"
+
+    fig_entries = []
+    for k, v in FIG.items():
+        fig_entries.append(f"{json.dumps(k)}:`{js_escape(fix_svg_lt(v))}`")
+    fig_js = "{" + ",".join(fig_entries) + "}"
+    tag_label_js = json.dumps(TAG_LABEL, ensure_ascii=False)
+
+    nav_tabs = "".join(
+        f'<a class="la-nav-tab c{i+1}" href="#{ch["id"]}">{ch["num"]} · {ch["title"]}</a>'
+        for i, ch in enumerate(CHAPTERS)
+    )
+
+    css = '''  :root{--la-bg:#f4f7fb;--la-card:#ffffff;--la-ink:#152033;--la-muted:#607089;--la-shadow:0 12px 32px rgba(20,36,60,.09);}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--la-ink);background:radial-gradient(circle at 10% 10%,rgba(37,99,235,.08),transparent 28%),radial-gradient(circle at 90% 10%,rgba(124,58,237,.08),transparent 28%),var(--la-bg);line-height:1.7}
+  a{color:inherit}
+  .la-wrap{width:min(1400px,94vw);margin:auto}
+  .la-header{padding:52px 0 20px;text-align:center}
+  .la-eyebrow{font-size:13px;letter-spacing:.22em;color:var(--la-muted);font-weight:700;text-transform:uppercase}
+  h1{margin:10px 0 8px;font-size:clamp(30px,5vw,54px);line-height:1.08;letter-spacing:-.03em}
+  .la-subtitle{margin:0 auto;color:var(--la-muted);font-size:16px;max-width:820px;line-height:1.8}
+  .back-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px}
+  .back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:800;background:#fff;color:#1e3a8a;border:1px solid #c7d7ee;box-shadow:0 8px 20px rgba(20,36,60,.08);transition:.25s;cursor:pointer}
+  .back-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(20,36,60,.14);color:#4c1d95;border-color:#ddd6fe}
+  .la-nav-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px 0 8px}
+  .la-nav-tab{padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:700;font-size:13px;border:1px solid #d5deea;background:#fff;transition:.25s;color:#334155}
+  .la-nav-tab:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,36,60,.1)}
+  .la-nav-tab.c1{color:#2563eb;border-color:#bfdbfe}
+  .la-nav-tab.c2{color:#7c3aed;border-color:#ddd6fe}
+  .la-nav-tab.c3{color:#0d9488;border-color:#99f6e4}
+  .la-nav-tab.c4{color:#c2410c;border-color:#fed7aa}
+  .la-nav-tab.c5{color:#be185d;border-color:#fbcfe8}
+  .la-nav-tab.c6{color:#0891b2;border-color:#a5f3fc}
+  .la-engagement-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px}
+  .la-stat-item{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:#fff;border:1px solid #e2e8f0;font-size:13px;color:#334155;font-weight:600}
+  .la-stat-value{color:#6366f1;font-weight:800;font-size:15px}
+  .la-stat-link{cursor:pointer;text-decoration:none;transition:.2s}
+  .la-stat-link:hover{background:#eef2ff;border-color:#c7d2fe}
+  .la-legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 0 24px;font-size:12px;color:#64748b}
+  .la-legend-title{font-weight:700;margin-right:4px}
+  .la-arc-badge{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:700;letter-spacing:.04em}
+  .la-arc-def{background:#dbeafe;color:#1e40af}
+  .la-arc-thm{background:#ede9fe;color:#6d28d9}
+  .la-arc-der{background:#e0f2fe;color:#0369a1}
+  .la-arc-exa{background:#dcfce7;color:#15803d}
+  .la-arc-app{background:#fef3c7;color:#b45309}
+  .la-arc-note{background:#fee2e2;color:#b91c1c}
+  .la-roadmap{padding:30px 0}
+  .la-phase-title{font-size:24px;color:#1e293b;margin:40px 0 6px 18px;display:flex;align-items:center;gap:12px}
+  .la-phase-title::before{content:"";width:6px;height:26px;border-radius:4px}
+  .la-phase-title.a-ch1::before{background:#dc2626}
+  .la-phase-title.a-ch2::before{background:#ea580c}
+  .la-phase-title.a-ch3::before{background:#d97706}
+  .la-phase-title.a-ch4::before{background:#0d9488}
+  .la-phase-title.a-ch5::before{background:#7c3aed}
+  .la-phase-title.a-ch6::before{background:#0891b2}
+  .la-phase-en{font-size:11px;letter-spacing:.36em;color:#94a3b8;font-weight:700;text-transform:uppercase;margin:0 0 12px 18px;font-style:italic}
+  .la-phase-desc{color:var(--la-muted);font-size:14px;margin:0 0 24px 18px;line-height:1.8;max-width:960px}
+  .la-domain{margin-bottom:26px;padding:16px 18px 18px 22px;position:relative;background:rgba(255,255,255,.6);border-radius:18px;border:1px solid #e5ebf2}
+  .la-domain::before{content:"";position:absolute;left:6px;top:16px;bottom:16px;width:5px;border-radius:5px;background:var(--domain-color,#2563eb);box-shadow:0 0 12px rgba(37,99,235,.25)}
+  .la-domain-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .la-domain-header h3{margin:0;font-size:17px;color:#1e293b}
+  .la-domain-count{font-size:11px;padding:2px 10px;border-radius:999px;background:#eef2ff;color:#4f46e5;font-weight:700}
+  .la-domain-desc{font-size:12px;color:#94a3b8}
+  .la-domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .la-course-card{background:#fff;border:1px solid #e5ebf2;border-radius:14px;padding:14px 16px;cursor:pointer;transition:.22s;box-shadow:var(--la-shadow)}
+  .la-course-card:hover{transform:translateY(-3px);border-color:#c7d2fe;box-shadow:0 16px 40px rgba(37,99,235,.12)}
+  .la-course-card h4{margin:6px 0;font-size:15px;color:#1e293b}
+  .la-course-card p{margin:4px 0 0;font-size:12.5px;color:#64748b;line-height:1.6}
+  .la-arc-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:2px}
+  .la-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;padding:18px;z-index:60;backdrop-filter:blur(2px)}
+  .la-overlay.show{display:flex}
+  .la-modal{width:min(820px,96vw);background:white;border-radius:24px;padding:30px;box-shadow:0 24px 80px rgba(0,0,0,.28);animation:laPopIn .3s;max-height:90vh;overflow-y:auto}
+  @keyframes laPopIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+  .la-modal h2{margin:0 0 10px;font-size:23px;color:#1e293b;line-height:1.35}
+  .la-modal .la-crumbs{font-size:12px;color:#94a3b8;margin:0 0 14px;font-weight:600;letter-spacing:.02em}
+  .la-modal .la-arc-badges{margin:0 0 16px}
+  .la-modal-body{color:#334155;font-size:15px;line-height:1.9}
+  .la-modal-body p{margin:0 0 12px}
+  .la-modal-body strong{color:#0f172a}
+  .la-modal-body ul{margin:0 0 12px;padding-left:22px}
+  .la-modal-body li{margin-bottom:6px}
+  .la-fml{margin:16px 0;padding:14px 18px;background:linear-gradient(135deg,#f8fafc,#eef4fb);border-left:4px solid #93b4e8;border-radius:10px;overflow-x:auto;font-size:16px;color:#0f172a}
+  .la-fml .note{display:block;font-size:12.5px;color:#8496ad;margin-top:8px;line-height:1.6;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .la-fml mjx-container[display="true"]{margin:0 !important}
+  mjx-container, mjx-container *{color:#0f172a !important;opacity:1 !important}
+  mjx-mi{font-style:italic !important}
+  mjx-mo{color:#0f172a !important}
+  .la-modal-body mjx-container, .la-modal-body mjx-container *{color:#0f172a !important;opacity:1 !important}
+  .la-fig{margin:18px auto;padding:14px 16px 10px;background:#fafcff;border:1px solid #e2ebf7;border-radius:14px;display:flex;flex-direction:column;align-items:center;max-width:600px}
+  .la-fig svg{display:block;width:100%;height:auto;max-width:560px}
+  .la-fig .la-fig-cap{font-size:12px;color:#8496ad;margin-top:8px;text-align:center;letter-spacing:.02em}
+  .la-callout{margin:14px 0;padding:12px 16px;background:#fffbeb;border-left:3px solid #fbbf24;border-radius:8px;font-size:13.5px;color:#78350f;line-height:1.8}
+  .la-kp-sec{margin:0 0 18px;padding:14px 16px;border-radius:12px;background:#f8fafc;border:1px solid #eef2f7}
+  .la-kp-sec h5{margin:0 0 10px;font-size:14px;color:#1e293b;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+  .la-kp-sec h5::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--la-accent,#3b82f6)}
+  .la-kp-def{border-left:3px solid #3b82f6}
+  .la-kp-thm{border-left:3px solid #8b5cf6;background:#faf7ff}
+  .la-kp-der{border-left:3px solid #0ea5e9;background:#f0f9ff}
+  .la-kp-exa{border-left:3px solid #10b981;background:#f0fdf4}
+  .la-kp-app{border-left:3px solid #f59e0b;background:#fffbeb}
+  .la-kp-note{border-left:3px solid #ef4444;background:#fef2f2}
+  .la-kp-his{border-left:3px solid #64748b;background:#f8fafc}
+  .la-kp-sec p:last-child{margin-bottom:0}
+  .la-modal-close{margin-top:22px;background:#0f172a;color:white;border-color:#0f172a;padding:10px 20px;font-weight:bold}
+  .la-footer{padding:34px 0 50px;color:var(--la-muted);text-align:center;font-size:13px;line-height:1.9}
+  .la-core-fmls{margin:40px 0 20px;padding:28px 24px;background:linear-gradient(135deg,#f0f4ff,#faf7ff);border:1px solid #e0e7ff;border-radius:18px}
+  .la-core-fmls h3{font-size:18px;color:#1e293b;margin:0 0 20px;text-align:center;letter-spacing:.04em}
+  .la-core-fmls h3 .la-core-count{display:inline-block;background:#6366f1;color:#fff;font-size:13px;padding:2px 10px;border-radius:20px;margin-left:8px;vertical-align:middle}
+  .la-core-item{display:flex;gap:12px;margin:0 0 14px;padding:12px 16px;background:#fff;border-radius:12px;border-left:3px solid #6366f1;align-items:flex-start}
+  .la-core-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#6366f1;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:bold}
+  .la-core-body{flex:1;min-width:0}
+  .la-core-body .la-core-name{font-size:14px;font-weight:600;color:#1e293b;margin-bottom:4px}
+  .la-core-body .la-fml{margin:6px 0 0;padding:8px 14px;font-size:15px}
+  .la-back-top{display:inline-block;margin-top:20px;padding:10px 28px;background:#1e293b;color:#fff;border:none;border-radius:25px;font-size:14px;cursor:pointer;letter-spacing:.04em;transition:background .2s}
+  .la-back-top:hover{background:#334155}
+  @media(max-width:900px){.la-wrap{width:min(94vw,720px)}.la-roadmap{padding:20px}.la-phase-title{font-size:19px}.la-phase-en{font-size:10px;letter-spacing:.26em}.la-domain-desc{display:none}.la-domain-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}.la-modal{padding:22px}}'''
+
+    js = f'''const LA_DATA = {la_data};
+const LA_TAG_LABEL = {tag_label_js};
+const LA_FIG = {fig_js};
+const LA_KP = {{}};
+function laBuildCard(item){{
+  const tags = item.tags.map(t => `<span class="la-arc-badge la-arc-${{t}}">${{LA_TAG_LABEL[t]}}</span>`).join('');
+  return `<div class="la-course-card" onclick="showLaItem('${{item.id}}')"><div class="la-arc-badges">${{tags}}</div><h4>${{item.name}}</h4><p>${{item.brief}}</p></div>`;
+}}
+function renderLa(){{
+  const root = document.getElementById('laRoadmap');
+  let html = '';
+  LA_DATA.forEach(ch => {{
+    html += `<h2 class="la-phase-title ${{ch.id}}" id="${{ch.id}}">${{ch.num}} · ${{ch.title}}</h2>`;
+    html += `<div class="la-phase-en">${{ch.en}}</div>`;
+    html += `<p class="la-phase-desc">${{ch.desc}}</p>`;
+    ch.sections.forEach(sec => {{
+      html += `<div class="la-domain" style="--domain-color:${{sec.color}};"><div class="la-domain-header"><h3>${{sec.name}}</h3><span class="la-domain-count">${{sec.items.length}} 个知识点</span><span class="la-domain-desc">${{sec.desc}}</span></div><div class="la-domain-grid">`;
+      sec.items.forEach(it => {{ html += laBuildCard(it); LA_KP[it.id] = {{item: it, section: sec.name, chapter: `${{ch.num}} · ${{ch.title}}`}}; }});
+      html += `</div></div>`;
+    }});
+  }});
+  root.innerHTML = html;
+  const kCount = Object.keys(LA_KP).length;
+  document.getElementById('laKCount').textContent = kCount;
+}}
+function showLaItem(id){{
+  const rec = LA_KP[id];
+  if(!rec) return;
+  const it = rec.item;
+  document.getElementById('laCrumbs').textContent = rec.chapter + ' ／ ' + rec.section;
+  document.getElementById('laTitle').textContent = it.name;
+  document.getElementById('laTags').innerHTML = it.tags.map(t => `<span class="la-arc-badge la-arc-${{t}}">${{LA_TAG_LABEL[t]}}</span>`).join('');
+  let bodyHtml = it.body;
+  if (it.fig && LA_FIG[it.fig]) {{
+    const figHtml = `<div class="la-fig">${{LA_FIG[it.fig]}}<div class="la-fig-cap">${{it.figCap || ''}}</div></div>`;
+    bodyHtml = figHtml + bodyHtml;
+  }}
+  document.getElementById('laBody').innerHTML = bodyHtml;
+  document.getElementById('laOverlay').classList.add('show');
+  document.querySelector('.la-modal').scrollTop = 0;
+  if (window.MathJax && window.MathJax.typesetPromise) {{ window.MathJax.typesetPromise([document.getElementById('laBody')]).catch(()=>{{}}); }}
+}}
+function hideLaInfo(){{ document.getElementById('laOverlay').classList.remove('show'); }}
+function closeLaInfo(e){{ if(e.target.id === 'laOverlay') hideLaInfo(); }}
+document.addEventListener('keydown', e => {{ if(e.key === 'Escape') hideLaInfo(); }});
+document.addEventListener('DOMContentLoaded', () => {{
+  renderLa();
+  if (window.MathJax && window.MathJax.typesetPromise) {{ window.MathJax.typesetPromise([document.getElementById('laRoadmap')]).catch(()=>{{}}); }}
+}});'''
+
+    html = f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="原子物理学知识体系：卢瑟福模型、玻尔模型、量子力学导论、电子自旋与原子精细结构、泡利不相容原理、X射线">
+<title>原子物理学 · 知识体系</title>
+<script>
+window.MathJax = {{
+  tex: {{
+    inlineMath: [['$','$'], ['\\\\(','\\\\)']],
+    displayMath: [['$$','$$'], ['\\\\[','\\\\]']],
+    processEscapes: true,
+    packages: {{'[+]': ['ams','boldsymbol']}}
+  }},
+  options: {{
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+    ignoreHtmlClass: 'tex2jax_ignore'
+  }},
+  svg: {{ fontCache: 'global' }}
+}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+{css}
+</style>
+</head>
+<body>
+<div class="la-wrap">
+  <header class="la-header">
+    <div class="la-eyebrow">ATOMIC PHYSICS · KNOWLEDGE MAP</div>
+    <h1>原子物理学 · 知识体系</h1>
+    <p class="la-subtitle">卢瑟福模型 · 玻尔模型 · 量子力学导论 · 电子自旋与原子精细结构 · 泡利不相容原理 · X射线</p>
+    <div class="back-bar"><a class="back-btn" href="index.html">← 返回总览</a></div>
+    <div class="la-nav-tabs">{nav_tabs}</div>
+    <div class="la-engagement-bar">
+      <div class="la-stat-item"><span>📘</span><span class="la-stat-value" id="laKCount">--</span><span>个知识点</span></div>
+      <a class="la-stat-item la-stat-link" href="#laCoreFmls" onclick="event.preventDefault();document.getElementById('laCoreFmls').scrollIntoView({{behavior:'smooth',block:'start'}})"><span>🧮</span><span class="la-stat-value">{len(CORE_FORMULAS)}</span><span>条核心公式 · 点击速查</span></a>
+    </div>
+  </header>
+  <div class="la-legend">
+    <span class="la-legend-title">知识记号</span>
+    <span class="la-arc-badge la-arc-def">定 义</span>
+    <span class="la-arc-badge la-arc-thm">定 理</span>
+    <span class="la-arc-badge la-arc-der">推 导</span>
+    <span class="la-arc-badge la-arc-exa">例 子</span>
+    <span class="la-arc-badge la-arc-app">应 用</span>
+    <span class="la-arc-badge la-arc-note">备 注</span>
+  </div>
+  <main class="la-roadmap" id="laRoadmap"></main>
+  <section class="la-core-fmls" id="laCoreFmls">
+    <h3>核心公式速查 <span class="la-core-count">{len(CORE_FORMULAS)} 条</span></h3>
+{chr(10).join(f'    <div class="la-core-item"><div class="la-core-num">{i+1}</div><div class="la-core-body"><div class="la-core-name">{name.replace("<","&lt;")}</div><div class="la-fml">$${latex.replace("<","&lt;")}$$</div><div class="note" style="font-size:12px;color:#8496ad;margin-top:4px">{desc.replace("<","&lt;")}</div></div></div>' for i,(name,latex,desc) in enumerate(CORE_FORMULAS))}
+  </section>
+  <footer class="la-footer">
+    <div>原子物理学 · 知识体系可视化 · MathJax + SVG</div>
+    <div style="margin-top:8px">基于原子物理学核心知识体系整理</div>
+    <button class="la-back-top" onclick="window.scrollTo({{top:0,behavior:'smooth'}})">↑ 回到顶部</button>
+  </footer>
+</div>
+<div class="la-overlay" id="laOverlay" onclick="closeLaInfo(event)">
+  <div class="la-modal" onclick="event.stopPropagation()">
+    <p class="la-crumbs" id="laCrumbs"></p>
+    <h2 id="laTitle">知识点</h2>
+    <div class="la-arc-badges" id="laTags"></div>
+    <div class="la-modal-body" id="laBody"></div>
+    <button class="la-modal-close" onclick="hideLaInfo()">关 闭</button>
+  </div>
+</div>
+<script>
+{js}
+</script>
+</body>
+</html>'''
+    return html
+
+if __name__ == "__main__":
+    html = gen_html()
+    with open("/workspace/atomic-physics.html", "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"Generated atomic-physics.html ({len(html)} chars)")
