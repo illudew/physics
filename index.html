@@ -194,6 +194,11 @@ window.MathJax = {
   .trial-btn-ghost{background:#f1f5f9;color:#64748b;margin-top:10px}
   .trial-btn-ghost:hover{background:#e2e8f0}
 
+  /* ===== 全部解锁（原锁定卡片/章节恢复可交互） ===== */
+  .locked-card,.locked-chapter{filter:none!important;pointer-events:auto!important;user-select:auto!important}
+  .locked-card .lock-overlay,.locked-chapter>.lock-overlay{display:none!important}
+  .qm-trial-card{filter:none!important}
+  .qm-trial-overlay{display:none!important}
 </style>
 </head>
 <body>
@@ -227,7 +232,7 @@ window.MathJax = {
           <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 3</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 5</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 8</span><span class="arc-badge arc-etr" title="能够灵活运用该工具学科">ETR 9</span></div>
           <p>微积分定理与常微分方程。万恶之源。</p></div>
         <div class="course-card" onclick="showCourse('线性代数')"><div class="tag">前传第2章</div><h4>线性代数</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 2</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 4</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 7</span></div>
+          <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 2</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 4</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 7</span><span class="arc-badge arc-etr" title="能够灵活运用该工具学科">ETR 9+</span></div>
           <p>行列式、矩阵、线性方程组。新手村困难章节。</p></div>
         <div class="course-card locked-card"><div class="tag">前传第3章</div><h4>概率论与数理统计</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst">PST 3</span><span class="arc-badge arc-prs">PRS 5</span><span class="arc-badge arc-ftr">FTR 7</span></div>
@@ -261,7 +266,7 @@ window.MathJax = {
     <p class="phase-desc">五大经典领域在时光中回响：力、电磁、热、光、声。</p>
 
     <div class="domain" style="--domain-color:#0d9488;">
-      <div class="domain-header"><h3>🚀 力学领域</h3><span class="domain-count">5门</span><span class="domain-desc">从质点运动到连续介质</span></div>
+      <div class="domain-header"><h3>🚀 力学领域</h3><span class="domain-count">3门</span><span class="domain-desc">从质点运动到连续介质</span></div>
       <div class="domain-grid">
         <div class="course-card" onclick="showCourse('力学')"><div class="tag">第1章</div><h4>力学</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 1</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 3</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 7</span></div>
@@ -269,15 +274,6 @@ window.MathJax = {
         <div class="course-card" onclick="showCourse('理论力学')"><div class="tag">第1章pro</div><h4>理论力学</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 4</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 7</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 9</span><span class="arc-badge arc-byd" title="能够深入理解该学科">BYD 10</span></div>
           <p>拉格朗日、哈密顿。真正的物理才刚刚开始！</p></div>
-        <div class="course-card locked-card"><div class="tag">第1-1章</div><h4>流体力学</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 4</span><span class="arc-badge arc-prs">PRS 6</span><span class="arc-badge arc-ftr">FTR 8</span><span class="arc-badge arc-byd">BYD 10</span></div>
-          <p>NS方程、湍流、边界层。经典物理最后的难题。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card"><div class="tag">第1-2章</div><h4>固体力学</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 3</span><span class="arc-badge arc-prs">PRS 5</span><span class="arc-badge arc-ftr">FTR 7</span><span class="arc-badge arc-etr">ETR 9</span></div>
-          <p>应力应变、本构关系、有限元。让物理变成桥梁和高楼。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card hard-card"><div class="tag">第1-1章pro</div><h4>计算流体力学</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9+</span><span class="arc-badge arc-byd">BYD 11</span></div>
-          <p>有限差分、有限体积、谱方法。从NS方程到数值模拟。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
       </div>
     </div>
 
@@ -341,14 +337,6 @@ window.MathJax = {
       </div>
     </div>
 
-    <div class="domain" style="--domain-color:#0891b2;">
-      <div class="domain-header"><h3>🔊 声学领域</h3><span class="domain-count">1门</span><span class="domain-desc">波动物理的另一分支</span></div>
-      <div class="domain-grid">
-        <div class="course-card locked-card"><div class="tag">额外章节</div><h4>声学</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 3</span><span class="arc-badge arc-prs">PRS 5</span><span class="arc-badge arc-ftr">FTR 7</span></div>
-          <p>声波传播、超声成像、声纳探测。声音是探测世界的另一种感官。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-      </div>
-    </div>
 
     <h2 class="phase-title quantum">🌀 第三章 · 量子低语</h2>
     <div class="phase-en">WHISPERS OF QUANTUM</div>
@@ -360,7 +348,7 @@ window.MathJax = {
         <div class="course-card" onclick="showCourse('原子物理学')"><div class="tag">第5章</div><h4>原子物理学</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 4</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 6</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 8</span></div>
           <p>核式结构、电子跃迁。看到最终魔王的影子……</p></div>
-        <div class="course-card qm-trial-card" onclick="openTrial()"><div class="tag">第5章pro max</div><h4 style="color:#92400e;">量子力学</h4>
+        <div class="course-card qm-trial-card" onclick="showCourse('量子力学')"><div class="tag">第5章pro max</div><h4 style="color:#92400e;">量子力学</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst" title="刚刚明白这门课讲了个啥">PST 7</span><span class="arc-badge arc-prs" title="考试能够及格">PRS 9</span><span class="arc-badge arc-ftr" title="考试能够取得4.0或90+">FTR 10+</span><span class="arc-badge arc-byd" title="能够深入理解该学科">BYD 11+</span></div>
           <p style="color:#78350f;">微观世界的全新理论。遇事不决，量子力学。</p>
           <div class="qm-trial-overlay"><div class="lock-icon">🔒</div><div class="lock-text">解锁魔王的试炼</div><div class="lock-sub">十题通关 · 方可闯入量子世界</div></div></div>
@@ -388,15 +376,16 @@ window.MathJax = {
       </div>
     </div>
 
+
     <div class="domain" style="--domain-color:#6d28d9;">
-      <div class="domain-header"><h3>🧪 实验与科学通识</h3><span class="domain-count">2门</span><span class="domain-desc">动手能力与科学视野</span></div>
+      <div class="domain-header"><h3>⚛️ 粒子与场论</h3><span class="domain-count">2门</span><span class="domain-desc">基本粒子与相互作用的终极理论</span></div>
       <div class="domain-grid">
-        <div class="course-card locked-card"><div class="tag">第EX1章</div><h4>基础物理实验</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 1</span><span class="arc-badge arc-prs">PRS 2</span><span class="arc-badge arc-ftr">FTR 3</span></div>
-          <p>从拧螺丝到调光路。物理学的实验基础。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card"><div class="tag">第EX2章</div><h4>近代物理实验</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 4</span><span class="arc-badge arc-prs">PRS 6</span><span class="arc-badge arc-ftr">FTR 8</span></div>
-          <p>卢瑟福散射、弗兰克-赫兹、塞曼效应。亲手验证量子世界的奇妙规律。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
+        <div class="course-card cosmos-card" onclick="showCourse('粒子物理')"><div class="tag">？？？</div><h4>粒子物理</h4>
+          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9+</span><span class="arc-badge arc-byd">BYD 11+</span></div>
+          <p>夸克、轻子、Higgs。标准模型是20世纪物理最伟大的成就之一。</p></div>
+        <div class="course-card final-card" onclick="showCourse('量子场论')"><div class="tag">？？？</div><h4>量子场论</h4>
+          <div class="arc-badges"><span class="arc-badge arc-pst">PST 6</span><span class="arc-badge arc-prs">PRS 8</span><span class="arc-badge arc-ftr">FTR 10+</span><span class="arc-badge arc-ins">INS 12</span></div>
+          <p>路径积分、费曼图、重整化。粒子物理与凝聚态的共同语言。</p></div>
       </div>
     </div>
 
@@ -417,26 +406,6 @@ window.MathJax = {
       </div>
     </div>
 
-    <div class="domain" style="--domain-color:#7c3aed;">
-      <div class="domain-header"><h3>💎 凝聚态前沿专题</h3><span class="domain-count">5门</span><span class="domain-desc">超导、纳米、拓扑、二维材料、低温</span></div>
-      <div class="domain-grid">
-        <div class="course-card locked-card ultimate-card"><div class="tag">第6-1章</div><h4 style="color:#4c1d95;">超导物理</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9+</span><span class="arc-badge arc-byd">BYD 11</span></div>
-          <p style="color:#4c1d95;">零电阻、迈斯纳效应、BCS理论。宏观量子现象最壮观的展示。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card ultimate-card"><div class="tag">第6-2章</div><h4 style="color:#4c1d95;">纳米物理</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 4</span><span class="arc-badge arc-prs">PRS 6</span><span class="arc-badge arc-ftr">FTR 8</span><span class="arc-badge arc-byd">BYD 10</span></div>
-          <p style="color:#4c1d95;">量子点、碳纳米管、石墨烯。当材料缩小到纳米尺度，量子效应主导一切。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card ultimate-card"><div class="tag">第6-3章</div><h4 style="color:#4c1d95;">拓扑物态</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 6</span><span class="arc-badge arc-prs">PRS 8</span><span class="arc-badge arc-ftr">FTR 10+</span><span class="arc-badge arc-byd">BYD 11+</span></div>
-          <p style="color:#4c1d95;">拓扑绝缘体、拓扑半金属。用拓扑不变量分类物质的新范式。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card ultimate-card"><div class="tag">第6-4章</div><h4 style="color:#4c1d95;">二维材料</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9</span><span class="arc-badge arc-byd">BYD 10</span></div>
-          <p style="color:#4c1d95;">石墨烯、MoS2、黑磷。原子层厚度的材料世界，薄到离谱，强到离谱。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card ultimate-card"><div class="tag">第6-5章</div><h4 style="color:#4c1d95;">低温物理</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9</span><span class="arc-badge arc-byd">BYD 10</span></div>
-          <p style="color:#4c1d95;">液氦超流、玻色-爱因斯坦凝聚。接近绝对零度，量子涨落主宰一切。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-      </div>
-    </div>
 
     <div class="domain" style="--domain-color:#0891b2;">
       <div class="domain-header"><h3>🧱 材料工程</h3><span class="domain-count">2门</span><span class="domain-desc">烧炉子、测样品的手艺</span></div>
@@ -491,17 +460,11 @@ window.MathJax = {
     </div>
 
     <div class="domain" style="--domain-color:#6d28d9;">
-      <div class="domain-header"><h3>⚛️ 粒子与场论</h3><span class="domain-count">3门</span><span class="domain-desc">基本粒子与相互作用的终极理论</span></div>
+      <div class="domain-header"><h3>⚛️ 粒子与场论</h3><span class="domain-count">1门</span><span class="domain-desc">基本粒子与相互作用的终极理论</span></div>
       <div class="domain-grid">
-        <div class="course-card locked-card cosmos-card"><div class="tag">？？？</div><h4>粒子物理</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 5</span><span class="arc-badge arc-prs">PRS 7</span><span class="arc-badge arc-ftr">FTR 9+</span><span class="arc-badge arc-byd">BYD 11+</span></div>
-          <p>夸克、轻子、Higgs。标准模型是20世纪物理最伟大的成就之一。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
         <div class="course-card locked-card final-card"><div class="tag">？？？</div><h4>规范场论</h4>
           <div class="arc-badges"><span class="arc-badge arc-pst">PST 6</span><span class="arc-badge arc-prs">PRS 8</span><span class="arc-badge arc-ftr">FTR 10+</span><span class="arc-badge arc-ins">INS 12</span></div>
           <p>Yang-Mills理论、量子场论、重整化。用对称性书写宇宙的法则。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
-        <div class="course-card locked-card final-card"><div class="tag">？？？</div><h4>量子场论</h4>
-          <div class="arc-badges"><span class="arc-badge arc-pst">PST 6</span><span class="arc-badge arc-prs">PRS 8</span><span class="arc-badge arc-ftr">FTR 10+</span><span class="arc-badge arc-ins">INS 12</span></div>
-          <p>路径积分、费曼图、重整化。粒子物理与凝聚态的共同语言。</p><div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">知识不够，前面的区域以后再来探索吧</div></div></div>
       </div>
     </div>
 
@@ -580,18 +543,15 @@ window.MathJax = {
 const COURSES = {
   '初等数学':{desc:'小初高的知识你忘完了没有？\n\n什么？反三角是什么？极坐标是什么？向量叉乘又是什么？？？\n\n跟着此章节回顾初等数学基础与高数前的准备吧。',arc:['PST 1','PRS 4','FTR 7'],quote:'小初高的知识你忘完了没有？反三角、极坐标、向量叉乘……',prereq:[],next:['微积分','线性代数'],books:['人教版高中数学全套教材','《初等数学》'],videos:[{name:'宋浩《高等数学0基础一遍过》极限篇',keyword:'宋浩高等数学0基础一遍过'}],knowledgeLink:'elementary-math.html'},
   '微积分':{desc:'大学理科的第一步，你将学习基本微积分的定理以及常微分方程的求解。\n\n后续的多元微积分与无穷级数将把你的数学层次更高一个台阶。',arc:['PST 3','PRS 5','FTR 8','ETR 9'],quote:'理工科的万恶之源，高考只是决定你在哪里看宋浩高数。',prereq:['初等数学'],next:['数学物理方法','概率论与数理统计','计算物理'],books:['同济大学《高等数学》（第七版）','《托马斯微积分》','《普林斯顿微积分读本》'],videos:[{name:'宋浩《高等数学》全程教学视频 2.0版',keyword:'宋浩高等数学'},{name:'宋浩《微积分》全程教学视频',keyword:'宋浩微积分'}],knowledgeLink:'calculus.html'},
-  '线性代数':{desc:'大学基础数学的另一个科目，你将会认识到行列式与矩阵等新伙伴加入。\n\n以及求解多元一次线性方程组的方法，对矩阵的性质深入探索。',arc:['PST 2','PRS 4','FTR 7'],quote:'新手村的困难章节之一。',prereq:['初等数学'],next:['数学物理方法','量子力学','群论','计算物理'],books:['同济大学《线性代数》（第六版）','《线性代数应该这样学》','Gilbert Strang《Introduction to Linear Algebra》'],videos:[{name:'宋浩《线性代数》全程教学视频',keyword:'宋浩线性代数'},{name:'3Blue1Brown《线性代数的本质》',keyword:'线性代数的本质'}],knowledgeLink:'linear-algebra.html'},
+  '线性代数':{desc:'大学基础数学的另一个科目，你将会认识到行列式与矩阵等新伙伴加入。\n\n以及求解多元一次线性方程组的方法，对矩阵的性质深入探索。',arc:['PST 2','PRS 4','FTR 7','ETR 9+'],quote:'新手村的困难章节之一。',prereq:['初等数学'],next:['数学物理方法','量子力学','群论','计算物理'],books:['同济大学《线性代数》（第六版）','《线性代数应该这样学》','Gilbert Strang《Introduction to Linear Algebra》'],videos:[{name:'宋浩《线性代数》全程教学视频',keyword:'宋浩线性代数'},{name:'3Blue1Brown《线性代数的本质》',keyword:'线性代数的本质'}],knowledgeLink:'linear-algebra.html'},
   '概率论与数理统计':{desc:'建立随机变量、分布、期望、方差和统计推断框架。\n\n连接热统、实验误差与数据科学，处理不确定性的数学语言。',arc:['PST 3','PRS 5','FTR 7'],quote:'不会统计，等于白做实验。',prereq:['微积分'],next:['热力学与统计物理','量子力学'],books:['浙大版《概率论与数理统计》（第四版）','《概率论与数理统计》茆诗松'],videos:[{name:'宋浩《概率论与数理统计》全程教学视频',keyword:'宋浩概率论与数理统计'},{name:'浙江大学《概率论与数理统计》',keyword:'浙江大学概率论与数理统计'}],knowledgeLink:'probability-statistics.html'},
   '群论':{desc:'抽象代数的核心分支，研究对称性的数学结构。\n\n群、环、域、表示论，物理学家用来描述晶体对称性、粒子物理和量子态的"魔法"工具。',arc:['PST 4','PRS 6','FTR 8','ETR 10'],quote:'物理学家最爱的"魔法"工具——对称性即美。',prereq:['线性代数'],next:['量子力学','固体物理','粒子物理'],books:['《群论》李新征','《物理学中的群论》马中骐','《Group Theory in a Nutshell for Physicists》'],videos:[{name:'筱说物理 全网最友好的群论入门课程',keyword:'筱说物理群论'},{name:'南开大学《近世代数/抽象代数》国家级精品课',keyword:'南开大学近世代数'}],knowledgeLink:'group-theory.html'},
   '数学物理方法':{desc:'这是物理学的数学工具箱，将为你提供解决物理问题的强大数学武器。\n\n从复变函数到积分变换，从数学物理方程到特殊函数。',arc:['PST 6','PRS 8','FTR 10','ETR 10+'],quote:'噩梦、第二卷的初焉，此章节，面如死灰。',prereq:['微积分','线性代数'],next:['电动力学','量子力学','特殊函数'],books:['梁昆淼《数学物理方法》（第五版）','吴崇试《数学物理方法》（第三版）','顾樵《数学物理方法》'],videos:[{name:'北京大学《数学物理方法》吴崇试 全108讲',keyword:'吴崇试数学物理方法'},{name:'周国全《数学物理方法》全82集',keyword:'周国全数学物理方法'}],knowledgeLink:'mathematical-methods.html'},
   '特殊函数':{desc:'你以为考完数理方法就结束了吗？不！\n\n贝塞尔、勒让德、球谐函数，它们在你的电动力学、量子力学、甚至固体物理里无处不在，阴魂不散！',arc:['PST 5','PRS 7','FTR 9+','ETR 10+'],quote:'阴魂不散的贝塞尔和勒让德。',prereq:['数学物理方法'],next:['电动力学','量子力学','固体物理'],books:['王竹溪《特殊函数概论》','《特殊函数》刘式适','Arfken《Mathematical Methods for Physicists》'],videos:[{name:'特殊函数 贝塞尔 勒让德 专题课',keyword:'特殊函数贝塞尔勒让德'}],knowledgeLink:'special-functions.html'},
-  '矢量与张量分析':{desc:'向量代数、矢量微积分、梯度散度旋度、曲线坐标系、并矢与张量分析、算符运算法则。\n\n这是电磁学、流体力学、广义相对论、连续介质力学等高级物理课程的数学语言基础。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'矢量分析是物理学的第二语言——学会它，你才能读懂物理学的"小说"。',prereq:['微积分','线性代数'],next:['电动力学','流体力学','相对论'],books:['《矢量分析》许以超','Booth《Vector Calculus》','Arfken《Mathematical Methods for Physicists》'],videos:[{name:'矢量分析 向量微积分 网课',keyword:'矢量分析向量微积分'}],knowledgeLink:'vector-analysis.html'},
-  '计算物理':{desc:'自从学了计算物理，我就成了调包侠。Matlab和Python就是我的再生父母。\n\n代码跑通靠玄学，数据全靠P图（划掉）美化。遇事不决，先写个循环！',arc:['PST 3','PRS 7','FTR 10','ETR 10'],quote:'调包侠的起点，代码跑通靠玄学。遇事不决，先写个循环！',prereq:['微积分','线性代数'],next:['计算流体力学','材料物理'],books:['《计算物理》彭芳麟','《Numerical Recipes》','《Python科学计算》'],videos:[{name:'德国科隆大学《计算物理全系列》',keyword:'科隆大学计算物理'},{name:'东南大学《数值分析》课程精讲',keyword:'东南大学数值分析'}],knowledgeLink:'computational-physics.html'},
-  '力学':{desc:'这是物理学的基石，是探索物理世界奥秘的起点。\n\n你将从牛顿三大定律出发，深入理解物体的运动规律。',arc:['PST 1','PRS 3','FTR 7'],quote:'物理梦开始的地方。',prereq:['微积分'],next:['理论力学','流体力学','固体力学'],books:['舒幼生《力学》（北大）','漆安慎《力学》','Halliday《Fundamentals of Physics》'],videos:[{name:'B站物院 力学 系列',keyword:'B站物院力学'},{name:'舒幼生《力学》习题讲解',keyword:'舒幼生力学'}],knowledgeLink:'newtonian-mechanics.html'},
+  '矢量与张量分析':{desc:'向量代数、矢量微积分、梯度散度旋度、曲线坐标系、并矢与张量分析、算符运算法则。\n\n这是电磁学、流体力学、广义相对论、连续介质力学等高级物理课程的数学语言基础。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'矢量分析是物理学的第二语言——学会它，你才能读懂物理学的"小说"。',prereq:['微积分','线性代数'],next:['电动力学','相对论'],books:['《矢量分析》许以超','Booth《Vector Calculus》','Arfken《Mathematical Methods for Physicists》'],videos:[{name:'矢量分析 向量微积分 网课',keyword:'矢量分析向量微积分'}],knowledgeLink:'vector-analysis.html'},
+  '计算物理':{desc:'自从学了计算物理，我就成了调包侠。Matlab和Python就是我的再生父母。\n\n代码跑通靠玄学，数据全靠P图（划掉）美化。遇事不决，先写个循环！',arc:['PST 3','PRS 7','FTR 10','ETR 10'],quote:'调包侠的起点，代码跑通靠玄学。遇事不决，先写个循环！',prereq:['微积分','线性代数'],next:['材料物理'],books:['《计算物理》彭芳麟','《Numerical Recipes》','《Python科学计算》'],videos:[{name:'德国科隆大学《计算物理全系列》',keyword:'科隆大学计算物理'},{name:'东南大学《数值分析》课程精讲',keyword:'东南大学数值分析'}],knowledgeLink:'computational-physics.html'},
+  '力学':{desc:'这是物理学的基石，是探索物理世界奥秘的起点。\n\n你将从牛顿三大定律出发，深入理解物体的运动规律。',arc:['PST 1','PRS 3','FTR 7'],quote:'物理梦开始的地方。',prereq:['微积分'],next:['理论力学'],books:['舒幼生《力学》（北大）','漆安慎《力学》','Halliday《Fundamentals of Physics》'],videos:[{name:'B站物院 力学 系列',keyword:'B站物院力学'},{name:'舒幼生《力学》习题讲解',keyword:'舒幼生力学'}],knowledgeLink:'newtonian-mechanics.html'},
   '理论力学':{desc:'这是力学的深化与拓展，是对力学规律的更高层次的抽象与总结。\n\n从拉格朗日方程到哈密顿原理，你将看到力学体系在数学形式上的优美与简洁。',arc:['PST 4','PRS 7','FTR 9','BYD 10'],quote:'欢迎来到物理，真正的物理才刚刚开始！！！',prereq:['力学','微积分'],next:['电动力学','量子力学','相对论'],books:['周衍柏《理论力学教程》','梁昆淼《力学》','Goldstein《Classical Mechanics》'],videos:[{name:'哈尔滨工业大学《理论力学（物理类）》任延宇',keyword:'任延宇理论力学'},{name:'《理论力学》5小时速通期末速成课',keyword:'理论力学速成'}],knowledgeLink:'theoretical-mechanics.html'},
-  '流体力学':{desc:'Navier-Stokes 方程、湍流、边界层。天气预报、飞机设计、血液流动都靠它。\n\n流体力学的难点在于：你永远无法精确求解 NS 方程，但你可以假装自己解出来了。',arc:['PST 4','PRS 6','FTR 8','BYD 10'],quote:'湍流是经典物理最后的难题之一。',prereq:['力学'],next:['计算流体力学','等离子体物理'],books:['吴望一《流体力学》','Landau《Fluid Mechanics》','张兆顺《流体力学》'],videos:[{name:'流体力学 网课 推荐',keyword:'流体力学网课'}],knowledgeLink:'fluid-mechanics.html'},
-  '固体力学':{desc:'应力、应变、弹性模量、本构关系、有限元分析。\n\n桥梁为什么不塌？飞机翅膀为什么不断？材料在受力下的变形与破坏，是土木、机械、航空的必修课。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'让物理变成桥梁和高楼。',prereq:['力学'],next:['材料物理'],books:['徐芝纶《弹性力学》','孙训方《材料力学》','Timoshenko《Theory of Elasticity》'],videos:[{name:'弹性力学 固体力学 网课',keyword:'弹性力学网课'}],knowledgeLink:'solid-mechanics.html'},
-  '计算流体力学':{desc:'用计算机求解Navier-Stokes方程。有限差分、有限体积、谱方法……\n\n从理论到数值模拟，CFD是工程仿真的核心工具。',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'解析解不存在？那就用数值方法逼近它。',prereq:['流体力学','计算物理'],next:[],books:['《计算流体力学》陆夕云','Anderson《Computational Fluid Dynamics》','《CFD》朱自强'],videos:[{name:'计算流体力学 CFD 网课',keyword:'计算流体力学CFD'}],knowledgeLink:'cfd.html'},
   '电磁学':{desc:'当电与磁交织在一起，就构成了电磁学这一神奇的领域。\n\n你将学习到电场与磁场的性质，其中电磁感应现象与电磁波更是将电与磁的联系推向高潮。',arc:['PST 3','PRS 6','FTR 7'],quote:'左手磁，右手电，雷公助我！以雷霆击碎黑暗！！！',prereq:['力学','微积分','矢量与张量分析'],next:['电动力学','电路','光学'],books:['赵凯华《电磁学》','贾起民《电磁学》','Griffiths《Introduction to Electrodynamics》'],videos:[{name:'B站物院 电磁学（Bro姐主讲）',keyword:'B站物院电磁学'},{name:'北京大学《电磁学》国家精品课',keyword:'北京大学电磁学'}],knowledgeLink:'electromagnetism.html'},
   '电动力学':{desc:'电磁学的进一步深化，将带你走进电磁场的微观世界。\n\n麦克斯韦方程组作为电动力学的核心，将让你看到电场与磁场在微观层面的紧密联系与相互作用。',arc:['PST 5','PRS 7','FTR 9+','BYD 10+'],quote:'移动变换，电磁相对，物理梦还在交织……',prereq:['电磁学','数学物理方法'],next:['量子力学','激光原理','相对论','粒子物理'],books:['郭硕鸿《电动力学》（第三版）','Jackson《Classical Electrodynamics》','Griffiths《电动力学导论》'],videos:[{name:'北京大学《电动力学》田光善',keyword:'田光善电动力学'},{name:'B站物院 电动力学（Bro姐主讲）',keyword:'B站物院电动力学'},{name:'《电动力学》零基础速成',keyword:'电动力学速成'}],knowledgeLink:'electrodynamics.html'},
   '电路':{desc:'这是电气工程的基础，也是物理学在电磁学领域的应用实践。\n\n从电路的基本定律到复杂电路的分析方法，你将学习到如何设计、分析和优化电路。',arc:['PST 2','PRS 6','FTR 9'],quote:'老师你看，我的电阻会发光哦，嘣！（电阻炸了）',prereq:['电磁学'],next:['模拟电子技术','数字电子技术'],books:['邱关源《电路》（第五版）','《电路分析基础》李瀚荪'],videos:[{name:'电路 邱关源 网课',keyword:'电路邱关源'}],knowledgeLink:'circuits.html'},
@@ -606,21 +566,13 @@ const COURSES = {
   '激光原理':{desc:'受激辐射、粒子数反转、光放大。',arc:['PST 4','PRS 6','FTR 8','BYD 10+'],quote:'激光一开，谁与争锋！',prereq:['光学','原子物理学','光学系统设计'],next:['非线性光学'],books:['周炳琨《激光原理》（第六版）','Svelto《Principles of Lasers》'],videos:[{name:'激光原理 周炳琨 网课',keyword:'激光原理周炳琨'}],knowledgeLink:'laser-principles.html'},
   '非线性光学':{desc:'强光下的光学。倍频、和频、差频、四波混频、光孤子。',arc:['PST 4','PRS 6','FTR 8','BYD 10+'],quote:'从此光不仅会直线传播，还会跟光自己打架。',prereq:['激光原理'],next:[],books:['石顺祥《非线性光学》','Boyd《Nonlinear Optics》'],videos:[{name:'非线性光学 网课',keyword:'非线性光学网课'}],knowledgeLink:'nonlinear-optics.html'},
   '发光物理':{desc:'电子从高能级跃迁到低能级，释放出绚烂的光子。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'你不发光怎么照亮全人类？',prereq:['固体物理','半导体物理'],next:[],books:['徐叙瑢《发光物理》','《发光学与发光材料》','《LED原理与应用》'],videos:[{name:'发光物理 LED 荧光 教程',keyword:'发光物理LED'}],knowledgeLink:'luminescence.html'},
-  '声学':{desc:'声波在气体、液体、固体中的传播。从声学基础到超声成像、声纳探测、主动噪声控制。\n\n声音不只是耳朵听到的东西——它是压力波、是能量传输、是探测世界的另一种感官。',arc:['PST 3','PRS 5','FTR 7'],quote:'你在真空中大喊一声，什么声音也听不到。',prereq:['力学','光学'],next:[],books:['刘世清《声学基础》','Kinsler《Fundamentals of Acoustics》','《声学手册》'],videos:[{name:'声学基础 网课',keyword:'声学基础网课'}],knowledgeLink:'acoustics.html'},
   '原子物理学':{desc:'走进微观世界的大门，原子物理学将带你探索原子的结构与性质。',arc:['PST 4','PRS 6','FTR 8'],quote:'终于，看到了最终魔王的影子，但你还不是他……',prereq:['电磁学'],next:['量子力学','原子核物理'],books:['褚圣麟《原子物理学》','杨福家《原子物理学》','Foot《Atomic Physics》'],videos:[{name:'B站物院 原子物理',keyword:'B站物院原子物理'},{name:'《原子物理学》褚圣麟 课程讲解',keyword:'褚圣麟原子物理'}],knowledgeLink:'atomic-physics.html'},
   '量子力学':{desc:'物理学的尽头，或许不是？\n\n这是微观世界的全新理论体系，将彻底颠覆你对经典物理学的认识。',arc:['PST 7','PRS 9','FTR 10+','BYD 11+'],quote:'遇事不决，量子力学。',prereq:['理论力学','数学物理方法','原子物理学','线性代数','群论'],next:['固体物理','量子信息','量子计算','原子核物理','粒子物理','规范场论'],books:['周世勋《量子力学教程》','曾谨言《量子力学》','Griffiths《量子力学概论》','Sakurai《Modern Quantum Mechanics》'],videos:[{name:'北京大学《量子力学》田光善 国家精品课程',keyword:'田光善量子力学'},{name:'中南大学《追着你喂饭的量子力学》牛冬梅教授',keyword:'牛冬梅量子力学'},{name:'斯坦福大学《量子力学》',keyword:'斯坦福量子力学'}],knowledgeLink:'quantum-mechanics.html'},
   '量子信息':{desc:'比特变成了量子比特，0和1的叠加态。量子纠缠、量子计算、量子通信。',arc:['PST 4','PRS 6','FTR 8','BYD 10'],quote:'遇事不决，量子力学；量子加密，绝对安全！',prereq:['量子力学'],next:[],books:['Nielsen & Chuang《量子信息论》','《量子信息与量子计算》李承祖'],videos:[{name:'量子信息 量子计算 网课',keyword:'量子信息网课'}],knowledgeLink:'quantum-information.html'},
   '量子计算':{desc:'Shor 算法、Grover 算法、量子门、量子线路、量子纠错。',arc:['PST 4','PRS 6','FTR 8','BYD 10+'],quote:'量子霸权，谁能问鼎？',prereq:['量子力学','线性代数'],next:[],books:['Nielsen & Chuang《量子计算与量子信息》','Loeffler《Quantum Computing》'],videos:[{name:'量子计算 网课 推荐',keyword:'量子计算网课'}],knowledgeLink:'quantum-computing.html'},
   '原子核物理':{desc:'夸克、轻子、强子。质子中子抱团取暖，动不动就裂变聚变。',arc:['PST 4','PRS 6','FTR 8','BYD 10'],quote:'从核结构到核能，微观世界的暴力美学。',prereq:['原子物理学','量子力学'],next:['粒子物理'],books:['卢希庭《原子核物理》','Krane《Introductory Nuclear Physics》'],videos:[{name:'原子核物理 网课',keyword:'原子核物理网课'}],knowledgeLink:'nuclear-physics.html'},
-  '基础物理实验':{desc:'物理学的实验基础。力学实验、电磁学实验、光学实验……\n\n理论指导实验，实验验证理论。动手能力的培养，从拧螺丝开始。',arc:['PST 1','PRS 2','FTR 3'],quote:'纸上得来终觉浅，绝知此事要躬行。',prereq:['力学','电磁学'],next:[],books:['《大学物理实验》','《普通物理实验》'],videos:[{name:'普通物理实验 教程',keyword:'普通物理实验教程'}],knowledgeLink:'basic-physics-lab.html'},
-  '近代物理实验':{desc:'探索微观世界的实验之窗。卢瑟福散射、弗兰克-赫兹实验、光电效应、塞曼效应、核磁共振、激光光谱……\n\n近代物理实验让你亲手验证量子世界的奇妙规律，理解物理学家是如何发现微观世界的。',arc:['PST 4','PRS 6','FTR 8'],quote:'真正的发现之旅不在于寻找新的风景，而在于拥有新的眼睛。',prereq:['原子物理学','量子力学'],next:[],books:['《近代物理实验》','《Modern Physics Laboratory》','《大学物理实验》近代部分'],videos:[{name:'近代物理实验 教程',keyword:'近代物理实验教程'}],knowledgeLink:'modern-physics-lab.html'},
-  '固体物理':{desc:'从晶体结构、倒易空间、声子和能带理论出发，研究固体中的电子、晶格与磁性。',arc:['PST 7','PRS 9','FTR 10+','BYD 11'],quote:'微观量子世界在宏观材料中的终极体现。',prereq:['量子力学','热力学与统计物理','群论'],next:['半导体物理','材料物理','超导物理'],books:['黄昆《固体物理学》','Kittel《固体物理导论》','Ashcroft & Mermin《Solid State Physics》'],videos:[{name:'电子科技大学《固体物理学》课程精讲',keyword:'电子科技大学固体物理'},{name:'河南工业大学《固体物理》期末复习精讲',keyword:'固体物理期末复习'}],knowledgeLink:'solid-state-physics.html'},
+  '固体物理':{desc:'从晶体结构、倒易空间、声子和能带理论出发，研究固体中的电子、晶格与磁性。',arc:['PST 7','PRS 9','FTR 10+','BYD 11'],quote:'微观量子世界在宏观材料中的终极体现。',prereq:['量子力学','热力学与统计物理','群论'],next:['半导体物理','材料物理'],books:['黄昆《固体物理学》','Kittel《固体物理导论》','Ashcroft & Mermin《Solid State Physics》'],videos:[{name:'电子科技大学《固体物理学》课程精讲',keyword:'电子科技大学固体物理'},{name:'河南工业大学《固体物理》期末复习精讲',keyword:'固体物理期末复习'}],knowledgeLink:'solid-state-physics.html'},
   '材料物理':{desc:'结构决定性质，性质决定功能。从原子排列到宏观性能，从金属到陶瓷到高分子。',arc:['PST 5','PRS 8','FTR 10'],quote:'物理、化学、工程的完美交叉，新材料是科技革命的先导。',prereq:['固体物理'],next:['半导体材料','材料制备技术','材料测试技术'],books:['胡赓祥《材料科学基础》','石德珂《材料物理》','Callister《Materials Science and Engineering》'],videos:[{name:'枣子学长《材料科学基础》0基础24讲',keyword:'枣子学长材料科学基础'},{name:'中科大《802材料科学基础》系列课程',keyword:'中科大材料科学基础'}],knowledgeLink:'materials-physics.html'},
-  '超导物理':{desc:'零电阻、迈斯纳效应、BCS理论、高温超导、拓扑超导。\n\n当温度降到足够低，电子会配对形成库珀对，然后在晶格中无阻穿行。',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'超导是宏观量子现象最壮观的展示——电阻为零。',prereq:['固体物理','量子力学','热力学与统计物理'],next:['拓扑物态'],books:['田民波《超导物理与超导体》','Tinkham《Introduction to Superconductivity》','De Gennes《Superconductivity of Metals and Alloys》'],videos:[{name:'超导物理 网课',keyword:'超导物理网课'}],knowledgeLink:'superconductivity.html'},
-  '纳米物理':{desc:'当材料缩小到纳米尺度，量子效应开始主导宏观性质。量子点、碳纳米管、石墨烯、分子器件……',arc:['PST 4','PRS 6','FTR 8','BYD 10'],quote:'纳米世界里几乎没有"块体材料"这回事——表面就是全部。',prereq:['固体物理','量子力学'],next:['二维材料'],books:['《纳米物理与器件》','Luijten《Nanostructured Materials》','《纳米材料科学与工程》'],videos:[{name:'纳米物理 纳米技术 网课',keyword:'纳米物理纳米技术'}],knowledgeLink:'nanophysics.html'},
-  '拓扑物态':{desc:'拓扑绝缘体、拓扑半金属、拓扑超导体。用拓扑不变量分类物质的新范式。',arc:['PST 6','PRS 8','FTR 10+','BYD 11+'],quote:'咖啡杯和甜甜圈在拓扑学家眼里是一样的。',prereq:['固体物理','量子力学','群论'],next:['拓扑量子场论'],books:['Bernevig《Topological Insulators and Topological Superconductors》','《拓扑绝缘体和拓扑超导体》'],videos:[{name:'拓扑绝缘体 拓扑物态 网课',keyword:'拓扑绝缘体拓扑物态'}],knowledgeLink:'topological-matter.html'},
-  '二维材料':{desc:'石墨烯、过渡金属硫族化合物(MoS2)、黑磷、MXene。原子层厚度的材料世界。',arc:['PST 5','PRS 7','FTR 9','BYD 10'],quote:'石墨烯——薄到透明，强到离谱。',prereq:['固体物理','纳米物理','量子力学'],next:[],books:['《二维材料物理学》','Castro Neto et al.《The Electronic Properties of Graphene》'],videos:[{name:'二维材料 石墨烯 网课',keyword:'二维材料石墨烯'}],knowledgeLink:'2d-materials.html'},
-  '低温物理':{desc:'接近绝对零度的世界。液氦超流、玻色-爱因斯坦凝聚、极低温下的量子现象。',arc:['PST 5','PRS 7','FTR 9','BYD 10'],quote:'在绝对零度附近，物质会展现出你最不可思议的量子行为。',prereq:['热力学与统计物理','量子力学','固体物理'],next:['超导物理'],books:['《低温物理》','Pomeranchuk《Low Temperature Physics》','White《Cryogenic Engineering》'],videos:[{name:'低温物理 超流 玻色-爱因斯坦凝聚',keyword:'低温物理超流'}],knowledgeLink:'low-temperature-physics.html'},
   '材料制备技术':{desc:'烧炉子、镀膜、拉单晶、外延生长、CVD、PVD、分子束外延。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'好的材料是制备出来的，手上的功夫比脑子里的公式更重要。',prereq:['材料物理'],next:['半导体工艺'],books:['《材料制备科学与技术》','郑伟涛《薄膜材料与薄膜技术》','《晶体生长》'],videos:[{name:'材料制备技术 薄膜制备 晶体生长',keyword:'材料制备薄膜晶体生长'}],knowledgeLink:'materials-preparation.html'},
   '材料测试技术':{desc:'XRD、SEM、TEM、AFM、XPS、Raman。不管什么材料，先测一下。',arc:['PST 3','PRS 5','FTR 7','ETR 9'],quote:'你们做测试的，就是材料的法医！',prereq:['材料物理'],next:['半导体材料'],books:['周玉《材料现代分析测试方法》','《材料表征》','《X射线衍射学》'],videos:[{name:'XRD SEM TEM 材料测试 教程',keyword:'XRD SEM TEM教程'}],knowledgeLink:'materials-characterization.html'},
   '半导体物理':{desc:'能带、载流子、掺杂、输运、复合、异质结。这是物理与微电子工业的完美结合。',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'这是你未来主攻的方向，也是物理人改变世界的利器！',prereq:['固体物理','量子力学'],next:['半导体材料','半导体器件'],books:['刘恩科《半导体物理学》（第七版）','施敏《半导体器件物理》','Neamen《Semiconductor Physics and Devices》'],videos:[{name:'西安电子科技大学《半导体物理》国家级精品课程',keyword:'西电半导体物理'},{name:'《半导体物理学》期末速成课',keyword:'半导体物理速成'}],knowledgeLink:'semiconductor-physics.html'},
@@ -636,9 +588,9 @@ const COURSES = {
   '弦理论':{desc:'把基本粒子看作一维弦的振动模式。10维时空、超对称、M理论。',arc:['PST 6','PRS 8','FTR 10+','BYD 11+'],quote:'弦理论是万有理论的候选者——但还没有实验证据。',prereq:['量子场论','相对论','群论'],next:[],books:['Polchinski《String Theory》','Becker《String Theory and M-Theory》','Zwiebach《A First Course in String Theory》'],videos:[{name:'弦理论 网课 推荐',keyword:'弦理论网课'}],knowledgeLink:'string-theory.html'},
   '量子引力':{desc:'引力的量子化。圈量子引力、因果动力学三角剖分、渐近安全引力。',arc:['PST 7','PRS 9+','FTR 11+','INS 12+'],quote:'物理学最后的圣杯——把引力和量子力学统一起来。',prereq:['量子场论','相对论','黑洞物理'],next:[],books:['Rovelli《Quantum Gravity》','Thiemann《Modern Canonical Quantum General Relativity》','Rovelli《现实不似你所见》'],videos:[{name:'量子引力 圈量子引力 教程',keyword:'量子引力圈量子引力'}],knowledgeLink:'quantum-gravity.html'},
   '共形场论':{desc:'共形对称性是临界现象和弦理论的核心数学工具。',arc:['PST 7','PRS 9+','FTR 11+','INS 12'],quote:'共形对称性意味着你在任何尺度下看系统都一模一样。',prereq:['量子场论','热力学与统计物理','数学物理方法'],next:['弦理论'],books:['Di Francesco《Conformal Field Theory》','Polchinski《String Theory》Vol.1'],videos:[{name:'共形场论 网课',keyword:'共形场论网课'}],knowledgeLink:'conformal-field-theory.html'},
-  '拓扑量子场论':{desc:'用拓扑不变量研究量子场论。TQFT与凝聚态拓扑序、量子计算密切相关。',arc:['PST 7','PRS 9+','FTR 11+','BYD 11+'],quote:'拓扑量子场论是连接数学和物理最深刻的桥梁。',prereq:['量子场论','拓扑物态','群论'],next:[],books:['Witten《Topological Quantum Field Theory》','《拓扑量子场论》'],videos:[{name:'拓扑量子场论 网课',keyword:'拓扑量子场论网课'}],knowledgeLink:'tqft.html'},
+  '拓扑量子场论':{desc:'用拓扑不变量研究量子场论。TQFT与凝聚态拓扑序、量子计算密切相关。',arc:['PST 7','PRS 9+','FTR 11+','BYD 11+'],quote:'拓扑量子场论是连接数学和物理最深刻的桥梁。',prereq:['量子场论','群论'],next:[],books:['Witten《Topological Quantum Field Theory》','《拓扑量子场论》'],videos:[{name:'拓扑量子场论 网课',keyword:'拓扑量子场论网课'}],knowledgeLink:'tqft.html'},
   '天体物理学':{desc:'用物理学的工具研究宇宙中的天体。恒星演化、星系动力学、活动星系核、引力透镜……',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'我们都是由星尘构成的。——卡尔·萨根',prereq:['辐射过程','热力学与统计物理'],next:['宇宙学'],books:['Carroll & Ostlie《An Introduction to Modern Astrophysics》','Shu《天体物理学过程》'],videos:[{name:'天体物理学 网课 入门',keyword:'天体物理学网课'}],knowledgeLink:'astrophysics.html'},
-  '等离子体物理':{desc:'宇宙中99%的可观测物质都处于等离子体态。恒星内部、日冕、极光、核聚变装置……全是等离子体。',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'想要实现可控核聚变？先搞定等离子体不稳定性。',prereq:['流体力学','电动力学','热力学与统计物理'],next:['核聚变物理'],books:['Chen《Introduction to Plasma Physics》','Gurnett & Bhattacharjee《Introduction to Plasma Physics》'],videos:[{name:'等离子体物理 网课',keyword:'等离子体物理网课'}],knowledgeLink:'plasma-physics.html'},
+  '等离子体物理':{desc:'宇宙中99%的可观测物质都处于等离子体态。恒星内部、日冕、极光、核聚变装置……全是等离子体。',arc:['PST 5','PRS 7','FTR 9+','BYD 11'],quote:'想要实现可控核聚变？先搞定等离子体不稳定性。',prereq:['电动力学','热力学与统计物理'],next:['核聚变物理'],books:['Chen《Introduction to Plasma Physics》','Gurnett & Bhattacharjee《Introduction to Plasma Physics》'],videos:[{name:'等离子体物理 网课',keyword:'等离子体物理网课'}],knowledgeLink:'plasma-physics.html'},
   '生物物理':{desc:'用物理学的原理和方法研究生物大分子和生命过程。',arc:['PST 4','PRS 6','FTR 8','BYD 10'],quote:'生命不是违反热力学第二定律，它只是在巧妙地利用它。',prereq:['热力学与统计物理','量子力学'],next:[],books:['Phillips《Physical Biology of the Cell》','《生物物理学》朱正纲'],videos:[{name:'生物物理 网课',keyword:'生物物理网课'}],knowledgeLink:'biophysics.html'},
   '辐射过程':{desc:'带电粒子如何辐射电磁波？同步辐射、轫致辐射、切伦科夫辐射、黑体辐射……',arc:['PST 5','PRS 7','FTR 9','BYD 10'],quote:'加速的电荷必然辐射——这是电磁学给你的最优雅的判决。',prereq:['电动力学','相对论'],next:['天体物理学'],books:['Jackson《Classical Electrodynamics》辐射章节','Landau & Lifshitz《Classical Theory of Fields》'],videos:[{name:'辐射过程 同步辐射 网课',keyword:'辐射过程同步辐射'}],knowledgeLink:'radiation-processes.html'},
   '核聚变物理':{desc:'太阳的能量来源。托卡马克、仿星器、惯性约束聚变……',arc:['PST 6','PRS 8','FTR 10','BYD 11'],quote:'人造太阳——让恒星在地球上燃烧。',prereq:['等离子体物理','原子核物理','热力学与统计物理'],next:[],books:['Wesson《Tokamaks》','Freidberg《Plasma Physics and Controlled Fusion》'],videos:[{name:'核聚变 托卡马克 网课',keyword:'核聚变托卡马克'}],knowledgeLink:'fusion-physics.html'},
@@ -891,8 +843,17 @@ document.addEventListener('keydown',function(e){
   });
 })();
 
-</script>
 
+/* ===== 全部解锁：为所有未绑定点击的课程卡片自动绑定 showCourse ===== */
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.course-card').forEach(function(el){
+    if(el.hasAttribute('onclick')) return;
+    var h=el.querySelector('h4'); if(!h) return;
+    el.setAttribute('onclick',"showCourse('"+h.textContent.trim()+"')");
+    el.style.cursor='pointer';
+  });
+});
+</script>
 
   <!-- 量子力学解锁魔王的试炼 -->
   <div id="trialOverlay" class="trial-overlay" onclick="closeTrialOnBg(event)">

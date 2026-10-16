@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate special-functions.html with 8 chapters: 朗博W函数/伽马函数/高斯积分/菲涅尔积分/超几何函数/厄米多项式/椭圆积分/马丢函数."""
+"""Generate special-functions.html with 8 chapters: 朗博W函数/伽马函数/特殊积分/超几何函数/黎曼ζ函数/厄米多项式/椭圆积分/马丢函数."""
 import json
 
 FIG = {
@@ -308,6 +308,7 @@ FIG = {
 <text x="146" y="60" font-size="10" fill="#059669">ce1(z,q)</text>
 <text x="64" y="154" font-size="9" fill="#64748b">振荡解与指数增长解交替</text>
 </svg>''',
+"zeta": '''<svg viewBox=\"0 0 240 160\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"30\" y1=\"130\" x2=\"220\" y2=\"130\" stroke=\"#475569\" stroke-width=\"1.2\"/><line x1=\"30\" y1=\"20\" x2=\"30\" y2=\"140\" stroke=\"#475569\" stroke-width=\"1.2\"/><line x1=\"74\" y1=\"20\" x2=\"74\" y2=\"140\" stroke=\"#ef4444\" stroke-width=\"1\" stroke-dasharray=\"4 3\"/><path d=\"M 78 42 C 104 74 150 104 205 120\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"2\"/><circle cx=\"74\" cy=\"92\" r=\"3\" fill=\"#ef4444\"/><text x=\"80\" y=\"28\" font-size=\"10\" fill=\"#ef4444\">s=1 极点</text><text x=\"150\" y=\"150\" font-size=\"10\" fill=\"#475569\">Re s</text><text x=\"20\" y=\"30\" font-size=\"10\" fill=\"#475569\">ζ</text><text x=\"188\" y=\"114\" font-size=\"10\" fill=\"#b45309\">ζ(σ)</text></svg>''',
 }
 
 TAG_LABEL = {"def":"定 义","thm":"定 理","der":"推 导","exa":"例 子","app":"应 用","his":"注 记","note":"备 注"}
@@ -374,6 +375,14 @@ CORE_FORMULAS = [
     ("合流超几何级数", "{}_{1}F_{1}(a;b;z) = \\sum_{n=0}^{\\infty}\\frac{(a)_n}{(b)_n}\\,\\frac{z^{n}}{n!}", "Kummer 级数，全平面收敛"),
     ("指数函数特例", "{}_{1}F_{1}(1;1;z) = e^{z}", "最基本的合流超几何特例"),
     ("拉盖尔多项式表示", "L_n^{(\\alpha)}(x) = \\binom{n+\\alpha}{n}{}_{1}F_{1}(-n;\\alpha+1;x)", "缔合拉盖尔多项式与 ₁F₁"),
+    ("黎曼ζ函数定义", "\\zeta(s) = \\sum_{n=1}^{\\infty}\\frac{1}{n^{s}}\\quad(\\Re s>1)", "Dirichlet 级数定义"),
+    ("欧拉乘积", "\\zeta(s) = \\prod_{p}\\left(1-\\frac{1}{p^{s}}\\right)^{-1}", "对全体素数求积，联系素数分布"),
+    ("η 函数与 ζ 的关系", "\\eta(s) = \\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n^{s}} = (1-2^{1-s})\\zeta(s)", "交错级数给出 Re s>0 的解析延拓"),
+    ("ζ 的函数方程", "\\zeta(s) = 2^{s}\\pi^{s-1}\\sin\\!\\left(\\frac{\\pi s}{2}\\right)\\Gamma(1-s)\\,\\zeta(1-s)", "连接 s 与 1-s"),
+    ("ζ(2) 的取值", "\\zeta(2) = \\sum_{n=1}^{\\infty}\\frac{1}{n^{2}} = \\frac{\\pi^{2}}{6}", "巴塞尔问题"),
+    ("偶数处取值", "\\zeta(2n) = \\frac{(-1)^{n+1}B_{2n}(2\\pi)^{2n}}{2(2n)!}", "由伯努利数给出"),
+    ("负整数处取值", "\\zeta(-n) = -\\frac{B_{n+1}}{n+1},\\quad \\zeta(0)=-\\frac12,\\ \\zeta(-1)=-\\frac{1}{12}", "平凡零点位于负偶数"),
+    ("黎曼假设", "\\zeta(s)=0 \\Rightarrow \\Re s=\\tfrac12", "非平凡零点都在临界线上"),
     ("厄米多项式罗德里格斯公式", "H_n(x) = (-1)^{n}e^{x^{2}}\\frac{d^{n}}{dx^{n}}e^{-x^{2}}", "厄米多项式的紧凑定义"),
     ("厄米生成函数", "e^{\\,2xt-t^{2}} = \\sum_{n=0}^{\\infty} H_n(x)\\,\\frac{t^{n}}{n!}", "由生成函数可推出所有性质"),
     ("厄米三项递推", "H_{n+1}(x) = 2x\\,H_n(x) - 2n\\,H_{n-1}(x)", "相邻三个厄米多项式的关系"),
@@ -1446,11 +1455,231 @@ ch4_sections = [
 
 ch5_sections = [
 {
-"name": "5.1 厄米多项式的定义与生成函数",
+"name": "5.1 黎曼ζ函数的定义与收敛",
+"color": "#d97706",
+"desc": "Dirichlet 级数定义、收敛与解析性、s=1 的极点与欧拉乘积",
+"items": [
+{"id":"sf5s1-1","name":"黎曼ζ函数的定义与收敛","tags":["def","der"],"brief":"ζ(s)=Σ n^{-s} 在 Re s>1 上绝对收敛且解析。",
+ "fig":"zeta","figCap":"黎曼ζ函数沿实轴的图像：s>1 时单调下降到 ζ(1) 处的极点，s<0 上经函数方程取值",
+ "body": wrap(
+   defn("黎曼ζ函数", p("对复变量 $s=\\sigma+it$，定义<strong>黎曼ζ函数</strong>为 Dirichlet 级数：")+
+   fml("\\zeta(s)=\\sum_{n=1}^{\\infty}\\frac{1}{n^{s}}, \\qquad \\operatorname{Re}s>1","Dirichlet 级数定义")+
+   p("其中 $n^{-s}=e^{-s\\ln n}$。它由 Euler（1737）在实变量上引入，Riemann（1859）推广到复变量并作解析延拓，从而奠定了现代解析数论的基础。"))+
+   der(p("<strong>第一步：绝对收敛。</strong>写 $s=\\sigma+it$，则 $|n^{-s}|=n^{-\\sigma}$。当 $\\sigma>1$ 时：")+
+   fml("\\sum_{n=1}^{\\infty}\\left|n^{-s}\\right|=\\sum_{n=1}^{\\infty}\\frac{1}{n^{\\sigma}}")+
+   p("对 $p$-级数用积分判别法，得一致有界的部分和：")+
+   fml("\\sum_{n\\le N}\\frac{1}{n^{\\sigma}}\\le 1+\\int_{1}^{N}\\frac{dx}{x^{\\sigma}}=\\frac{\\sigma}{\\sigma-1}, \\qquad \\sigma>1")+
+   p("故级数在 $\\operatorname{Re}s\\ge 1+\\delta$（任意 $\\delta>0$）上一致且绝对收敛。")+
+   p("<strong>第二步：解析性。</strong>每一项 $n^{-s}=e^{-s\\ln n}$ 是全平面上的整函数。由 Weierstrass 定理，一个在紧集上一致收敛的解析函数项级数，其和仍解析，且可逐项求导。因此在 $\\operatorname{Re}s>1$ 内 $\\zeta(s)$ 解析，并且：")+
+   fml("\\zeta'(s)=-\\sum_{n=2}^{\\infty}\\frac{\\ln n}{n^{s}}, \\qquad \\operatorname{Re}s>1")+
+   p("同法可逐项求任意阶导数，说明 $\\zeta$ 是 $\\operatorname{Re}s>1$ 内的解析函数。"))+
+   exa(p("<strong>例（收敛速度）：</strong>取 $s=2$，用前 $N$ 项近似 $\\zeta(2)$。由积分估计余项：")+
+   fml("\\sum_{n>N}\\frac{1}{n^{2}}\\le\\int_{N}^{\\infty}\\frac{dx}{x^{2}}=\\frac{1}{N}")+
+   p("故取 $N=100$ 即可保证误差小于 $10^{-2}$；取全部项得 $\\zeta(2)=\\pi^{2}/6\\approx1.6449$。"))+
+   note(p("级数定义的收敛半平面是 $\\operatorname{Re}s>1$；把它延拓到更大的区域（见 5.2）正是 Riemann 的关键一步。"))
+ )},
+{"id":"sf5s1-2","name":"s=1 处的调和级数发散与极点","tags":["thm","der"],"brief":"ζ(1) 为发散的调和级数，故 s=1 是留数为 1 的单极点。",
+ "body": wrap(
+   thm("s=1 处的发散", p("当 $s=1$ 时级数退化为调和级数，其和发散：")+
+   fml("\\zeta(1)=\\sum_{n=1}^{\\infty}\\frac{1}{n}=1+\\frac12+\\frac13+\\frac14+\\cdots=\\infty"))+
+   der(p("<strong>分组比较：</strong>把项按 $2$ 的幂分组，第 $k$ 组含 $2^{k}$ 项，每项不小于 $2^{-(k+1)}$：")+
+   fml("\\sum_{n=1}^{2^{m}}\\frac1n =1+\\frac12+\\left(\\frac13+\\frac14\\right)+\\cdots\\ \\ge\\ 1+\\frac12+2\\cdot\\frac14+4\\cdot\\frac18+\\cdots")+
+   p("每组之和至少为 $\\frac12$，故部分和满足：")+
+   fml("\\sum_{n=1}^{2^{m}}\\frac1n\\ \\ge\\ 1+\\frac{m}{2}\\ \\longrightarrow\\ +\\infty")+
+   p("<strong>积分估计：</strong>更强地，$\\sum_{n\\le N}1/n\\ge\\int_1^{N+1}dx/x=\\ln(N+1)\\to\\infty$，说明发散速率是对数的。")+
+   p("<strong>极点的来源：</strong>由 5.2 的解析延拓可证 $\\zeta(s)-\\frac{1}{s-1}$ 在整个 $\\operatorname{Re}s>0$ 上解析，因此 $s=1$ 是 $\\zeta$ 唯一的极点，且为一阶极点、留数为 $1$：")+
+   fml("\\zeta(s)=\\frac{1}{s-1}+\\gamma+O(s-1), \\qquad s\\to 1")+
+   p("其中 $\\gamma=0.57721\\dots$ 是 Euler 常数。"))+
+   exa(p("<strong>例（分界）：</strong>$s=2$ 时 $\\sum n^{-2}=\\pi^{2}/6$ 收敛，$s=1$ 恰好位于收敛与发散的分界线上，故级数定义无权给出 $s=1$ 的值，只能由延拓刻画其奇性。"))+
+   note(p("极点 $s=1$ 与 Euler 乘积在 $s=1$ 的发散相互印证，也正是「素数有无穷多个」的分析表达（见下一条）。"))
+ )},
+{"id":"sf5s1-3","name":"欧拉乘积公式","tags":["thm","der"],"brief":"ζ(s)=∏_p (1-p^{-s})^{-1}，并推出素数无穷多。",
+ "body": wrap(
+   thm("欧拉乘积", p("对 $\\operatorname{Re}s>1$，$\\zeta(s)$ 等于遍历全部素数的无穷乘积：")+
+   fml("\\zeta(s)=\\prod_{p}\\left(1-p^{-s}\\right)^{-1}=\\prod_{p}\\frac{1}{1-p^{-s}}","p 遍历所有素数"))+
+   der(p("<strong>第一步：几何级数展开。</strong>因 $|p^{-s}|=p^{-\\sigma}\\lt1$，每个因子可展开为几何级数：")+
+   fml("\\frac{1}{1-p^{-s}}=1+p^{-s}+p^{-2s}+p^{-3s}+\\cdots")+
+   p("<strong>第二步：有限乘积。</strong>设 $p_1,\\dots,p_r$ 为前 $r$ 个素数，记 $P=p_r$。有限乘积中可先乘后整理（绝对收敛）：")+
+   fml("\\prod_{p\\le P}\\left(1+p^{-s}+p^{-2s}+\\cdots\\right)=\\sum_{n\\in S_P}\\frac{1}{n^{s}}")+
+   p("其中 $S_P$ 表示素因子全部不超过 $P$ 的那些正整数。由<strong>算术基本定理</strong>，每个 $n$ 的素因数分解唯一，故展开式中每个 $n$ 恰好出现一次，不会重复也不会遗漏。")+
+   p("<strong>第三步：取极限。</strong>当 $P\\to\\infty$ 时 $S_P$ 填满全体正整数，余项估计：")+
+   fml("\\sum_{n\\notin S_P}\\frac{1}{n^{\\sigma}}\\ \\le\\ \\sum_{n>P}\\frac{1}{n^{\\sigma}}\\longrightarrow 0")+
+   p("于是令 $P\\to\\infty$，即得欧拉乘积公式。"))+
+   app(p("<strong>推论：素数有无穷多个。</strong>反设素数只有有限个，则右端是有限乘积，当 $s\\to1^{+}$ 时保持有界：")+
+   fml("\\prod_{p}\\frac{1}{1-p^{-s}}\\ \\le\\ \\prod_{p}\\frac{1}{1-p^{-1}}\\ \\lt\\ \\infty")+
+   p("但左端 $\\zeta(s)\\to+\\infty$（$s\\to1^{+}$），矛盾。故素数必有无穷多个——这是分析学对欧几里得结论的一个著名新证。")+
+   p("进一步，对乘积取对数并展开 $\\ln(1-x)=-\\sum_k x^k/k$：")+
+   fml("\\ln\\zeta(s)=\\sum_{p}\\sum_{k=1}^{\\infty}\\frac{1}{k\\,p^{ks}}, \\qquad \\operatorname{Re}s>1")+
+   p("可见 $\\sum_p p^{-s}$ 的性态支配着 $\\ln\\zeta(s)$，这是研究素数分布（素数定理、算术级数中的素数）的出发点。"))+
+   note(p("欧拉乘积把「加法」（级数求和）与「乘法」（素数分解）联系起来，是解析数论中一切素数信息的源头。"))
+ )},
+]},
+{
+"name": "5.2 欧拉乘积与解析延拓",
+"color": "#ea580c",
+"desc": "延拓到 Re s>0、η 函数关系与 Mellin 积分表示",
+"items": [
+{"id":"sf5s2-1","name":"解析延拓到 Re s>0","tags":["thm","der"],"brief":"用 Abel 求和把 ζ(s)-1/(s-1) 延拓到 Re s>0。",
+ "body": wrap(
+   thm("解析延拓定理", p("$\\zeta(s)-\\dfrac{1}{s-1}$ 可解析延拓到半平面 $\\operatorname{Re}s>0$；因此 $\\zeta$ 在 $\\operatorname{Re}s>0$ 上除 $s=1$ 的单极点外处处解析。"))+
+   der(p("<strong>第一步：Abel 求和。</strong>对 $\\operatorname{Re}s>1$，记 $A(x)=\\lfloor x\\rfloor$，把级数写成 Riemann–Stieltjes 积分：")+
+   fml("\\zeta(s)=\\sum_{n=1}^{\\infty}n^{-s}=\\int_{1^{-}}^{\\infty}x^{-s}\\,dA(x)")+
+   p("<strong>第二步：分部积分。</strong>")+
+   fml("\\zeta(s)=\\left[x^{-s}A(x)\\right]_{1}^{\\infty}+s\\int_{1}^{\\infty}A(x)\\,x^{-s-1}\\,dx")+
+   p("在 $\\operatorname{Re}s>1$ 时边界项 $x^{-s}A(x)\\sim x^{1-\\sigma}\\to0$（上半端），$x=1^{-}$ 处 $A=0$，故：")+
+   fml("\\zeta(s)=s\\int_{1}^{\\infty}\\frac{\\lfloor x\\rfloor}{x^{s+1}}\\,dx")+
+   p("<strong>第三步：分离主部。</strong>把 $\\lfloor x\\rfloor=x-\\{x\\}$（$\\{x\\}$ 为小数部分）代入：")+
+   fml("\\zeta(s)=s\\int_{1}^{\\infty}\\frac{x-\\{x\\}}{x^{s+1}}\\,dx=s\\int_{1}^{\\infty}\\frac{dx}{x^{s}}-s\\int_{1}^{\\infty}\\frac{\\{x\\}}{x^{s+1}}\\,dx")+
+   p("第一项为 $s\\cdot\\frac{1}{s-1}$。第二项中 $0\\le\\{x\\}\\lt1$，积分在 $\\operatorname{Re}s>0$ 上一致收敛且解析。于是：")+
+   fml("\\zeta(s)=\\frac{s}{s-1}-s\\int_{1}^{\\infty}\\frac{\\{x\\}}{x^{s+1}}\\,dx, \\qquad \\operatorname{Re}s>0")+
+   p("<strong>第四步：极点与常数项。</strong>右端仅 $\\frac{s}{s-1}$ 在 $s=1$ 有一阶极点。写 $\\frac{s}{s-1}=1+\\frac{1}{s-1}$，并用已知积分 $\\int_{1}^{\\infty}\\{x\\}\\,x^{-2}\\,dx=1-\\gamma$，在 $s=1$ 附近展开得：")+
+   fml("\\zeta(s)=\\frac{1}{s-1}+1-(1-\\gamma)+O(s-1)=\\frac{1}{s-1}+\\gamma+O(s-1)"))+
+   exa(p("<strong>例：</strong>由该式立即看出 $s\\to1^{+}$ 时 $\\zeta(s)\\to+\\infty$，且首项恰为 $\\frac{1}{s-1}$；第二个常数项就是 Euler 常数 $\\gamma$。"))+
+   note(p("这种「先减主部、再积分」的做法是解析延拓的通用思想：延拓后函数的奇性完全集中在显式的 $\\frac{1}{s-1}$ 中。"))
+ )},
+{"id":"sf5s2-2","name":"Dirichlet η 函数与 ζ 的关系","tags":["def","der"],"brief":"η(s)=(1-2^{1-s})ζ(s)，把 ζ 延拓到 Re s>0。",
+ "body": wrap(
+   defn("Dirichlet η 函数", p("定义<strong>交错 ζ 函数</strong>（Dirichlet eta 函数）为交错 Dirichlet 级数：")+
+   fml("\\eta(s)=\\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n^{s}}, \\qquad \\operatorname{Re}s>0"))+
+   der(p("<strong>第一步：项配对。</strong>对 $\\operatorname{Re}s>1$，把 $\\zeta(s)$ 中偶数项单独抽出。注意到 $2\\sum_{n}(2n)^{-s}=2^{1-s}\\zeta(s)$：")+
+   fml("(1-2^{1-s})\\zeta(s)=\\sum_{n=1}^{\\infty}\\frac{1}{n^{s}}-2\\sum_{n=1}^{\\infty}\\frac{1}{(2n)^{s}}=\\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n^{s}}=\\eta(s)")+
+   p("逐项验证即得交错级数 $1-\\frac{1}{2^{s}}+\\frac{1}{3^{s}}-\\frac{1}{4^{s}}+\\cdots$。")+
+   p("<strong>第二步：延拓。</strong>右端交错级数对 $\\operatorname{Re}s>0$ 收敛：由 Dirichlet 判别法，$\\{n^{-s}\\}$ 单调递减趋于 $0$ 而 $\\sum(-1)^{n-1}$ 部分和有界，故 $\\eta(s)$ 在 $\\operatorname{Re}s>0$ 上解析。于是：")+
+   fml("\\zeta(s)=\\frac{\\eta(s)}{1-2^{1-s}}=\\frac{1}{1-2^{1-s}}\\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n^{s}}, \\qquad \\operatorname{Re}s>0,\\ s\\ne 1")+
+   p("因子 $1-2^{1-s}$ 在 $s=1$ 有一阶零点，而 $\\eta(1)=\\ln2\\ne0$，故该式在 $s=1$ 恰给出 $\\zeta$ 的单极点，与 5.2.1 一致。")+
+   p("<strong>第三步：积分表示。</strong>由 $\\frac{1}{e^{x}+1}=\\sum_{n\\ge1}(-1)^{n-1}e^{-nx}$ 逐项积分：")+
+   fml("\\frac{1}{\\Gamma(s)}\\int_{0}^{\\infty}\\frac{x^{s-1}}{e^{x}+1}\\,dx=\\frac{1}{\\Gamma(s)}\\sum_{n=1}^{\\infty}(-1)^{n-1}\\!\\int_{0}^{\\infty}x^{s-1}e^{-nx}dx=\\eta(s), \\qquad \\operatorname{Re}s>0"))+
+   exa(p("<strong>例：</strong>$\\eta(1)=1-\\frac12+\\frac13-\\cdots=\\ln2$；$\\eta(0)=1-1+1-\\cdots=\\frac12$（Abel 求和）；由此 $\\zeta(0)=\\eta(0)/(1-2)=-\\frac12$。"))+
+   note(p("η 函数提供了一个比 π^{-s/2}Γ(s/2)ζ(s) 更初等的延拓入口，且其积分核 $\\frac{1}{e^{x}+1}$ 与费米–狄拉克分布直接相关。"))
+ )},
+{"id":"sf5s2-3","name":"Mellin 积分表示","tags":["thm","der"],"brief":"ζ(s)=1/Γ(s)∫ x^{s-1}/(e^x-1) dx 及围道延拓。",
+ "body": wrap(
+   thm("Mellin 积分表示", p("对 $\\operatorname{Re}s>1$，$\\zeta(s)$ 是 $\\dfrac{1}{e^{x}-1}$ 的 Mellin 变换：")+
+   fml("\\zeta(s)=\\frac{1}{\\Gamma(s)}\\int_{0}^{\\infty}\\frac{x^{s-1}}{e^{x}-1}\\,dx"))+
+   der(p("<strong>第一步：单项的 Mellin 积分。</strong>作换元 $x=u/n$：")+
+   fml("\\int_{0}^{\\infty}e^{-nx}x^{s-1}\\,dx=n^{-s}\\int_{0}^{\\infty}e^{-u}u^{s-1}\\,du=\\Gamma(s)\\,n^{-s}")+
+   p("故 $n^{-s}=\\frac{1}{\\Gamma(s)}\\int_{0}^{\\infty}e^{-nx}x^{s-1}\\,dx$。")+
+   p("<strong>第二步：对 $n$ 求和。</strong>当 $\\operatorname{Re}s>1$ 时求和与积分可交换（绝对收敛）：")+
+   fml("\\sum_{n=1}^{\\infty}n^{-s}=\\frac{1}{\\Gamma(s)}\\int_{0}^{\\infty}x^{s-1}\\left(\\sum_{n=1}^{\\infty}e^{-nx}\\right)dx")+
+   p("<strong>第三步：几何级数。</strong>对 $x>0$ 有 $\\sum_{n\\ge1}e^{-nx}=\\frac{e^{-x}}{1-e^{-x}}=\\frac{1}{e^{x}-1}$，代入即得所证。")+
+   p("<strong>围道延拓：</strong>把 $\\frac{x^{s-1}}{e^{x}-1}$ 沿一条 Hankel 围道（绕原点一圈后回到正实轴两侧）积分，分子在原点附近 $\\sim x^{s-2}$ 的奇性使积分对全部 $s\\ne1$ 有意义，从而给出 $\\zeta$ 到整个复平面的解析延拓，并显式暴露 $s=1$ 处的极点；这正与函数方程（5.3）互为补充。"))+
+   exa(p("<strong>例：</strong>取 $s=4$，由 $\\Gamma(4)=6$ 与 $\\int_0^{\\infty}\\frac{x^{3}}{e^{x}-1}dx=\\frac{\\pi^{4}}{15}$ 得 $\\zeta(4)=\\frac{1}{6}\\cdot\\frac{\\pi^{4}}{15}=\\frac{\\pi^{4}}{90}$，与 Bernoulli 公式一致。"))+
+   note(p("抽象的结论：$\\int_0^{\\infty}x^{s-1}f(x)\\,dx=\\Gamma(s)\\sum a_n n^{-s}$ 把「级数」翻译为「积分」，是 ζ 与 θ 函数、模形式相联系的桥梁。"))
+ )},
+]},
+{
+"name": "5.3 函数方程与特殊值",
+"color": "#b45309",
+"desc": "函数方程的推导，以及偶数、非正整数上由 Bernoulli 数给出的取值",
+"items": [
+{"id":"sf5s3-1","name":"黎曼函数方程","tags":["thm","der"],"brief":"ζ(s)=2^s π^{s-1} sin(πs/2)Γ(1-s)ζ(1-s)。",
+ "body": wrap(
+   thm("函数方程", p("$\\zeta$ 满足联系 $s$ 与 $1-s$ 的对称函数方程：")+
+   fml("\\zeta(s)=2^{s}\\pi^{s-1}\\sin\\!\\left(\\frac{\\pi s}{2}\\right)\\Gamma(1-s)\\,\\zeta(1-s)"))+
+   der(p("<strong>第一步：完备 ζ 函数。</strong>定义 $\\xi(s)=\\pi^{-s/2}\\Gamma\\!\\left(\\frac{s}{2}\\right)\\zeta(s)$。对单项 $n^{-s}$ 用 Mellin 积分 $\\int_0^{\\infty}x^{s/2-1}e^{-n^{2}\\pi x}dx=\\Gamma(s/2)/(n^{2}\\pi)^{s/2}$，求和得：")+
+   fml("\\xi(s)=\\int_{0}^{\\infty}x^{s/2-1}\\psi(x)\\,dx, \\qquad \\psi(x)=\\sum_{n=1}^{\\infty}e^{-n^{2}\\pi x}")+
+   p("<strong>第二步：θ 函数的模变换。</strong>由 Jacobi theta 函数 $\\vartheta(t)=\\sum_{n\\in\\mathbb{Z}}e^{-\\pi n^{2}t}$ 满足 $\\vartheta(t)=t^{-1/2}\\vartheta(1/t)$，结合 $2\\psi(x)+1=\\vartheta(x)$，得 $\\psi$ 的函数方程：")+
+   fml("2\\psi(x)+1=x^{-1/2}\\left[2\\psi(1/x)+1\\right]")+
+   p("<strong>第三步：拆积分。</strong>把 $\\xi(s)$ 拆为 $\\int_0^1+\\int_1^{\\infty}$，对 $\\int_0^1$ 作换元 $x\\to1/x$ 并利用上式，得：")+
+   fml("\\xi(s)=\\frac{1}{s-1}-\\frac{1}{s}+\\int_{1}^{\\infty}\\left(x^{s/2-1}+x^{(1-s)/2-1}\\right)\\psi(x)\\,dx")+
+   p("右端在 $s\\leftrightarrow1-s$ 下逐项不变（$\\frac{1}{s-1}-\\frac{1}{s}$ 经替换后化为 $\\frac{1}{1-s-1}-\\frac{1}{1-s}=-\\frac1s-\\frac{1}{1-s}$，与原来相等），故 $\\xi(s)=\\xi(1-s)$。")+
+   p("<strong>第四步：解出 $\\zeta$ 的形式。</strong>由 $\\xi(s)=\\xi(1-s)$：")+
+   fml("\\pi^{-s/2}\\Gamma\\!\\left(\\frac{s}{2}\\right)\\zeta(s)=\\pi^{-(1-s)/2}\\Gamma\\!\\left(\\frac{1-s}{2}\\right)\\zeta(1-s)")+
+   p("即 $\\zeta(s)=\\pi^{s-1/2}\\dfrac{\\Gamma\\!\\left(\\frac{1-s}{2}\\right)}{\\Gamma\\!\\left(\\frac{s}{2}\\right)}\\zeta(1-s)$。由倍角公式 $\\Gamma\\!\\left(\\frac{1-s}{2}\\right)\\Gamma\\!\\left(1-\\frac{s}{2}\\right)=2^{s}\\sqrt{\\pi}\\,\\Gamma(1-s)$ 与反射公式 $\\dfrac{1}{\\Gamma(\\frac{s}{2})}=\\dfrac{\\Gamma(1-\\frac{s}{2})\\sin(\\pi s/2)}{\\pi}$，代入消去 $\\Gamma\\!\\left(1-\\frac{s}{2}\\right)$：")+
+   fml("\\frac{\\Gamma\\!\\left(\\frac{1-s}{2}\\right)}{\\Gamma\\!\\left(\\frac{s}{2}\\right)}=\\frac{2^{s}\\sqrt{\\pi}\\,\\Gamma(1-s)}{\\pi}\\sin\\!\\left(\\frac{\\pi s}{2}\\right)")+
+   p("于是 $\\zeta(s)=\\pi^{s-1/2}\\cdot2^{s}\\pi^{-1/2}\\Gamma(1-s)\\sin(\\pi s/2)\\zeta(1-s)$，整理即得函数方程。"))+
+   app(p("函数方程把 $\\operatorname{Re}s>1$ 上的信息延拓到整个复平面，并给出零点关于 $\\operatorname{Re}s=\\frac12$ 的对称性（见 5.4）。对称形式 $\\xi(s)=\\xi(1-s)$ 正是 Riemann 1859 年论文的核心。"))+
+   note(p("函数方程与 Euler 乘积一起，是 ζ 的两个「总开关」：前者管复平面结构，后者管素数与整数结构。"))
+ )},
+{"id":"sf5s3-2","name":"偶数正整数上的取值","tags":["thm","der"],"brief":"ζ(2)=π²/6 及 ζ(2n)=(-1)^{n+1}B_{2n}(2π)^{2n}/(2(2n)!)。",
+ "body": wrap(
+   thm("Euler 公式", p("$\\zeta(2)=\\dfrac{\\pi^{2}}{6}$；更一般地，对 $n\\ge1$：")+
+   fml("\\zeta(2n)=(-1)^{n+1}\\frac{B_{2n}\\,(2\\pi)^{2n}}{2\\,(2n)!}","B_{2n} 为 Bernoulli 数"))+
+   der(p("<strong>第一步：正弦的无穷乘积。</strong>由 Weierstrass 分解（零点 $\\pm\\pi,\\pm2\\pi,\\dots$）：")+
+   fml("\\frac{\\sin z}{z}=\\prod_{n=1}^{\\infty}\\left(1-\\frac{z^{2}}{n^{2}\\pi^{2}}\\right)")+
+   p("<strong>第二步：取对数导数。</strong>两边取对数再对 $z$ 求导，得 $\\cot$ 的部分分式展开（当 $|z|\\lt\\pi$）：")+
+   fml("\\cot z=\\frac{1}{z}-2\\sum_{n=1}^{\\infty}\\frac{z}{n^{2}\\pi^{2}-z^{2}}")+
+   p("<strong>第三步：展开为幂级数。</strong>对每个 $n$ 展开 $\\frac{z}{n^{2}\\pi^{2}-z^{2}}=\\frac{1}{n^{2}\\pi^{2}}\\sum_{k\\ge0}\\left(\\frac{z^{2}}{n^{2}\\pi^{2}}\\right)^{k}$，交换求和次序：")+
+   fml("z\\cot z=1-2\\sum_{k=1}^{\\infty}\\left(\\sum_{n=1}^{\\infty}\\frac{1}{n^{2k}}\\right)\\frac{z^{2k}}{\\pi^{2k}}=1-2\\sum_{k=1}^{\\infty}\\zeta(2k)\\frac{z^{2k}}{\\pi^{2k}}")+
+   p("<strong>第四步：Bernoulli 数展开。</strong>另一方面由 $z\\cot z=iz\\frac{e^{2iz}+1}{e^{2iz}-1}$ 与生成函数 $\\frac{z}{e^{z}-1}=\\sum B_m z^{m}/m!$，可得：")+
+   fml("z\\cot z=\\sum_{k=0}^{\\infty}(-1)^{k}\\frac{2^{2k}B_{2k}}{(2k)!}\\,z^{2k}")+
+   p("<strong>第五步：比较系数。</strong>由 $-2\\zeta(2k)/\\pi^{2k}=(-1)^{k}2^{2k}B_{2k}/(2k)!$，解出：")+
+   fml("\\zeta(2k)=(-1)^{k+1}\\frac{(2\\pi)^{2k}B_{2k}}{2\\,(2k)!}")+
+   p("取 $k=1$，$B_{2}=\\frac16$，得 $\\zeta(2)=\\frac{(2\\pi)^{2}}{2\\cdot2}\\cdot\\frac16=\\frac{\\pi^{2}}{6}$。"))+
+   exa(p("<strong>例：</strong>$B_4=-\\frac{1}{30},\\ B_6=\\frac{1}{42}$，代入得 $\\zeta(4)=\\frac{\\pi^{4}}{90}$，$\\zeta(6)=\\frac{\\pi^{6}}{945}$。"))+
+   note(p("$\\zeta(2)=\\pi^2/6$ 即著名的 Basel 问题，Euler 于 1735 年解决。奇数值 $\\zeta(2n+1)$ 至今无一般闭式，仅 $\\zeta(3)$ 被 Apéry（1978）证明为无理数。"))
+ )},
+{"id":"sf5s3-3","name":"非正整数上的取值与伯努利数","tags":["thm","der"],"brief":"ζ(1-2k)=-B_{2k}/(2k)，ζ(0)=-1/2，ζ(-1)=-1/12。",
+ "body": wrap(
+   thm("非正整数取值", p("对 $k\\ge1$：")+
+   fml("\\zeta(1-2k)=-\\frac{B_{2k}}{2k}, \\qquad \\zeta(0)=-\\frac12"))+
+   der(p("<strong>第一步：代入函数方程。</strong>在 $\\zeta(s)=2^{s}\\pi^{s-1}\\sin(\\pi s/2)\\Gamma(1-s)\\zeta(1-s)$ 中令 $s=1-2k$：")+
+   fml("\\zeta(1-2k)=2^{1-2k}\\pi^{-2k}\\sin\\!\\left(\\frac{\\pi(1-2k)}{2}\\right)\\Gamma(2k)\\,\\zeta(2k)")+
+   p("<strong>第二步：代入偶数值。</strong>由 $\\sin\\!\\left(\\frac{\\pi}{2}(1-2k)\\right)=(-1)^{k}$，$\\Gamma(2k)=(2k-1)!$，并代入 $\\zeta(2k)=(-1)^{k+1}\\frac{B_{2k}(2\\pi)^{2k}}{2(2k)!}$：")+
+   fml("\\zeta(1-2k)=2^{1-2k}\\pi^{-2k}(-1)^{k}(2k-1)!\\cdot(-1)^{k+1}\\frac{B_{2k}(2\\pi)^{2k}}{2(2k)!}")+
+   p("<strong>第三步：化简。</strong>注意 $(-1)^{k}(-1)^{k+1}=-1$，$2^{1-2k}\\cdot2^{2k}=2$，$\\pi^{-2k}\\pi^{2k}=1$，且 $(2k-1)!/(2k)!=1/(2k)$：")+
+   fml("\\zeta(1-2k)=\\frac{-B_{2k}}{2k}")+
+   p("<strong>第四步：$s=0$（$k$ 的特殊处理）。</strong>改写函数方程，利用 $(1-s)\\Gamma(1-s)=\\Gamma(2-s)$ 得 $(1-s)\\zeta(s)=2^{s}\\pi^{s-1}\\sin(\\frac{\\pi s}{2})\\Gamma(2-s)\\zeta(1-s)$。令 $s\\to1$：左端 $\\to-1$（由 5.1 的极点，$(1-s)\\zeta(s)\\to-1$），右端 $\\to2\\cdot1\\cdot\\Gamma(1)\\zeta(0)=2\\zeta(0)$，故 $\\zeta(0)=-\\frac12$。"))+
+   exa(p("<strong>例：</strong>$\\zeta(-1)=-\\frac{B_2}{2}=-\\frac{1}{12}$，即物理中「$1+2+3+\\cdots=-\\frac{1}{12}$」的 ζ 正规化来源；$\\zeta(-3)=-\\frac{B_4}{4}=\\frac{1}{120}$；一般地 $\\zeta(-2n)=0$（平凡零点，见 5.4）。"))+
+   note(p("非正整数上的取值全由 Bernoulli 数给出，是<strong>有理数</strong>；这解释了为何 ζ 在负侧可以被赋予有限的「正规化」值。"))
+ )},
+]},
+{
+"name": "5.4 零点、黎曼猜想与应用",
+"color": "#f59e0b",
+"desc": "平凡零点、临界带与临界线、黎曼猜想及物理中的 ζ 正规化",
+"items": [
+{"id":"sf5s4-1","name":"平凡零点","tags":["thm","der"],"brief":"负偶数 s=-2n 是 ζ 的零点，称平凡零点。",
+ "body": wrap(
+   thm("平凡零点", p("对每个正整数 $n$，$\\zeta$ 在负偶数处取零：")+
+   fml("\\zeta(-2n)=0, \\qquad n=1,2,3,\\dots"))+
+   der(p("<strong>第一步：函数方程给出零点。</strong>在函数方程中取 $s=-2n$：")+
+   fml("\\zeta(-2n)=2^{-2n}\\pi^{-2n-1}\\sin(-n\\pi)\\,\\Gamma(1+2n)\\,\\zeta(1+2n)")+
+   p("其中 $\\sin(-n\\pi)=0$，而 $\\Gamma(1+2n)=(2n)!$ 与 $\\zeta(1+2n)$ 都是有限值，故 $\\zeta(-2n)=0$。")+
+   p("<strong>第二步：右半平面无零点。</strong>在 $\\operatorname{Re}s>1$ 内由欧拉乘积，每个因子 $(1-p^{-s})^{-1}\\ne0$，且无穷乘积收敛到非零值，故 $\\zeta(s)\\ne0$。")+
+   p("<strong>第三步：负半平面的零点归类。</strong>函数方程把 $\\operatorname{Re}s\\lt0$ 的零点归结为右端 $\\sin(\\pi s/2)$ 的零点与 $\\operatorname{Re}(1-s)>1$ 区间内 $\\zeta$ 的极点；逐一核对可知负实轴上的零点恰好是 $s=-2,-4,-6,\\dots$。"))+
+   exa(p("<strong>例：</strong>$\\zeta(-2)=0$，$\\zeta(-4)=0$，$\\zeta(-6)=0$；它们对应 $B_{2n}\\ne0$ 之外由 $\\sin(\\pi s/2)$ 造成的零。"))+
+   note(p("这些零点称为<strong>平凡零点</strong>（trivial zeros），位置平凡、与素数分布无关，故分析中常先把它们分离出去。"))
+ )},
+{"id":"sf5s4-2","name":"非平凡零点与临界带","tags":["thm","der"],"brief":"非平凡零点全部落在临界带内，并具有共轭与反射四种对称。",
+ "body": wrap(
+   thm("临界带与对称性", p("$\\zeta$ 的全部非平凡零点都位于<strong>临界带</strong> $0\\lt\\operatorname{Re}s\\lt1$ 内，并关于实轴和临界线 $\\operatorname{Re}s=\\frac12$ 对称。"))+
+   der(p("<strong>第一步：定出临界带。</strong>$\\operatorname{Re}s>1$ 无零点（欧拉乘积）；$\\operatorname{Re}s\\lt0$ 只有平凡零点。故非平凡零点落在 $0\\le\\operatorname{Re}s\\le1$。进一步可排除两条边界：$\\operatorname{Re}s=1$ 上无零点（这恰是素数定理的等价命题），$\\operatorname{Re}s=0$ 上也无零点。于是：")+
+   fml("0\\lt\\operatorname{Re}\\rho\\lt1")+
+   p("<strong>第二步：共轭对称。</strong>由于级数系数为实，$\\overline{\\zeta(s)}=\\zeta(\\bar s)$，故零点成共轭对：")+
+   fml("\\zeta(\\rho)=0\\ \\Longrightarrow\\ \\zeta(\\bar\\rho)=0")+
+   p("<strong>第三步：关于 $1/2$ 的对称。</strong>函数方程给出 $s\\leftrightarrow1-s$ 的对应，故：")+
+   fml("\\zeta(\\rho)=0\\ \\Longrightarrow\\ \\zeta(1-\\rho)=0")+
+   p("两者复合，零点在 $\\rho,\\ \\bar\\rho,\\ 1-\\rho,\\ 1-\\bar\\rho$ 四点之间封闭，整体关于实轴与直线 $\\operatorname{Re}s=\\frac12$ 对称。"))+
+   app(p("数值计算（Odlyzko 等）已证实前 $10^{13}$ 个零点都落在临界线上；更惊人地，零点的相邻间距统计与随机 Hermite 矩阵（GUE 系综）的特征值统计高度吻合，把数论与量子混沌联系起来。"))+
+   note(p("直线 $\\operatorname{Re}s=\\frac12$ 称为<strong>临界线</strong>，带状区域 $0\\lt\\operatorname{Re}s\\lt1$ 称为<strong>临界带</strong>。"))
+ )},
+{"id":"sf5s4-3","name":"黎曼猜想及其意义","tags":["thm","der","app"],"brief":"零点都在 Re s=1/2 上，决定素数定理的最优误差。",
+ "body": wrap(
+   thm("黎曼猜想", p("<strong>黎曼猜想（RH）</strong>断言：$\\zeta$ 的每一个非平凡零点都落在临界线上，即")+
+   fml("\\operatorname{Re}\\rho=\\frac12"))+
+   der(p("<strong>第一步：零点决定素数计数的误差。</strong>记 $\\psi(x)=\\sum_{n\\le x}\\Lambda(n)$（$\\Lambda$ 为 von Mangoldt 函数），显式公式把 $\\psi$ 与全部非平凡零点联系起来：")+
+   fml("\\psi(x)=x-\\sum_{\\rho}\\frac{x^{\\rho}}{\\rho}-\\ln(2\\pi)-\\frac12\\ln\\!\\left(1-x^{-2}\\right)")+
+   p("<strong>第二步：误差由 $\\beta$ 控制。</strong>求和遍历所有非平凡零点 $\\rho=\\beta+i\\gamma$，每一项的模按 $x^{\\beta}$ 增长。当所有 $\\beta=\\frac12$ 时，误差达到可能的最小阶 $x^{1/2}$：")+
+   fml("\\pi(x)=\\operatorname{Li}(x)+O\\!\\left(\\sqrt{x}\\,\\ln x\\right), \\qquad \\operatorname{Li}(x)=\\int_{2}^{x}\\frac{dt}{\\ln t}")+
+   p("反之，若存在 $\\beta>\\frac12$ 的零点，误差阶会相应变大。黎曼猜想因此精确刻画了素数分布中不确定性的最小规模。"))+
+   app(p("<strong>应用一：素数定理。</strong>即便不假设 RH，由 $\\zeta$ 在 $\\operatorname{Re}s=1$ 上无零点也可证得 $\\pi(x)\\sim x/\\ln x$；RH 给出的是更强的最优误差估计。")+
+   p("<strong>应用二：物理中的 ζ 正规化。</strong>把发散的求和 $\\sum_{n\\ge1}n^{s}$ 用 $\\zeta(-s)$ 重新定义为有限值：")+
+   fml("\\sum_{n=1}^{\\infty}n^{s}\\ \\xrightarrow{\\ \\text{ζ 正规化}\\ }\\ \\zeta(-s), \\qquad \\zeta(-1)=-\\frac{1}{12},\\ \\zeta(-3)=\\frac{1}{120}")+
+   p("弦论由 $1+2+3+\\cdots=-\\frac{1}{12}$ 的真空能求和定出临界维数；Casimir 效应中两板间真空能求和 $\\sum n^{3}$ 的有限部分正比于 $\\zeta(-3)=\\frac{1}{120}$，给出可观测的 Casimir 力。")+
+   p("<strong>应用三：统计物理与随机矩阵。</strong>ζ 零点统计、GUE 随机矩阵与量子混沌之间的对应，已成为量子场论与凝聚态中的重要工具。"))+
+   note(p("黎曼猜想是 Clay 数学研究所「千禧年七大难题」之一，悬赏一百万美元，至今仍未解决。"))
+ )},
+]},
+]
+
+ch6_sections = [
+{
+"name": "6.1 厄米多项式的定义与生成函数",
 "color": "#0891b2",
 "desc": "罗德里格斯公式、生成函数与显式展开",
 "items": [
-{"id":"sf5s1-1","name":"厄米多项式的定义","tags":["def","der"],"brief":"H_n(x)=(-1)^n e^(x²)(d^n/dx^n)e^(-x²)，并给出前几个。",
+{"id":"sf6s1-1","name":"厄米多项式的定义","tags":["def","der"],"brief":"H_n(x)=(-1)^n e^(x²)(d^n/dx^n)e^(-x²)，并给出前几个。",
  "fig":"hermite","figCap":"前四个厄米多项式 H0~H3 的图像，奇偶性与 n 一致",
  "body": wrap(
    defn("厄米多项式", p("定义<strong>厄米多项式</strong>为高斯函数的逐阶导数（罗德里格斯公式）：")+
@@ -1463,7 +1692,7 @@ ch5_sections = [
    p("于是前四个为 $H_0=1$，$H_1=2x$，$H_2=4x^{2}-2$，$H_3=8x^{3}-12x$。"))+
    note(p("由定义可见 $H_n$ 是 $n$ 次多项式，最高次项系数为 $2^{n}$，且奇偶性与 $n$ 一致：$H_n(-x)=(-1)^{n}H_n(x)$。"))
  )},
-{"id":"sf5s1-2","name":"生成函数","tags":["der","thm"],"brief":"e^(2xt-t²)=Σ H_n(x)t^n/n! 的推导与用途。",
+{"id":"sf6s1-2","name":"生成函数","tags":["der","thm"],"brief":"e^(2xt-t²)=Σ H_n(x)t^n/n! 的推导与用途。",
  "body": wrap(
    thm("生成函数", p("厄米多项式由高斯生成函数给出：")+
    fml("e^{\\,2xt-t^{2}} = \\sum_{n=0}^{\\infty}H_n(x)\\,\\frac{t^{n}}{n!}"))+
@@ -1476,7 +1705,7 @@ ch5_sections = [
    p("两边除以 $e^{-x^{2}}$ 即得生成函数式。"))+
    note(p("生成函数是所有性质的「总开关」：对两边求导或代入特殊 $t$ 即可导出递推关系、正交性与特殊值。"))
  )},
-{"id":"sf5s1-3","name":"显式展开","tags":["der"],"brief":"由生成函数展开得 H_n 的显式系数公式。",
+{"id":"sf6s1-3","name":"显式展开","tags":["der"],"brief":"由生成函数展开得 H_n 的显式系数公式。",
  "fig":"hermite_rec","figCap":"厄米多项式前几项及其递推、导数与正交关系",
  "body": wrap(
    der(p("<strong>显式公式：</strong>把生成函数中的指数分开：")+
@@ -1490,11 +1719,11 @@ ch5_sections = [
  )},
 ]},
 {
-"name": "5.2 递推关系与厄米微分方程",
+"name": "6.2 递推关系与厄米微分方程",
 "color": "#06b6d4",
 "desc": "三项递推、微分方程与导数关系",
 "items": [
-{"id":"sf5s2-1","name":"三项递推关系","tags":["der","thm"],"brief":"H_{n+1}=2xH_n-2nH_{n-1} 的生成函数推导。",
+{"id":"sf6s2-1","name":"三项递推关系","tags":["der","thm"],"brief":"H_{n+1}=2xH_n-2nH_{n-1} 的生成函数推导。",
  "body": wrap(
    thm("递推关系", p("厄米多项式满足：")+
    fml("H_{n+1}(x)=2x\\,H_n(x)-2n\\,H_{n-1}(x)"))+
@@ -1506,7 +1735,7 @@ ch5_sections = [
    exa(p("<strong>例：</strong>由 $H_0=1,H_1=2x$：$H_2=2x(2x)-2\\cdot1\\cdot1=4x^{2}-2$；$H_3=2x(4x^{2}-2)-4(2x)=8x^{3}-12x$，与罗德里格斯公式一致。"))+
    note(p("四项以上的高阶多项式都可由该递推快速生成，数值上比直接求导稳定得多，是计算谐振子波函数的标准算法。"))
  )},
-{"id":"sf5s2-2","name":"厄米微分方程","tags":["der"],"brief":"由波函数或直接代入导出 y''-2xy'+2ny=0。",
+{"id":"sf6s2-2","name":"厄米微分方程","tags":["der"],"brief":"由波函数或直接代入导出 y''-2xy'+2ny=0。",
  "body": wrap(
    thm("厄米方程", p("厄米多项式满足二阶常微分方程：")+
    fml("y''-2x\\,y'+2n\\,y=0"))+
@@ -1518,7 +1747,7 @@ ch5_sections = [
    der(p("<strong>与罗德里格斯公式等价：</strong>记 $g=e^{-x^{2}}$，则 $g'=-2xg$，$g''=(-2+4x^{2})g$。对 $y=(-1)^{n}e^{x^{2}}g^{(n)}$ 求导两次并利用 $g^{(n+1)}=-2xg^{(n)}-2ng^{(n-1)}$，可整理出 $y''-2xy'+2ny=0$。"))+
    note(p("厄米方程是「在无穷远有正则奇点（非正则）」的典型例子，其多项式解条件 $n$ 为整数正是能量量子化的数学表达。"))
  )},
-{"id":"sf5s2-3","name":"导数关系","tags":["der","exa"],"brief":"H_n'=2nH_{n-1} 及由递推导出的降阶公式。",
+{"id":"sf6s2-3","name":"导数关系","tags":["der","exa"],"brief":"H_n'=2nH_{n-1} 及由递推导出的降阶公式。",
  "body": wrap(
    der(p("<strong>导数关系：</strong>对生成函数关于 $x$ 求偏导：")+
    fml("\\frac{\\partial G}{\\partial x}=2t\\,G")+
@@ -1534,11 +1763,11 @@ ch5_sections = [
  )},
 ]},
 {
-"name": "5.3 正交性与积分性质",
+"name": "6.3 正交性与积分性质",
 "color": "#0891b2",
 "desc": "高斯权重下的正交、递推积分与完备性",
 "items": [
-{"id":"sf5s3-1","name":"正交性","tags":["der","thm"],"brief":"∫H_mH_n e^(-x²)dx=√π 2^n n! δ_mn 的证明。",
+{"id":"sf6s3-1","name":"正交性","tags":["der","thm"],"brief":"∫H_mH_n e^(-x²)dx=√π 2^n n! δ_mn 的证明。",
  "body": wrap(
    thm("正交关系", p("厄米多项式以高斯为权重正交：")+
    fml("\\int_{-\\infty}^{\\infty}H_m(x)H_n(x)e^{-x^{2}}dx = \\sqrt{\\pi}\\,2^{n}n!\\,\\delta_{mn}"))+
@@ -1551,7 +1780,7 @@ ch5_sections = [
    p("其中交叉项为零（$2st$ 中 $t,s$ 幂次相等）。"))+
    note(p("正交性使 $\\{H_n\\}$ 成为希尔伯特空间 $L^{2}(\\mathbb{R},e^{-x^{2}}dx)$ 的正交基，可用于函数展开（Hermite 变换）。"))
  )},
-{"id":"sf5s3-2","name":"积分性质","tags":["der","exa"],"brief":"由递推计算 ∫xH_mH_n 权重积分与三项积分。",
+{"id":"sf6s3-2","name":"积分性质","tags":["der","exa"],"brief":"由递推计算 ∫xH_mH_n 权重积分与三项积分。",
  "body": wrap(
    der(p("<strong>含 $x$ 的积分：</strong>利用三项递推把 $x H_n$ 表示成同族组合。由 $2xH_n=H_{n+1}+2nH_{n-1}$：")+
    fml("2\\int x H_mH_n e^{-x^{2}}dx = \\int H_mH_{n+1}e^{-x^{2}}dx + 2n\\int H_mH_{n-1}e^{-x^{2}}dx")+
@@ -1563,7 +1792,7 @@ ch5_sections = [
    p("这给出谐振子的均方位置 $\\langle x^{2}\\rangle\\propto(n+\\frac12)$，与能级均分一致。"))+
    note(p("一般地，$\\int x^{k}H_n^{2}e^{-x^{2}}dx$ 在 $k$ 与 $n$ 同奇偶时非零，且可用递推逐次降幂计算。"))
  )},
-{"id":"sf5s3-3","name":"完备性与函数展开","tags":["der","app"],"brief":"厄米函数构成正交完备基，用于高斯型积分变换。",
+{"id":"sf6s3-3","name":"完备性与函数展开","tags":["der","app"],"brief":"厄米函数构成正交完备基，用于高斯型积分变换。",
  "body": wrap(
    der(p("<strong>归一化基与展开：</strong>定义 $\\phi_n(x)=\\frac{H_n(x)e^{-x^{2}/2}}{\\sqrt{\\sqrt\\pi\\,2^{n}n!}}$，则 $\\int\\phi_m\\phi_n dx=\\delta_{mn}$。任意 $f\\in L^{2}(\\mathbb{R})$ 可展开为：")+
    fml("f(x)=\\sum_{n=0}^{\\infty}c_n\\,\\phi_n(x),\\qquad c_n=\\int_{-\\infty}^{\\infty}f(x)\\phi_n(x)\\,dx")+
@@ -1576,11 +1805,11 @@ ch5_sections = [
  )},
 ]},
 {
-"name": "5.4 量子谐振子中的应用",
+"name": "6.4 量子谐振子中的应用",
 "color": "#0e7490",
 "desc": "定态波函数、升降算符与跃迁选律",
 "items": [
-{"id":"sf5s4-1","name":"谐振子定态波函数","tags":["app","der"],"brief":"解薛定谔方程得 ψ_n∝H_n(αx)e^(-α²x²/2)。",
+{"id":"sf6s4-1","name":"谐振子定态波函数","tags":["app","der"],"brief":"解薛定谔方程得 ψ_n∝H_n(αx)e^(-α²x²/2)。",
  "fig":"hermite_qho","figCap":"量子谐振子前几个定态波函数，节点数随 n 增加",
  "body": wrap(
    app(p("一维量子谐振子是厄米多项式最直接的应用，其定态解精确地由 $H_n$ 给出。"))+
@@ -1595,7 +1824,7 @@ ch5_sections = [
    p("这就是谐振子的量子化条件与波函数。"))+
    note(p("与氢原子类似，能量量子化源于「二阶方程的解必须可归一⇒级数截断为多项式」，这是量子力学中解析可解模型的一般机制。"))
  )},
-{"id":"sf5s4-2","name":"升降算符与代数解法","tags":["der"],"brief":"由 a、a† 的代数关系重推能级与递推。",
+{"id":"sf6s4-2","name":"升降算符与代数解法","tags":["der"],"brief":"由 a、a† 的代数关系重推能级与递推。",
  "body": wrap(
    der(p("<strong>升降算符：</strong>定义 $a=\\sqrt{\\frac{m\\omega}{2\\hbar}}\\left(x+\\frac{ip}{m\\omega}\\right)$，$a^{\\dagger}=\\sqrt{\\frac{m\\omega}{2\\hbar}}\\left(x-\\frac{ip}{m\\omega}\\right)$。由 $[x,p]=i\\hbar$ 计算对易子：")+
    fml("[a,a^{\\dagger}]=\\frac{1}{2\\hbar}\\cdot i\\hbar\\left\\{\\left(-\\frac{i}{m\\omega}\\right)m\\omega - m\\omega\\frac{i}{m\\omega}\\cdot(-1)\\right\\}=1")+
@@ -1606,7 +1835,7 @@ ch5_sections = [
    p("与解析解完全一致，体现了代数方法的高效。"))+
    note(p("在坐标表象 $a=\\frac{1}{\\sqrt2}(\\xi+\\frac{d}{d\\xi})$，条件 $a|0\\rangle=0$ 直接给出高斯基态 $e^{-\\xi^{2}/2}$；$|n\\rangle\\propto(a^{\\dagger})^{n}|0\\rangle$ 即生成 $H_n$。"))
  )},
-{"id":"sf5s4-3","name":"矩阵元与跃迁选律","tags":["der","app"],"brief":"⟨m|x|n⟩ 的推导与 Δn=±1 选律。",
+{"id":"sf6s4-3","name":"矩阵元与跃迁选律","tags":["der","app"],"brief":"⟨m|x|n⟩ 的推导与 Δn=±1 选律。",
  "body": wrap(
    der(p("<strong>坐标算符表示：</strong>由升降算符反解 $x=\\sqrt{\\frac{\\hbar}{2m\\omega}}(a+a^{\\dagger})$。利用 $a|n\\rangle=\\sqrt n\\,|n-1\\rangle$，$a^{\\dagger}|n\\rangle=\\sqrt{n+1}\\,|n+1\\rangle$：")+
    fml("x|n\\rangle=\\sqrt{\\frac{\\hbar}{2m\\omega}}\\left(\\sqrt n\\,|n-1\\rangle+\\sqrt{n+1}\\,|n+1\\rangle\\right)")+
@@ -1620,13 +1849,13 @@ ch5_sections = [
 ]},
 ]
 
-ch6_sections = [
+ch7_sections = [
 {
-"name": "6.1 椭圆积分的定义与分类",
+"name": "7.1 椭圆积分的定义与分类",
 "color": "#4f46e5",
 "desc": "一般形式、三类勒让德标准型与初等特例",
 "items": [
-{"id":"sf6s1-1","name":"椭圆积分的定义","tags":["def","der"],"brief":"含根式 √(三次/四次多项式) 的不可初等积分。",
+{"id":"sf7s1-1","name":"椭圆积分的定义","tags":["def","der"],"brief":"含根式 √(三次/四次多项式) 的不可初等积分。",
  "body": wrap(
    defn("椭圆积分", p("形如：")+
    fml("\\int R\\!\\left(x,\\sqrt{P(x)}\\right)dx","P 为三次或四次多项式，R 为有理函数")+
@@ -1637,7 +1866,7 @@ ch6_sections = [
    exa(p("<strong>例：</strong>椭圆弧长积分 $\\int\\sqrt{1-e^{2}\\sin^{2}\\theta}\\,d\\theta$ 与单摆周期 $\\int d\\theta/\\sqrt{1-k^{2}\\sin^{2}\\theta}$ 都是椭圆积分。"))+
    note(p("若 $P$ 的次数更高（亏格 $g\\ge2$），积分称为超椭圆积分；椭圆积分对应 $g=1$，是唯一能用双周期函数反演的「简单」情形。"))
  )},
-{"id":"sf6s1-2","name":"三类勒让德标准形式","tags":["def","der"],"brief":"第一、二、三类不完全椭圆积分的标准定义。",
+{"id":"sf7s1-2","name":"三类勒让德标准形式","tags":["def","der"],"brief":"第一、二、三类不完全椭圆积分的标准定义。",
  "body": wrap(
    defn("勒让德三类", p("通过代换把任意椭圆积分化为三种标准形式：")+
    fml("F(\\varphi,k)=\\int_0^{\\varphi}\\frac{d\\theta}{\\sqrt{1-k^{2}\\sin^{2}\\theta}}","第一类")+
@@ -1650,7 +1879,7 @@ ch6_sections = [
    p("故被积式化为 $d\\theta/\\sqrt{1-k^{2}\\sin^{2}\\theta}$，正是 $F(\\varphi,k)$。"))+
    note(p("勒让德把椭圆积分归约为三类，这是特殊函数理论化的重要一步；第三类 $\\Pi$ 在解含 $\\sin^{2}$ 分母的物理问题（如球面摆）时出现。"))
  )},
-{"id":"sf6s1-3","name":"退化为初等函数的情形","tags":["exa","der"],"brief":"k=0,1 或 φ 很小时的极限行为。",
+{"id":"sf7s1-3","name":"退化为初等函数的情形","tags":["exa","der"],"brief":"k=0,1 或 φ 很小时的极限行为。",
  "body": wrap(
    exa(p("<strong>例：</strong>取 $k=0$：$F(\\varphi,0)=\\int_0^{\\varphi}d\\theta=\\varphi$，$E(\\varphi,0)=\\varphi$，回到初等的角度量。取 $k=1$：")+
    fml("F(\\varphi,1)=\\int_0^{\\varphi}\\frac{d\\theta}{\\cos\\theta}=\\ln\\tan\\!\\left(\\frac{\\pi}{4}+\\frac{\\varphi}{2}\\right)")+
@@ -1664,11 +1893,11 @@ ch6_sections = [
  )},
 ]},
 {
-"name": "6.2 勒让德标准形式与完全椭圆积分",
+"name": "7.2 勒让德标准形式与完全椭圆积分",
 "color": "#6366f1",
 "desc": "标准化的代换、K 与 E 的性质及 AGM 计算",
 "items": [
-{"id":"sf6s2-1","name":"完全椭圆积分 K 与 E","tags":["def","der"],"brief":"K,E 的定义、级数与 k→1 的对数发散。",
+{"id":"sf7s2-1","name":"完全椭圆积分 K 与 E","tags":["def","der"],"brief":"K,E 的定义、级数与 k→1 的对数发散。",
  "fig":"elliptic","figCap":"完全椭圆积分 K(k) 与 E(k) 随模数 k 的变化：K 在 k→1 发散，E 趋于 1",
  "body": wrap(
    defn("完全椭圆积分", p("在标准型中取 $\\varphi=\\pi/2$：")+
@@ -1681,7 +1910,7 @@ ch6_sections = [
    p("故 $K(k)\\sim\\ln\\frac{4}{k'}=\\ln\\frac{4}{\\sqrt{1-k^{2}}}$，为对数发散。"))+
    note(p("$E(k)$ 在 $k\\to1$ 时趋于有限值 $E(1)=1$，因为被积函数有界；两函数的这种不同行为对应单摆周期在接近倒立时发散、而弧长保持有限。"))
  )},
-{"id":"sf6s2-2","name":"加法与倍角公式","tags":["der","thm"],"brief":"K,E 的 Legendre 关系与倍角变换。",
+{"id":"sf7s2-2","name":"加法与倍角公式","tags":["der","thm"],"brief":"K,E 的 Legendre 关系与倍角变换。",
  "body": wrap(
    thm("勒让德关系", p("$K$ 与 $E$ 满足：")+
    fml("E(k)K(k')+E(k')K(k)-K(k)K(k')=\\frac{\\pi}{2}","勒让德关系式")+
@@ -1694,7 +1923,7 @@ ch6_sections = [
    exa(p("<strong>例：</strong>取 $k=1/\\sqrt2$，$k'=1/\\sqrt2$，$\\mathrm{AGM}(1,1/\\sqrt2)\\approx0.8472$，则 $K\\approx\\pi/(2\\cdot0.8472)=1.8541$，与精确值一致。"))+
    note(p("AGM 是高斯 18 岁的发现，把椭圆积分与算术-几何平均联系起来，也是现代高精度圆周率与椭圆积分数值算法的核心。"))
  )},
-{"id":"sf6s2-3","name":"完全椭圆积分的导数","tags":["der","exa"],"brief":"dK/dk、dE/dk 的推导与相互表示。",
+{"id":"sf7s2-3","name":"完全椭圆积分的导数","tags":["der","exa"],"brief":"dK/dk、dE/dk 的推导与相互表示。",
  "body": wrap(
    der(p("<strong>$K$ 与 $E$ 的导数：</strong>对 $E(k)=\\int_0^{\\pi/2}\\sqrt{1-k^{2}\\sin^{2}\\theta}\\,d\\theta$ 在积分号下对 $k$ 求导：")+
    fml("\\frac{dE}{dk}=\\int_0^{\\pi/2}\\frac{-k\\sin^{2}\\theta}{\\sqrt{1-k^{2}\\sin^{2}\\theta}}\\,d\\theta")+
@@ -1708,11 +1937,11 @@ ch6_sections = [
  )},
 ]},
 {
-"name": "6.3 椭圆函数的引入",
+"name": "7.3 椭圆函数的引入",
 "color": "#818cf8",
 "desc": "雅可比椭圆函数、加法公式与双周期性",
 "items": [
-{"id":"sf6s3-1","name":"雅可比椭圆函数","tags":["def","der"],"brief":"sn,cn,dn 由第一类椭圆积分的反演定义。",
+{"id":"sf7s3-1","name":"雅可比椭圆函数","tags":["def","der"],"brief":"sn,cn,dn 由第一类椭圆积分的反演定义。",
  "fig":"jacobi_sn","figCap":"雅可比椭圆函数 sn(u,k)：以 4K 为实周期的双周期函数",
  "body": wrap(
    defn("雅可比椭圆函数", p("把第一类不完全椭圆积分看作幅角 $\\varphi$ 的函数：")+
@@ -1727,7 +1956,7 @@ ch6_sections = [
    p("由定义直接得恒等式 $\\mathrm{sn}^{2}+\\mathrm{cn}^{2}=1$ 与 $k^{2}\\mathrm{sn}^{2}+\\mathrm{dn}^{2}=1$。"))+
    note(p("$\\mathrm{sn},\\mathrm{cn}$ 对应钟摆运动的坐标，$\\mathrm{dn}$ 对应「角速度」，三者构成椭圆函数的「三角关系」。"))
  )},
-{"id":"sf6s3-2","name":"加法公式与倍角","tags":["der","thm"],"brief":"推导 sn(u+v) 的加法公式。",
+{"id":"sf7s3-2","name":"加法公式与倍角","tags":["der","thm"],"brief":"推导 sn(u+v) 的加法公式。",
  "body": wrap(
    thm("加法公式", p("雅可比椭圆函数满足：")+
    fml("\\mathrm{sn}(u+v)=\\frac{\\mathrm{sn}\\,u\\,\\mathrm{cn}\\,v\\,\\mathrm{dn}\\,v+\\mathrm{sn}\\,v\\,\\mathrm{cn}\\,u\\,\\mathrm{dn}\\,u}{1-k^{2}\\mathrm{sn}^{2}u\\,\\mathrm{sn}^{2}v}"))+
@@ -1739,7 +1968,7 @@ ch6_sections = [
    exa(p("<strong>例：</strong>取极限 $k\\to0$，加法公式退化为 $\\sin(u+v)=\\sin u\\cos v+\\cos u\\sin v$，回到普通三角函数。"))+
    note(p("椭圆函数的加法公式使其构成代数群结构（椭圆曲线上的群律），这是椭圆曲线密码学与可积系统的代数基础。"))
  )},
-{"id":"sf6s3-3","name":"双周期性与周期","tags":["der"],"brief":"sn 以 4K 与 2iK' 为周期，构成双周期函数。",
+{"id":"sf7s3-3","name":"双周期性与周期","tags":["der"],"brief":"sn 以 4K 与 2iK' 为周期，构成双周期函数。",
  "body": wrap(
    der(p("<strong>实周期：</strong>由定义，$\\mathrm{sn}\\,u$ 是关于幅角 $\\varphi$ 的 $2\\pi$ 周期函数的像。当 $\\varphi$ 从 $0$ 增大到 $2\\pi$ 时，$u$ 增加：")+
    fml("4K = 4\\int_0^{\\pi/2}\\frac{d\\theta}{\\sqrt{1-k^{2}\\sin^{2}\\theta}}")+
@@ -1752,11 +1981,11 @@ ch6_sections = [
  )},
 ]},
 {
-"name": "6.4 椭圆积分的应用",
+"name": "7.4 椭圆积分的应用",
 "color": "#4f46e5",
 "desc": "单摆大角度、椭圆弧长与几何物理应用",
 "items": [
-{"id":"sf6s4-1","name":"单摆的大角度周期","tags":["app","der"],"brief":"T=4√(L/g)K(sin(θ0/2)) 的推导与展开。",
+{"id":"sf7s4-1","name":"单摆的大角度周期","tags":["app","der"],"brief":"T=4√(L/g)K(sin(θ0/2)) 的推导与展开。",
  "fig":"pendulum_elliptic","figCap":"大摆角单摆：周期由第一类完全椭圆积分给出，振幅越大周期越长",
  "body": wrap(
    app(p("单摆在大摆角下的精确周期是椭圆积分最经典的物理应用，也是测地学与精密计时中的基础问题。"))+
@@ -1771,7 +2000,7 @@ ch6_sections = [
    exa(p("<strong>例：</strong>$\\theta_0=90^{\\circ}$ 时 $k=\\sin45^{\\circ}=0.7071$，$K=1.854$，故 $T\\approx1.18\\,T_0$，比小角度周期大 $18\\%$。"))+
    note(p("小角度展开给出 $T\\approx T_0[1+\\frac{\\theta_0^{2}}{16}+\\cdots]$，这正是钟摆校正在大摆角下需要考虑的修正项。"))
  )},
-{"id":"sf6s4-2","name":"椭圆弧长与几何","tags":["app","der"],"brief":"L=4aE(e) 的推导与地球子午线测量。",
+{"id":"sf7s4-2","name":"椭圆弧长与几何","tags":["app","der"],"brief":"L=4aE(e) 的推导与地球子午线测量。",
  "body": wrap(
    der(p("<strong>椭圆弧长：</strong>椭圆 $x=a\\sin\\theta$，$y=b\\cos\\theta$ 的弧长微元：")+
    fml("ds=\\sqrt{(a\\cos\\theta)^{2}+(b\\sin\\theta)^{2}}\\,d\\theta = a\\sqrt{1-e^{2}\\sin^{2}\\theta}\\,d\\theta")+
@@ -1783,7 +2012,7 @@ ch6_sections = [
    p("这正是历史上定义「米」与进行大地测量时必须计算的不完全椭圆积分。"))+
    note(p("$E(e)$ 的奇异性质（$E(1)=1$）保证了椭圆即使在极度扁平时周长仍有限，这与 $K$ 的对数发散形成对比。"))
  )},
-{"id":"sf6s4-3","name":"其他应用","tags":["app","der"],"brief":"在弹性、几何与物理中的其他椭圆积分应用。",
+{"id":"sf7s4-3","name":"其他应用","tags":["app","der"],"brief":"在弹性、几何与物理中的其他椭圆积分应用。",
  "body": wrap(
    app(p("椭圆积分与椭圆函数广泛出现在几何、力学、电磁学与可积系统中。"))+
    der(p("<strong>弹性杆的大挠度：</strong>细长弹性杆在端部受力弯曲时，曲率与弯矩成正比 $\\kappa=M/EI$。取弧长 $s$ 为参数，切线角 $\\psi(s)$ 满足：")+
@@ -1797,13 +2026,13 @@ ch6_sections = [
 ]},
 ]
 
-ch7_sections = [
+ch8_sections = [
 {
-"name": "7.1 马丢方程与参数",
+"name": "8.1 马丢方程与参数",
 "color": "#059669",
 "desc": "方程的物理来源、特征值与周期解",
 "items": [
-{"id":"sf7s1-1","name":"马丢方程的来源与形式","tags":["def","der"],"brief":"由椭圆坐标分离变量得到 y''+(a-2q cos2z)y=0。",
+{"id":"sf8s1-1","name":"马丢方程的来源与形式","tags":["def","der"],"brief":"由椭圆坐标分离变量得到 y''+(a-2q cos2z)y=0。",
  "body": wrap(
    defn("马丢方程", p("标准<strong>马丢方程</strong>为：")+
    fml("y''+(a-2q\\cos 2z)\\,y=0","a 为特征参数，q 为强度参数")+
@@ -1814,7 +2043,7 @@ ch7_sections = [
    p("马丢方程也出现在：椭圆截面波导、周期势中的电子（Bloch 能带）、参量振子（Mathieu 摆）与离子阱稳定性分析中。"))+
    note(p("注意系数周期为 $\\pi$（因 $\\cos2z$），故解在 $z\\to z+\\pi$ 下变换，与通常周期系数的 Hill 方程一致。"))
  )},
-{"id":"sf7s1-2","name":"特征值与周期解","tags":["def","der"],"brief":"存在 π 或 2π 周期解的 a 值 a_n(q), b_n(q)。",
+{"id":"sf8s1-2","name":"特征值与周期解","tags":["def","der"],"brief":"存在 π 或 2π 周期解的 a 值 a_n(q), b_n(q)。",
  "fig":"mathieu_ce","figCap":"马丢特征值 a_n(q) 与 b_n(q) 随 q 分离，q=0 时分别趋于 n²",
  "body": wrap(
    defn("马丢特征值", p("对给定 $q$，只有特定的 $a$ 值使方程存在 $\\pi$ 或 $2\\pi$ 周期的解。这些 $a$ 值记为：")+
@@ -1826,7 +2055,7 @@ ch7_sections = [
    p("<strong>周期解的奇偶性：</strong>由于方程在 $z\\to-z$ 与 $z\\to z+\\pi$ 下不变，周期解可按奇偶分类：$\\mathrm{ce}_n$ 为偶函数，$\\mathrm{se}_n$ 为奇函数。"))+
    note(p("$a_n(q),b_n(q)$ 是 $q$ 的解析函数（对充分小的 $q$），可按幂级数展开（见 8.3.2）。"))
  )},
-{"id":"sf7s1-3","name":"傅里叶级数解","tags":["der"],"brief":"把周期解展开为傅里叶级数并推出三项递推。",
+{"id":"sf8s1-3","name":"傅里叶级数解","tags":["der"],"brief":"把周期解展开为傅里叶级数并推出三项递推。",
  "body": wrap(
    der(p("<strong>偶解展开：</strong>设 $\\mathrm{ce}_n(z,q)$ 为偶函数，周期 $2\\pi$，展开为余弦级数：")+
    fml("y(z)=\\sum_{k\\ge0}A_k\\cos(kz)")+
@@ -1840,11 +2069,11 @@ ch7_sections = [
  )},
 ]},
 {
-"name": "7.2 马丢函数的解与稳定性",
+"name": "8.2 马丢函数的解与稳定性",
 "color": "#10b981",
 "desc": "Floquet 理论、Ince-Strutt 图与稳定判据",
 "items": [
-{"id":"sf7s2-1","name":"Floquet 理论与单值矩阵","tags":["der","thm"],"brief":"周期系数方程解的结构与特征指数。",
+{"id":"sf8s2-1","name":"Floquet 理论与单值矩阵","tags":["der","thm"],"brief":"周期系数方程解的结构与特征指数。",
  "fig":"mathieu_stability","figCap":"Ince-Strutt 稳定图：从 a=n² 出发的不稳定舌区随 q 张开",
  "body": wrap(
    thm("Floquet 定理", p("对周期系数线性方程 $y''+p(z)y=0$（$p(z+\\pi)=p(z)$），存在基本解系：")+
@@ -1855,7 +2084,7 @@ ch7_sections = [
    p("（因 $\\det M=1$，Wronskian 守恒）。故 $\\rho=e^{\\pm\\mu\\pi}$，解有界当且仅当 $|\\rho|=1$。"))+
    note(p("这里 $\\operatorname{tr}M$ 是 $a,q$ 的函数；稳定条件 $|\\operatorname{tr}M|\\le2$ 的图像就是 Ince-Strutt 图。"))
  )},
-{"id":"sf7s2-2","name":"稳定性图与舌区","tags":["der","app"],"brief":"不稳定区域从 a=n² 张开，宽度随 q 增大。",
+{"id":"sf8s2-2","name":"稳定性图与舌区","tags":["der","app"],"brief":"不稳定区域从 a=n² 张开，宽度随 q 增大。",
  "body": wrap(
    der(p("<strong>舌区的来源：</strong>当 $q=0$ 时所有 $a\\ge0$ 都稳定（解为正弦），不稳定的只是「边界点」$a=n^{2}$（此时解线性增长）。当 $q>0$，这些点张开成楔形不稳定区（舌区）。")+
    p("在 $a=n^{2}$ 附近作微扰分析。设 $a=n^{2}+\\delta$，$\\delta\\sim O(q)$。把解写成慢变振幅形式，对 $n=1$ 的情形共振条件为：")+
@@ -1866,7 +2095,7 @@ ch7_sections = [
    app(p("这解释了为什么秋千要「站立时下蹲、摆到最高点时起身」以泵入能量：驱动频率恰为固有频率的两倍时发生参量共振。"))+
    note(p("舌区宽度随 $n$ 快速变窄，因此实际系统中高阶不稳定区往往被阻尼或非线性抑制。"))
  )},
-{"id":"sf7s2-3","name":"稳定判据","tags":["thm","der"],"brief":"|tr M|≤2 的证明与稳定边界的意义。",
+{"id":"sf8s2-3","name":"稳定判据","tags":["thm","der"],"brief":"|tr M|≤2 的证明与稳定边界的意义。",
  "body": wrap(
    thm("稳定判据", p("马丢方程的解有界（稳定）当且仅当：")+
    fml("|\\operatorname{tr}M|\\le2")+
@@ -1881,11 +2110,11 @@ ch7_sections = [
  )},
 ]},
 {
-"name": "7.3 马丢函数的性质与展开",
+"name": "8.3 马丢函数的性质与展开",
 "color": "#047857",
 "desc": "正交性、小 q 微扰与大 q 渐近",
 "items": [
-{"id":"sf7s3-1","name":"正交性与归一化","tags":["der"],"brief":"周期马丢函数在 [0,2π] 上正交。",
+{"id":"sf8s3-1","name":"正交性与归一化","tags":["der"],"brief":"周期马丢函数在 [0,2π] 上正交。",
  "body": wrap(
    der(p("<strong>正交性：</strong>把马丢方程写成 Sturm-Liouville 形式：")+
    fml("\\frac{d}{dz}\\left(p\\frac{dy}{dz}\\right)+\\left(\\lambda w-\\tilde q(z)\\right)y=0")+
@@ -1897,7 +2126,7 @@ ch7_sections = [
    app(p("正交性是展开任意 $2\\pi$ 周期函数、求解非齐次马丢方程、以及量子力学中周期势微扰展开的基础。"))+
    note(p("偶解与奇解之间也正交（$\\int\\mathrm{ce}_m\\mathrm{se}_n=0$），故 $\\{\\mathrm{ce}_n,\\mathrm{se}_n\\}$ 构成 $L^{2}(0,2\\pi)$ 的正交基。"))
  )},
-{"id":"sf7s3-2","name":"小 q 微扰展开","tags":["der"],"brief":"a_n(q)=n²+q²/(2(n²-1))+… 的推导。",
+{"id":"sf8s3-2","name":"小 q 微扰展开","tags":["der"],"brief":"a_n(q)=n²+q²/(2(n²-1))+… 的推导。",
  "body": wrap(
    der(p("<strong>微扰计算（以 $n=1$ 为例）：</strong>设 $a=1+\\alpha_1 q+\\alpha_2 q^{2}+\\cdots$，解 $y=\\cos z+q\\,y_1+\\cdots$。代入马丢方程，$O(q)$ 项：")+
    fml("y_1''+y_1=\\alpha_1\\cos z-2\\cos2z\\cos z=\\alpha_1\\cos z-(\\cos3z+\\cos z)")+
@@ -1908,7 +2137,7 @@ ch7_sections = [
    exa(p("<strong>例：</strong>$n=2$，$q=0.5$：$a_2\\approx4+\\frac{0.25}{2\\cdot3}=4.0417$，与精确值 $4.0400$ 接近。"))+
    note(p("这些展开式在 $q\\ll n^{2}$ 时可靠；当 $q$ 很大时必须改用大 $q$ 渐近（见 8.3.3）。"))
  )},
-{"id":"sf7s3-3","name":"大 q 渐近与指数区域","tags":["der"],"brief":"q→∞ 时特征值与解的渐近，及稳定/不稳定交替。",
+{"id":"sf8s3-3","name":"大 q 渐近与指数区域","tags":["der"],"brief":"q→∞ 时特征值与解的渐近，及稳定/不稳定交替。",
  "fig":"mathieu_mode","figCap":"马丢函数 ce1(z,q) 的振荡解与指数增长解交替出现",
  "body": wrap(
    der(p("<strong>大 $q$ 渐近（WKB 法）：</strong>当 $q\\to\\infty$，方程 $y''+(a-2q\\cos2z)y=0$ 的系数在 $\\cos2z<0$ 处为负，产生指数型解。令 $Q(z)=2q\\cos2z-a$，在 $Q>0$ 区域用 WKB：")+
@@ -1921,11 +2150,11 @@ ch7_sections = [
  )},
 ]},
 {
-"name": "7.4 马丢函数的应用",
+"name": "8.4 马丢函数的应用",
 "color": "#059669",
 "desc": "椭圆膜、参量振荡与电磁波导",
 "items": [
-{"id":"sf7s4-1","name":"椭圆膜与鼓面振动","tags":["app","der"],"brief":"椭圆边界膜的振动模态由马丢函数给出。",
+{"id":"sf8s4-1","name":"椭圆膜与鼓面振动","tags":["app","der"],"brief":"椭圆边界膜的振动模态由马丢函数给出。",
  "body": wrap(
    app(p("椭圆形状的膜（如椭圆鼓面）的振动模态是马丢函数最直观的应用。"))+
    der(p("<strong>波动方程分离变量：</strong>膜振动满足 $\\nabla^{2}u+k^{2}u=0$（$k=\\omega/c$）。椭圆坐标 $(\\xi,\\eta)$ 由 $x=c\\cosh\\xi\\cos\\eta$，$y=c\\sinh\\xi\\sin\\eta$ 定义，拉普拉斯算子在椭圆坐标中分离变量得：")+
@@ -1935,7 +2164,7 @@ ch7_sections = [
    p("$\\xi$ 方程（修正马丢方程）则给出径向依赖，椭圆边界条件使其本征值离散化，从而得到分立的振动频率。"))+
    note(p("圆边界（$c\\to0$）时马丢函数退化，模态回到贝塞尔函数 $J_n$，这说明马丢函数是椭圆几何下的自然「简正模态」。"))
  )},
-{"id":"sf7s4-2","name":"参量振荡与离子阱","tags":["app","der"],"brief":"Mathieu 摆与 Paul 阱的稳定性分析。",
+{"id":"sf8s4-2","name":"参量振荡与离子阱","tags":["app","der"],"brief":"Mathieu 摆与 Paul 阱的稳定性分析。",
  "body": wrap(
    app(p("马丢方程是参量振荡（Mathieu 摆）与四极离子阱（Paul trap）稳定性分析的核心。"))+
    der(p("<strong>Mathieu 摆：</strong>悬挂点作竖直振动 $y=-A\\cos\\omega t$ 的单摆，小角方程为：")+
@@ -1948,7 +2177,7 @@ ch7_sections = [
    p("同样化为马丢方程，参数 $a,q\\propto U,V$。离子被囚禁的条件正是 $(a,q)$ 落在 Ince-Strutt 图的稳定区内，由此得到阱的工作点设计。"))+
    note(p("Paul 因离子阱获 1989 年诺贝尔物理学奖；其稳定性图的数学本质就是马丢方程稳定区。"))
  )},
-{"id":"sf7s4-3","name":"周期势中的能带与波动","tags":["app","der"],"brief":"周期势薛定谔方程与能带结构，及波导应用。",
+{"id":"sf8s4-3","name":"周期势中的能带与波动","tags":["app","der"],"brief":"周期势薛定谔方程与能带结构，及波导应用。",
  "body": wrap(
    app(p("周期性介质中的波传播与周期势中的电子都归结为马丢型方程，其稳定/不稳定分区正是「能带/禁带」结构。"))+
    der(p("<strong>周期势电子：</strong>在周期势 $V(x)=V_0\\cos(2\\pi x/d)$ 中，单电子薛定谔方程作变换 $z=\\pi x/d$ 后化为：")+
@@ -1975,15 +2204,18 @@ CHAPTERS = [
     {"id":"sf-ch4","num":"第四章","title":"超几何函数","en":"HYPERGEOMETRIC FUNCTION",
      "desc":"高斯超几何级数的定义与收敛性、高斯求和公式、超几何微分方程与 Frobenius 解、欧拉与普法夫变换、反正切与勒让德函数等特殊情形、不完全贝塔函数、库默尔合流方程与 ₁F₁ 级数、拉盖尔与厄米多项式关系，以及氢原子与散射理论中的应用。",
      "sections": ch4_sections},
-    {"id":"sf-ch5","num":"第五章","title":"厄米多项式","en":"HERMITE POLYNOMIALS",
-     "desc":"厄米多项式的罗德里格斯公式、生成函数与显式展开、三项递推关系、厄米微分方程与导数关系、高斯权重下的正交性与积分性质、厄米函数完备性与展开，以及量子谐振子的定态波函数、升降算符代数与跃迁选择定则。",
+    {"id":"sf-ch5","num":"第五章","title":"黎曼ζ函数","en":"RIEMANN ZETA FUNCTION",
+     "desc":"黎曼ζ函数的 Dirichlet 级数定义与收敛性、调和级数发散与 s=1 的单极点、欧拉乘积与素数无穷多、Abel 求和与 η 函数的解析延拓、Mellin 积分表示、函数方程、偶数点与负整数处的特殊值（巴塞尔问题、伯努利数）、非平凡零点与临界线、黎曼猜想，以及在素数定理、统计物理与弦论 ζ 正规化中的应用。",
      "sections": ch5_sections},
-    {"id":"sf-ch6","num":"第六章","title":"椭圆积分","en":"ELLIPTIC INTEGRALS",
-     "desc":"椭圆积分的一般定义与三类勒让德标准形式、退化情形、完全椭圆积分 K 与 E 的级数与对数发散、导数关系、Landen 变换与 AGM 算法、雅可比椭圆函数 sn/cn/dn、加法公式与双周期性，以及单摆大角度周期、椭圆弧长与弹性杆挠度中的应用。",
+    {"id":"sf-ch6","num":"第六章","title":"厄米多项式","en":"HERMITE POLYNOMIALS",
+     "desc":"厄米多项式的罗德里格斯公式、生成函数与显式展开、三项递推关系、厄米微分方程与导数关系、高斯权重下的正交性与积分性质、厄米函数完备性与展开，以及量子谐振子的定态波函数、升降算符代数与跃迁选择定则。",
      "sections": ch6_sections},
-    {"id":"sf-ch7","num":"第七章","title":"马丢函数","en":"MATHIEU FUNCTIONS",
-     "desc":"马丢方程的形式与椭圆坐标来源、特征值 a_n 与 b_n、傅里叶级数解与三项递推、Floquet 理论与单值矩阵、Ince-Strutt 稳定图与舌区、稳定性判据 |tr M|≤2、周期马丢函数的正交性、小 q 微扰与大 q 渐近，以及椭圆膜振动、参量振荡、离子阱与周期势能带中的应用。",
+    {"id":"sf-ch7","num":"第七章","title":"椭圆积分","en":"ELLIPTIC INTEGRALS",
+     "desc":"椭圆积分的一般定义与三类勒让德标准形式、退化情形、完全椭圆积分 K 与 E 的级数与对数发散、导数关系、Landen 变换与 AGM 算法、雅可比椭圆函数 sn/cn/dn、加法公式与双周期性，以及单摆大角度周期、椭圆弧长与弹性杆挠度中的应用。",
      "sections": ch7_sections},
+    {"id":"sf-ch8","num":"第八章","title":"马丢函数","en":"MATHIEU FUNCTIONS",
+     "desc":"马丢方程的形式与椭圆坐标来源、特征值 a_n 与 b_n、傅里叶级数解与三项递推、Floquet 理论与单值矩阵、Ince-Strutt 稳定图与舌区、稳定性判据 |tr M|≤2、周期马丢函数的正交性、小 q 微扰与大 q 渐近，以及椭圆膜振动、参量振荡、离子阱与周期势能带中的应用。",
+     "sections": ch8_sections},
 ]
 
 total_items = sum(sum(len(s["items"]) for s in ch["sections"]) for ch in CHAPTERS)
@@ -2056,9 +2288,10 @@ def gen_html():
   .la-nav-tab.c2{color:#7c3aed;border-color:#ddd6fe}
   .la-nav-tab.c3{color:#0d9488;border-color:#99f6e4}
   .la-nav-tab.c4{color:#be185d;border-color:#fbcfe8}
-  .la-nav-tab.c5{color:#0891b2;border-color:#a5f3fc}
-  .la-nav-tab.c6{color:#4f46e5;border-color:#c7d2fe}
-  .la-nav-tab.c7{color:#059669;border-color:#a7f3d0}
+  .la-nav-tab.c5{color:#d97706;border-color:#fde68a}
+  .la-nav-tab.c6{color:#0891b2;border-color:#a5f3fc}
+  .la-nav-tab.c7{color:#4f46e5;border-color:#c7d2fe}
+  .la-nav-tab.c8{color:#059669;border-color:#a7f3d0}
   .la-engagement-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 10px}
   .la-stat-item{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:#fff;border:1px solid #e2e8f0;font-size:13px;color:#334155;font-weight:600}
   .la-stat-value{color:#6366f1;font-weight:800;font-size:15px}
@@ -2080,9 +2313,10 @@ def gen_html():
   .la-phase-title.sf-ch2::before{background:#7c3aed}
   .la-phase-title.sf-ch3::before{background:#0d9488}
   .la-phase-title.sf-ch4::before{background:#be185d}
-  .la-phase-title.sf-ch5::before{background:#0891b2}
-  .la-phase-title.sf-ch6::before{background:#4f46e5}
-  .la-phase-title.sf-ch7::before{background:#059669}
+  .la-phase-title.sf-ch5::before{background:#d97706}
+  .la-phase-title.sf-ch6::before{background:#0891b2}
+  .la-phase-title.sf-ch7::before{background:#4f46e5}
+  .la-phase-title.sf-ch8::before{background:#059669}
   .la-phase-en{font-size:11px;letter-spacing:.36em;color:#94a3b8;font-weight:700;text-transform:uppercase;margin:0 0 12px 18px;font-style:italic}
   .la-phase-desc{color:var(--la-muted);font-size:14px;margin:0 0 24px 18px;line-height:1.8;max-width:960px}
   .la-domain{margin-bottom:26px;padding:16px 18px 18px 22px;position:relative;background:rgba(255,255,255,.6);border-radius:18px;border:1px solid #e5ebf2}
@@ -2200,7 +2434,7 @@ document.addEventListener('DOMContentLoaded', () => {{
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="特殊函数知识体系：朗博W函数、伽马函数、特殊积分、超几何函数、厄米多项式、椭圆积分、马丢函数">
+<meta name="description" content="特殊函数知识体系：朗博W函数、伽马函数、特殊积分、超几何函数、黎曼ζ函数、厄米多项式、椭圆积分、马丢函数">
 <title>特殊函数 · 知识体系</title>
 <script>
 window.MathJax = {{
@@ -2227,7 +2461,7 @@ window.MathJax = {{
   <header class="la-header">
     <div class="la-eyebrow">SPECIAL FUNCTIONS · KNOWLEDGE MAP</div>
     <h1>特殊函数 · 知识体系</h1>
-    <p class="la-subtitle">朗博W函数 · 伽马函数 · 特殊积分 · 超几何函数 · 厄米多项式 · 椭圆积分 · 马丢函数</p>
+    <p class="la-subtitle">朗博W函数 · 伽马函数 · 特殊积分 · 超几何函数 · 黎曼ζ函数 · 厄米多项式 · 椭圆积分 · 马丢函数</p>
     <div class="back-bar"><a class="back-btn" href="index.html">← 返回总览</a></div>
     <div class="la-nav-tabs">{nav_tabs}</div>
     <div class="la-engagement-bar">
