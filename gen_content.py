@@ -1053,8 +1053,6 @@ SUBJECT_LIST = [
     ("QUANTUM_MECHANICS", "量子力学", "QM", "波函数·算符·薛定谔", QUANTUM_TOPICS),
     ("ATOMIC_PHYSICS", "原子物理", "ATOMIC PHYSICS", "原子结构·光谱", QUANTUM_TOPICS),
     ("NUCLEAR_PHYSICS", "核物理", "NUCLEAR PHYSICS", "核结构·衰变·核反应", QUANTUM_TOPICS),
-    ("QUANTUM_COMPUTING", "量子计算", "QUANTUM COMPUTING", "量子比特·量子门·算法", QUANTUM_TOPICS),
-    ("QUANTUM_INFORMATION", "量子信息", "QUANTUM INFO", "纠缠·通信·纠错", QUANTUM_TOPICS),
     # 实验 -> CROSS_TOPICS
     ("EXPERIMENTAL_PHYSICS", "基础物理实验", "EXPERIMENTAL", "测量·误差·基础实验", CROSS_TOPICS),
     ("MODERN_PHYSICS_EXPERIMENTS", "近代物理实验", "MODERN EXPERIMENTS", "真空·光谱·核探测", CROSS_TOPICS),
@@ -1104,6 +1102,16 @@ SUBJECT_LIST = [
 
 for name, ch_title, en, sub, pool in SUBJECT_LIST:
     gen_from_flat(name, ch_title, en, sub, pool)
+
+# ============================================================
+# 量子计算 / 量子信息：按 Nielsen & Chuang 体系手写章节
+# ============================================================
+from qcii_qc import chapters as qc_chapters
+from qcii_qi import chapters as qi_chapters
+
+dump_var("QUANTUM_COMPUTING", qc_chapters())
+dump_var("QUANTUM_INFORMATION", qi_chapters())
+
 
 # ============================================================
 # 输出到 content_topics.py

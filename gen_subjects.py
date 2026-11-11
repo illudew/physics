@@ -1067,8 +1067,8 @@ SUBJECTS.append({
   "filename":"quantum-computing.html",
   "title":"量子计算",
   "eyebrow":"QUANTUM COMPUTING",
-  "subtitle":"量子比特 · 量子门 · 量子线路 · Shor · Grover · 纠错",
-  "meta_desc":"量子计算知识体系：量子比特、量子门、量子线路、Shor、Grover、纠错",
+  "subtitle":"量子比特 · 量子门 · QFT · Shor · Grover · 纠错 · 复杂度",
+  "meta_desc":"量子计算知识体系：量子比特、量子门、量子傅里叶变换、Shor、Grover、量子模拟、纠错与复杂度",
   "chapters":[
     {"id":"la-ch1","num":"第一章","title":"量子比特与量子门","en":"QUBITS & GATES","sub":"叠加、纠缠、门操作","desc":"量子计算利用叠加与纠缠实现并行。本章介绍量子比特与基本量子门。","sections":[
       {"name":"1.1 量子比特","color":"#2563eb","desc":"布洛赫球","items":[
@@ -1924,7 +1924,7 @@ print("Total subjects defined:", len(SUBJECTS))
 SUBJECTS.append({"filename":"linear-algebra.html","title":"线性代数","eyebrow":"LINEAR ALGEBRA","subtitle":"行列式 · 矩阵 · 向量空间 · 特征值 · 二次型","meta_desc":"线性代数知识体系","chapters":[]})
 SUBJECTS.append({"filename":"newtonian-mechanics.html","title":"牛顿力学","eyebrow":"NEWTONIAN MECHANICS","subtitle":"运动学 · 牛顿定律 · 动量能量 · 刚体振动","meta_desc":"牛顿力学知识体系","chapters":[]})
 SUBJECTS.append({"filename":"engineering-optics.html","title":"工程光学","eyebrow":"ENGINEERING OPTICS","subtitle":"几何光学 · 像差 · 光学系统","meta_desc":"工程光学知识体系","chapters":[]})
-SUBJECTS.append({"filename":"quantum-information.html","title":"量子信息","eyebrow":"QUANTUM INFORMATION","subtitle":"量子比特 · 纠缠 · 量子通信","meta_desc":"量子信息知识体系","chapters":[]})
+SUBJECTS.append({"filename":"quantum-information.html","title":"量子信息","eyebrow":"QUANTUM INFORMATION","subtitle":"密度算符 · 纠缠 · 量子通信 · 信道 · 熵 · 纠错","meta_desc":"量子信息知识体系：密度算符、纠缠理论、量子通信、量子信道、量子熵与信息论、量子纠错","chapters":[]})
 
 # 用 build_subjects 生成的扩展章节替换原章节（每科≥300知识点）
 from build_subjects import expand_subject, SUBJECT_MAP
