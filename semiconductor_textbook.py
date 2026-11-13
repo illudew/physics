@@ -1,563 +1,1402 @@
-"""《半导体物理学》第8版核心导读；概念重述，不含教材扫描件。
-
-从仓库目录运行 python3 semiconductor_textbook.py 可仅更新本专题。
-"""
+"""半导体物理知识体系：章、小节、知识点；复用微积分页面版式。"""
 
 CHAPTERS = [{'id': 'sp8-ch1',
-  'num': '第1章',
+  'num': '第一章',
   'title': '半导体中的电子状态',
   'en': 'ELECTRONIC STATES',
   'sub': '从晶体周期势出发，建立能带、有效质量与空穴的图像。',
-  'desc': '本页依据刘恩科等《半导体物理学》（第8版，电子工业出版社，2023）整理，为覆盖13章的核心导读，尚非逐节完整讲解。公式采用通用记号，未标原书公式编号；完整推导、例题和习题请对照教材。从晶体周期势出发，建立能带、有效质量与空穴的图像。',
-  'sections': [{'name': '核心学习导读',
+  'desc': '从晶体周期势出发，建立能带、有效质量与空穴的图像。',
+  'sections': [{'name': '1.1 晶格结构与能带',
                 'color': '#2563eb',
-                'desc': '概念 · 关键关系 · 适用条件',
+                'desc': '晶格与能带、晶体结构与共价键',
                 'items': [{'id': 'sp8-1-1',
                            'name': '晶格与能带',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '硅、锗的金刚石结构由四面体共价键组成；化合物还可具有闪锌矿或纤锌矿结构。大量原子结合后，离散能级展宽为允许带。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>硅、锗的金刚石结构由四面体共价键组成；化合物还可具有闪锌矿或纤锌矿结构。大量原子结合后，离散能级展宽为允许带。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '硅、锗的金刚石结构由四面体共价键组成；化合物还可具有闪锌矿或纤锌矿结构。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>硅、锗的金刚石结构由四面体共价键组成；化合物还可具有闪锌矿或纤锌矿结构。大量原子结合后，离散能级展宽为允许带。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_g=E_c-E_v$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>带隙是导带底与价带顶的能量差。不能仅按某个固定带隙数值划分全部半导体与绝缘体；还需结合温度和输运性质。</p></section><section '
+                                   'class="la-kp-sec"><h5>物理图像（示意）</h5><svg viewBox="0 0 460 180" role="img" '
+                                   'aria-label="半导体能带示意图" style="width:100%;max-width:460px"><rect x="80" '
+                                   'y="20" width="300" height="44" rx="5" fill="#dbeafe"/><rect x="80" '
+                                   'y="118" width="300" height="44" rx="5" fill="#ede9fe"/><text x="100" '
+                                   'y="48" font-size="17">导带\u3000E ≥ Ec</text><text x="100" y="146" '
+                                   'font-size="17">价带\u3000E ≤ Ev</text><path d="M235 67v48m-5-8 5 8 '
+                                   '5-8m-10-32 5-8 5 8" fill="none" stroke="#c026d3" stroke-width="2"/><text '
+                                   'x="250" y="96" font-size="16">禁带 Eg</text></svg></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_g=E_c-E_v\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>带隙是导带底与价带顶的能量差。不能仅按某个固定带隙数值划分全部半导体与绝缘体；还需结合温度和输运性质。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第1章，§1.1—1.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-1-2',
+                                   'la-kp-def"><h5>推导思路</h5><p>晶格平移对称性使本征态满足布洛赫形式，从而可以用波矢标记能带。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\psi_{n\\mathbf{k}}(\\mathbf '
+                                   'r)=u_{n\\mathbf{k}}(\\mathbf r)e^{i\\mathbf{k}\\cdot\\mathbf r},\\quad '
+                                   'u_{n\\mathbf{k}}(\\mathbf r+\\mathbf R)=u_{n\\mathbf{k}}(\\mathbf '
+                                   'r)$$</div><p><br><strong>①</strong> 周期势满足 '
+                                   'V(r+R)=V(r)。<br><strong>②</strong> '
+                                   '哈密顿量与平移算符对易，可选择其共同本征态。<br><strong>③</strong> 平移本征值写成 e^{ik·R}，余下的 u '
+                                   '具有晶格周期。波矢相差倒格矢的态属于等价描述；能带指标 n 不能省略。</p></section>'},
+                          {'id': 'sp-detail-1-1',
+                           'name': '晶体结构与共价键',
+                           'brief': '金刚石结构可视为两个相对位移的面心立方子晶格。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>金刚石结构可视为两个相对位移的面心立方子晶格；每个原子与四个近邻形成四面体键。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$d=\\frac{\\sqrt3}{4}a$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>最近邻坐标差为(a/4,a/4,a/4)，用勾股关系即可得到键长。闪锌矿的两个子晶格由不同元素占据，化学键通常含离子性成分。</p></section><section '
+                                   'class="la-kp-sec la-kp-exa"><h5>例子与应用</h5><p>硅晶格常数约0.543 '
+                                   'nm，模型给最近邻距离约0.235 nm。</p></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>晶格常数不是键长；纤锌矿与闪锌矿的局部配位相似，但堆垛顺序不同。</p></section></div>'}]},
+               {'name': '1.2 载流子的运动',
+                'color': '#3b82f6',
+                'desc': '有效质量与空穴、回旋共振与有效质量',
+                'items': [{'id': 'sp8-1-2',
                            'name': '有效质量与空穴',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '周期势的作用可以在带边近似中吸收到有效质量里。价带少一个电子的集体运动可用带正电的空穴描述。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>周期势的作用可以在带边近似中吸收到有效质量里。价带少一个电子的集体运动可用带正电的空穴描述。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '周期势的作用可以在带边近似中吸收到有效质量里。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>周期势的作用可以在带边近似中吸收到有效质量里。价带少一个电子的集体运动可用带正电的空穴描述。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$v_g=\\frac{1}{\\hbar}\\frac{dE}{dk},\\qquad '
+                                   '\\frac{1}{m^*}=\\frac{1}{\\hbar^2}\\frac{d^2E}{dk^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>此处是一维表达；一般情形有效质量是张量。不要把有效质量理解为电子静止质量发生改变。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[v_g=\\frac{1}{\\hbar}\\frac{dE}{dk},\\qquad '
-                                   '\\frac{1}{m^*}=\\frac{1}{\\hbar^2}\\frac{d^2E}{dk^2}\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>能带极值附近的二阶展开把复杂晶体运动化为近似自由粒子问题。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$E(k)\\simeq E_c+\\frac{\\hbar^2(k-k_0)^2}{2m^*},\\quad '
+                                   'v=\\frac1\\hbar\\frac{dE}{dk},\\quad \\hbar\\dot '
+                                   'k=F$$</div><p><br><strong>①</strong> 在极小值 k₀ '
+                                   '处一阶导数为零，保留二阶项。<br><strong>②</strong> 对速度求时间导数，得 '
+                                   'a=(1/ℏ²)(d²E/dk²)F。<br><strong>③</strong> 定义有效质量使 '
+                                   'F=m*a。价带顶曲率为负；用正电空穴描述缺失电子可得到正空穴质量。各向异性时使用质量张量。</p></section>'},
+                          {'id': 'sp-detail-1-2',
+                           'name': '回旋共振与有效质量',
+                           'brief': '载流子在磁场中受洛伦兹力。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>载流子在磁场中受洛伦兹力，垂直于磁场的运动发生回旋；共振频率可用于测定回旋质量。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\omega_c=\\frac{qB}{m_c^*}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>对各向同性抛物线能带，由m*v²/r=qvB得v/r=qB/m*。外加电磁波频率与回旋频率接近时吸收增强。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>此处是一维表达；一般情形有效质量是张量。不要把有效质量理解为电子静止质量发生改变。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第1章，§1.3—1.5。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-1-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>改变磁场方向测量共振，可研究椭球等能面的质量各向异性。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>回旋质量、态密度质量和电导质量含义不同，不能不加区分地代入同一数值。</p></section></div>'}]},
+               {'name': '1.3 典型材料与能带工程',
+                'color': '#0ea5e9',
+                'desc': '直接与间接带隙、宽禁带材料',
+                'items': [{'id': 'sp8-1-3',
                            'name': '直接与间接带隙',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': 'Si、Ge的导带底和价带顶不在同一波矢处；GaAs是典型直接带隙材料。间接跃迁通常需要声子参与以满足动量守恒。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>Si、Ge的导带底和价带顶不在同一波矢处；GaAs是典型直接带隙材料。间接跃迁通常需要声子参与以满足动量守恒。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': 'Si、Ge的导带底和价带顶不在同一波矢处；GaAs是典型直接带隙材料。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>Si、Ge的导带底和价带顶不在同一波矢处；GaAs是典型直接带隙材料。间接跃迁通常需要声子参与以满足动量守恒。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_{\\gamma}=h\\nu$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>发光效率还取决于缺陷、注入和非辐射复合；直接带隙不保证器件必然高效。宽禁带材料另需考虑掺杂与接触难度。</p></section>'},
+                          {'id': 'sp-detail-1-3',
+                           'name': '宽禁带材料',
+                           'brief': '较大的禁带宽度使本征激发受到抑制。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>较大的禁带宽度使本征激发受到抑制，但材料的器件潜力还由击穿场、热导、缺陷与接触决定。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$n_i\\propto e^{-E_g/(2k_BT)}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>比较同温度下两个材料的带隙，若暂忽略有效态密度差异，较大带隙使本征浓度呈指数降低。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_{\\gamma}=h\\nu\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>发光效率还取决于缺陷、注入和非辐射复合；直接带隙不保证器件必然高效。宽禁带材料另需考虑掺杂与接触难度。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第1章，§1.6—1.10。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>SiC常用于高压功率器件；GaN异质结构可用于高频和功率电子。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不能由带隙单独推断迁移率、热导率或器件可靠性。</p></section></div>'}]}]},
  {'id': 'sp8-ch2',
-  'num': '第2章',
+  'num': '第二章',
   'title': '半导体中杂质和缺陷能级',
   'en': 'IMPURITIES AND DEFECTS',
   'sub': '把掺杂类型、离化、补偿和深能级的作用分开理解。',
   'desc': '把掺杂类型、离化、补偿和深能级的作用分开理解。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#7c3aed',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '2.1 杂质与电离',
+                'color': '#2563eb',
+                'desc': '施主与受主、杂质电离与占据概率',
                 'items': [{'id': 'sp8-2-1',
                            'name': '施主与受主',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '浅施主电离后提供导带电子并带正电；浅受主俘获价带电子，留下可运动空穴并带负电。杂质位置和宿主材料会改变能级性质。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>浅施主电离后提供导带电子并带正电；浅受主俘获价带电子，留下可运动空穴并带负电。杂质位置和宿主材料会改变能级性质。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[E_D\\lt E_c,\\qquad '
-                                   'E_A>E_v\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>施主浓度不总等于自由电子浓度。低温不完全电离、补偿或高浓度简并都会改变简单关系。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第2章，§2.1—2.3。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-2-2',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '浅施主电离后提供导带电子并带正电；浅受主俘获价带电子，留下可运动空穴并带负电。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>浅施主电离后提供导带电子并带正电；浅受主俘获价带电子，留下可运动空穴并带负电。杂质位置和宿主材料会改变能级性质。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div class="la-fml">$$E_D\\lt '
+                                   'E_c,\\qquad E_A>E_v$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>施主浓度不总等于自由电子浓度。低温不完全电离、补偿或高浓度简并都会改变简单关系。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>受主和施主共存时，需要用带电粒子总数求浓度，而不是只比较杂质总数。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$n+N_A^-=p+N_D^+,\\quad '
+                                   'np=n_i^2$$</div><p><br><strong>①</strong> '
+                                   '写出电中性：电子及电离受主的负电荷等于空穴及电离施主的正电荷。<br><strong>②</strong> 室温完全电离且非简并时令 '
+                                   'N_D⁺≈N_D，N_A⁻≈N_A。<br><strong>③</strong> 若 Δ=N_D−N_A，则 '
+                                   'n=(Δ+√(Δ²+4nᵢ²))/2，p=nᵢ²/n。公式亦适用于 Δ 为负，但极端数值计算应避免相消误差。</p></section>'},
+                          {'id': 'sp-detail-2-1',
+                           'name': '杂质电离与占据概率',
+                           'brief': '施主被电子占据时通常呈中性。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>施主被电子占据时通常呈中性，失去束缚电子后带正电；电离比例依赖温度和费米能级。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$N_D^+=\\frac{N_D}{1+g_D '
+                                   'e^{(E_F-E_D)/(k_BT)}}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>比较施主为空与占据的统计权重，得到费米能级依赖的电离数。这里g_D定义为占据态相对空态的简并权重，常用浅施主模型取2。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>计算低温电子浓度时，将电离式与电中性方程联立，不能先假定全部电离。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不同教材可能将简并因子定义成倒数；代入前应核对定义。</p></section></div>'}]},
+               {'name': '2.2 补偿与浓度计算',
+                'color': '#3b82f6',
+                'desc': '氢样模型与补偿、补偿浓度的数值解',
+                'items': [{'id': 'sp8-2-2',
                            'name': '氢样模型与补偿',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '浅杂质束缚态可用有效质量和介电屏蔽修正氢原子模型。施主与受主同时存在时，相互补偿会降低净掺杂。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>浅杂质束缚态可用有效质量和介电屏蔽修正氢原子模型。施主与受主同时存在时，相互补偿会降低净掺杂。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '浅杂质束缚态可用有效质量和介电屏蔽修正氢原子模型。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>浅杂质束缚态可用有效质量和介电屏蔽修正氢原子模型。施主与受主同时存在时，相互补偿会降低净掺杂。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_b\\approx13.6\\,\\mathrm{eV}\\,\\frac{m^*/m_0}{\\varepsilon_r^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>仅为浅能级的近似模型，不适用于所有深能级。在完全电离且电子占优时，才可用 '
+                                   'n≈N_D−N_A。</p></section><section class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>把氢原子模型中的真空介电常数和电子质量换成材料参数，可估计浅施主束缚能。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$E_b=13.6\\,\\mathrm{eV}\\frac{m^*/m_0}{\\varepsilon_r^2},\\quad '
+                                   'a_B^*=a_B\\varepsilon_r\\frac{m_0}{m^*}$$</div><p><br><strong>①</strong> '
+                                   '动能项与 1/m* 成正比，库仑势被介电常数屏蔽。<br><strong>②</strong> '
+                                   '将氢原子的能级和波函数长度按比例缩放。<br><strong>③</strong> 例如 m*=0.26m₀、εr=11.7 时，模型估得 '
+                                   'E_b≈26 meV、半径≈2.38 nm。实际硅施主存在多能谷和中心胞修正，数值仅为估算。</p></section>'},
+                          {'id': 'sp-detail-2-2',
+                           'name': '补偿浓度的数值解',
+                           'brief': '非简并且施受主完全电离时。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非简并且施受主完全电离时，净掺杂决定电子和空穴浓度之差。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$n=\\frac{\\Delta+\\sqrt{\\Delta^2+4n_i^2}}2,\\quad '
+                                   '\\Delta=N_D-N_A$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>由n−p=Δ和np=n_i²消去p，得到二次方程n²−Δn−n_i²=0，取正根。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_b\\approx13.6\\,\\mathrm{eV}\\,\\frac{m^*/m_0}{\\varepsilon_r^2}\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>仅为浅能级的近似模型，不适用于所有深能级。在完全电离且电子占优时，才可用 '
-                                   'n≈N_D−N_A。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第2章，§2.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-2-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>若N_D=10¹⁶、N_A=2×10¹⁵、n_i=10¹⁰，单位均为cm⁻³，则n≈8×10¹⁵、p≈1.25×10⁴ '
+                                   'cm⁻³。</p></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>示例采用给定的本征浓度；真实n_i随材料与温度改变。</p></section></div>'}]},
+               {'name': '2.3 缺陷与深能级',
+                'color': '#0ea5e9',
+                'desc': '深能级与晶体缺陷、复合中心与陷阱',
+                'items': [{'id': 'sp8-2-3',
                            'name': '深能级与晶体缺陷',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '空位、间隙原子和位错能引入局域能级。深能级可俘获载流子，也可能充当有效的复合中心。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>空位、间隙原子和位错能引入局域能级。深能级可俘获载流子，也可能充当有效的复合中心。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '空位、间隙原子和位错能引入局域能级。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>空位、间隙原子和位错能引入局域能级。深能级可俘获载流子，也可能充当有效的复合中心。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$n+N_A^-=p+N_D^+$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>电中性式要计入其他带电缺陷。俘获与复合不同：被俘获的载流子也可能重新热发射回能带。</p></section>'},
+                          {'id': 'sp-detail-2-3',
+                           'name': '复合中心与陷阱',
+                           'brief': '能俘获电子或空穴的缺陷称陷阱。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>能俘获电子或空穴的缺陷称陷阱；若能连续俘获两种载流子并使其湮灭，就可充当复合中心。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$c_n=\\sigma_n v_{th},\\quad R_{cap,n}=c_n '
+                                   'nN_t^{empty}$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>俘获系数是截面与热速度之积，再乘自由电子数和可俘获空态数，得到单位体积每秒俘获事件数。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[n+N_A^-=p+N_D^+\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>电中性式要计入其他带电缺陷。俘获与复合不同：被俘获的载流子也可能重新热发射回能带。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第2章，§2.1、2.4。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>深能级瞬态谱利用俘获后热发射的时间响应识别缺陷。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>能级深浅不是唯一判据；俘获截面、占据率和两类载流子浓度同样重要。</p></section></div>'}]}]},
  {'id': 'sp8-ch3',
-  'num': '第3章',
+  'num': '第三章',
   'title': '半导体中载流子的统计分布',
   'en': 'CARRIER STATISTICS',
   'sub': '先判断是否热平衡、是否简并，再求费米能级与载流子浓度。',
   'desc': '先判断是否热平衡、是否简并，再求费米能级与载流子浓度。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#08916f',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '3.1 统计分布与态密度',
+                'color': '#2563eb',
+                'desc': '费米分布与态密度、有效态密度',
                 'items': [{'id': 'sp8-3-1',
                            'name': '费米分布与态密度',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '态密度表示可占据状态的数目，费米函数表示每个状态被电子占据的概率。两者相乘后积分才得到浓度。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>态密度表示可占据状态的数目，费米函数表示每个状态被电子占据的概率。两者相乘后积分才得到浓度。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '态密度表示可占据状态的数目，费米函数表示每个状态被电子占据的概率。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>态密度表示可占据状态的数目，费米函数表示每个状态被电子占据的概率。两者相乘后积分才得到浓度。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$f(E)=\\frac{1}{1+\\exp[(E-E_F)/(k_BT)]}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>费米能级不是所有电子共有的能量。非简并近似要求相关带边与费米能级相隔数个热能。</p></section><section '
+                                   'class="la-kp-sec la-kp-def"><h5>推导思路</h5><p>态密度来自 k '
+                                   '空间中允许量子态的计数；自旋和等价能谷简并度均需计入。</p></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$g_c(E)=\\frac{g_v}{2\\pi^2}\\left(\\frac{2m_d^*}{\\hbar^2}\\right)^{3/2}\\sqrt{E-E_c}$$</div><p><br><strong>①</strong> '
+                                   '周期边界条件下，每个 k 态占据体积 (2π/L)³，并计入两个自旋。<br><strong>②</strong> 半径 k 内的态数与 k³ '
+                                   '成正比。<br><strong>③</strong> 由 E−E_c=ℏ²k²/(2m*) 换元并对能量求导，得到平方根形式。此处 g_v '
+                                   '是不含自旋的等价谷数，m_d* 是单谷态密度质量；若质量参数已经包含谷简并，不能重复乘 g_v。</p></section>'},
+                          {'id': 'sp-detail-3-1',
+                           'name': '有效态密度',
+                           'brief': '有效态密度把态密度积分压缩为一个温度相关系数。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>有效态密度把态密度积分压缩为一个温度相关系数，便于计算非简并载流子浓度。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$N_c=2g_v\\left(\\frac{2\\pi '
+                                   'm_d^*k_BT}{h^2}\\right)^{3/2}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>将三维态密度与玻尔兹曼因子相乘，令u=(E−E_c)/(kBT)，利用积分∫₀∞u^(1/2)e^(−u)du=√π/2得到结果。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[f(E)=\\frac{1}{1+\\exp[(E-E_F)/(k_BT)]}\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>费米能级不是所有电子共有的能量。非简并近似要求相关带边与费米能级相隔数个热能。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第3章，§3.1—3.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-3-2',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>温度由T升至2T且质量不变时，N_c增加到2^(3/2)倍。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>这里m_d*为单谷质量；若使用已包含谷数的等效质量，不应重复乘g_v。</p></section></div>'}]},
+               {'name': '3.2 本征与杂质半导体',
+                'color': '#3b82f6',
+                'desc': '非简并载流子浓度、费米能级的位置',
+                'items': [{'id': 'sp8-3-2',
                            'name': '非简并载流子浓度',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '抛物线带边结合玻尔兹曼近似，给出导带电子和价带空穴的指数分布。本征浓度对带隙与温度十分敏感。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>抛物线带边结合玻尔兹曼近似，给出导带电子和价带空穴的指数分布。本征浓度对带隙与温度十分敏感。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[n=N_c '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '抛物线带边结合玻尔兹曼近似，给出导带电子和价带空穴的指数分布。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>抛物线带边结合玻尔兹曼近似，给出导带电子和价带空穴的指数分布。本征浓度对带隙与温度十分敏感。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div class="la-fml">$$n=N_c '
                                    'e^{-(E_c-E_F)/(k_BT)},\\quad p=N_v e^{-(E_F-E_v)/(k_BT)},\\quad '
-                                   'n_i=\\sqrt{N_cN_v}e^{-E_g/(2k_BT)}\\]</p></section><section '
-                                   'class="la-kp-sec la-kp-note"><h5>适用条件与易错点</h5><p>N_c、N_v为有效态密度。平衡非简并情况下 '
-                                   'np=n_i²；受光照或注入时不能直接套用此乘积关系。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第3章，§3.2—3.3。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-3-3',
+                                   'n_i=\\sqrt{N_cN_v}e^{-E_g/(2k_BT)}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 注</h5><p>N_c、N_v为有效态密度。平衡非简并情况下 '
+                                   'np=n_i²；受光照或注入时不能直接套用此乘积关系。</p></section><section class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>将费米函数在非简并极限展开，可以看出带隙和温度如何决定本征载流子数。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$n_i=\\sqrt{N_cN_v}e^{-E_g/(2k_BT)},\\quad '
+                                   'E_i=\\frac{E_c+E_v}{2}+\\frac{k_BT}{2}\\ln\\frac{N_v}{N_c}$$</div><p><br><strong>①</strong> '
+                                   '导带与价带分别采用玻尔兹曼近似。<br><strong>②</strong> 本征条件 n=p 联立两个指数式，求得 '
+                                   'E_i。<br><strong>③</strong> 两式相乘消去费米能级，得到 nᵢ。三维抛物线带中 N_c、N_v 与 T 的 3/2 '
+                                   '次方成正比，因此温度变化不仅影响指数项。</p></section>'},
+                          {'id': 'sp-detail-3-2',
+                           'name': '费米能级的位置',
+                           'brief': '非简并半导体中。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非简并半导体中，电子浓度决定费米能级与导带底的距离。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_c-E_F=k_BT\\ln(N_c/n)$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 导</h5><p>从n=N_c '
+                                   'exp[−(E_c−E_F)/kBT]取对数得到。浓度每增加一个数量级，费米能级向导带移动kBT '
+                                   'ln10。</p></section><section class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>300 K下kBT约25.85 meV，因此每增加十倍浓度，对应约59.5 '
+                                   'meV的变化。</p></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>靠近或进入能带后玻尔兹曼近似失效，不能继续沿用这一对数规律。</p></section></div>'}]},
+               {'name': '3.3 简并与温度效应',
+                'color': '#0ea5e9',
+                'desc': '冻析、饱和电离与简并、简并半导体与费米积分',
+                'items': [{'id': 'sp8-3-3',
                            'name': '冻析、饱和电离与简并',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '低温时杂质可能尚未充分电离；中间温区由掺杂主导；高温本征激发显著。重掺杂时还需考虑简并与禁带变窄。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>低温时杂质可能尚未充分电离；中间温区由掺杂主导；高温本征激发显著。重掺杂时还需考虑简并与禁带变窄。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '低温时杂质可能尚未充分电离；中间温区由掺杂主导；高温本征激发显著。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>低温时杂质可能尚未充分电离；中间温区由掺杂主导；高温本征激发显著。重掺杂时还需考虑简并与禁带变窄。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$n-p=N_D^+-N_A^-$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>解题应将电中性条件与统计分布联立。简并体系须使用费米积分，不能机械延伸玻尔兹曼公式。</p></section>'},
+                          {'id': 'sp-detail-3-3',
+                           'name': '简并半导体与费米积分',
+                           'brief': '当费米能级接近能带边缘时。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>当费米能级接近能带边缘时，必须保留完整费米分布和泡利不相容效应。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$n=N_cF_{1/2}(\\eta),\\quad '
+                                   'F_{1/2}(\\eta)=\\frac2{\\sqrt\\pi}\\int_0^\\infty\\frac{\\sqrt{x}}{1+e^{x-\\eta}}dx$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>取η=(E_F−E_c)/kBT，将抛物线态密度积分换成无量纲变量。η很负时，分母近似为exp(x−η)，恢复F₁/₂≈e^η。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[n-p=N_D^+-N_A^-\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>解题应将电中性条件与统计分布联立。简并体系须使用费米积分，不能机械延伸玻尔兹曼公式。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第3章，§3.4—3.7。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>重掺杂接触区需要简并统计；高浓度时还可能发生带隙变窄。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>本式明确使用归一化费米积分，其他归一化约定会改变前因子。</p></section></div>'}]}]},
  {'id': 'sp8-ch4',
-  'num': '第4章',
+  'num': '第四章',
   'title': '半导体的导电性',
   'en': 'ELECTRICAL CONDUCTION',
   'sub': '用散射解释迁移率，再区分弱场与强场输运。',
   'desc': '用散射解释迁移率，再区分弱场与强场输运。',
-  'sections': [{'name': '核心学习导读',
+  'sections': [{'name': '4.1 漂移与电导',
                 'color': '#2563eb',
-                'desc': '概念 · 关键关系 · 适用条件',
+                'desc': '漂移、迁移率与电导率、迁移率与电导的数值计算',
                 'items': [{'id': 'sp8-4-1',
                            'name': '漂移、迁移率与电导率',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '电场使随机热运动叠加定向漂移。电子漂移方向与电场相反，但电子和空穴的常规电流贡献同向。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>电场使随机热运动叠加定向漂移。电子漂移方向与电场相反，但电子和空穴的常规电流贡献同向。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '电场使随机热运动叠加定向漂移。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电场使随机热运动叠加定向漂移。电子漂移方向与电场相反，但电子和空穴的常规电流贡献同向。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\sigma=q(n\\mu_n+p\\mu_p),\\qquad '
+                                   '\\rho=1/\\sigma$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>q为元电荷的正值。电导率同时受浓度和迁移率影响，增大掺杂并不意味着迁移率提高。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\sigma=q(n\\mu_n+p\\mu_p),\\qquad '
-                                   '\\rho=1/\\sigma\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>q为元电荷的正值。电导率同时受浓度和迁移率影响，增大掺杂并不意味着迁移率提高。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第4章，§4.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-4-2',
+                                   'la-kp-def"><h5>推导思路</h5><p>弛豫时间近似说明为什么电导率正比于载流子浓度和迁移率。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$m^*\\frac{d\\langle v\\rangle}{dt}=q_c\\mathcal '
+                                   'E-\\frac{m^*\\langle v\\rangle}{\\tau},\\quad '
+                                   '\\mu=\\frac{q\\tau}{m^*}$$</div><p><br><strong>①</strong> '
+                                   '平均动量受到电场驱动，同时因散射以时间尺度 τ 弛豫。<br><strong>②</strong> '
+                                   '稳态令左边为零。<br><strong>③</strong> 用电荷 q_c 乘以浓度与漂移速度得到电流，电子和空穴相加得到 '
+                                   'σ=q(nμ_n+pμ_p)。τ 往往依赖能量，严格统计理论需要适当加权平均。</p></section>'},
+                          {'id': 'sp-detail-4-1',
+                           'name': '迁移率与电导的数值计算',
+                           'brief': '迁移率表示单位电场引起的漂移速度。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>迁移率表示单位电场引起的漂移速度，电导率还需要乘载流子数和电荷。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\sigma=qn\\mu_n,\\quad '
+                                   '\\rho=1/\\sigma$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>在电子导电占优时省去空穴项。先统一浓度、迁移率和电荷单位，再计算电导与电阻率。</p></section><section '
+                                   'class="la-kp-sec la-kp-exa"><h5>例子与应用</h5><p>若n=10¹⁶ cm⁻³、μ_n=1000 '
+                                   'cm²/(V·s)，则σ≈1.60 S/cm，ρ≈0.624 Ω·cm。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不要把cm制浓度与m制迁移率混合使用；迁移率不是漂移速度。</p></section></div>'}]},
+               {'name': '4.2 散射与迁移率',
+                'color': '#3b82f6',
+                'desc': '声子与离化杂质散射、散射率相加',
+                'items': [{'id': 'sp8-4-2',
                            'name': '声子与离化杂质散射',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '晶格热振动和带电杂质都会破坏载流子的定向运动。散射主导机制随温度、掺杂和材料改变。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>晶格热振动和带电杂质都会破坏载流子的定向运动。散射主导机制随温度、掺杂和材料改变。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '晶格热振动和带电杂质都会破坏载流子的定向运动。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>晶格热振动和带电杂质都会破坏载流子的定向运动。散射主导机制随温度、掺杂和材料改变。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\mu\\approx\\frac{q\\tau}{m^*},\\qquad '
+                                   '\\frac{1}{\\mu}\\approx\\sum_i\\frac{1}{\\mu_i}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>弛豫时间模型和Matthiessen近似有适用条件。不同散射机制对应的温度指数不可当作普适常数。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\mu\\approx\\frac{q\\tau}{m^*},\\qquad '
-                                   '\\frac{1}{\\mu}\\approx\\sum_i\\frac{1}{\\mu_i}\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>电导率由浓度与迁移率共同决定，因此温度趋势不能只由某一项判断。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\rho(T)=\\frac{1}{q[n(T)\\mu_n(T)+p(T)\\mu_p(T)]}$$</div><p><br><strong>①</strong> '
+                                   '低温冻析时自由载流子减少。<br><strong>②</strong> '
+                                   '杂质电离充分而本征激发较弱时，载流子浓度近似恒定，迁移率的温度变化成为主要因素。<br><strong>③</strong> '
+                                   '高温本征激发使电子、空穴浓度快速上升。各机制主导的温区随样品掺杂和材料而变。</p></section>'},
+                          {'id': 'sp-detail-4-2',
+                           'name': '散射率相加',
+                           'brief': '近似独立的散射通道可用总动量弛豫率相加描述。。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>近似独立的散射通道可用总动量弛豫率相加描述。</p></section><section class="la-kp-sec '
+                                   'la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\tau^{-1}\\approx\\sum_i\\tau_i^{-1},\\quad '
+                                   '\\mu^{-1}\\approx\\sum_i\\mu_i^{-1}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>短时间内各独立散射事件发生的概率相加，得到总散射率。进一步在适用的平均近似下得到迁移率倒数相加。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>弛豫时间模型和Matthiessen近似有适用条件。不同散射机制对应的温度指数不可当作普适常数。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第4章，§4.2—4.5。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-4-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>若两通道迁移率分别为1000和2000，同单位下总迁移率约667。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>能量依赖和统计平均可能破坏简单相加；这是一种近似规则。</p></section></div>'}]},
+               {'name': '4.3 强电场输运',
+                'color': '#0ea5e9',
+                'desc': '热载流子与耿氏效应、速度饱和',
+                'items': [{'id': 'sp8-4-3',
                            'name': '热载流子与耿氏效应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '强电场下，载流子可偏离与晶格相同的热平衡分布。某些多能谷材料发生谷间转移后，平均漂移速度可能随电场增加而降低。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>强电场下，载流子可偏离与晶格相同的热平衡分布。某些多能谷材料发生谷间转移后，平均漂移速度可能随电场增加而降低。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\frac{dv_d}{d\\mathcal '
-                                   'E}\\lt 0\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>负微分迁移率不等于负静态电阻。耿氏振荡需要适当材料、场强及器件边界条件。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第4章，§4.6—4.7。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '强电场下，载流子可偏离与晶格相同的热平衡分布。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>强电场下，载流子可偏离与晶格相同的热平衡分布。某些多能谷材料发生谷间转移后，平均漂移速度可能随电场增加而降低。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{dv_d}{d\\mathcal E}\\lt '
+                                   '0$$</div></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>负微分迁移率不等于负静态电阻。耿氏振荡需要适当材料、场强及器件边界条件。</p></section>'},
+                          {'id': 'sp-detail-4-3',
+                           'name': '速度饱和',
+                           'brief': '强场下能量损失与散射加强。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>强场下能量损失与散射加强，漂移速度不再与电场线性增长。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$v_d\\simeq\\frac{\\mu_0\\mathcal E}{1+\\mu_0|\\mathcal '
+                                   'E|/v_{sat}}$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>该经验插值在弱场恢复v≈μ₀𝓔，强场时速度绝对值趋于v_sat，用于说明欧姆区向饱和区的过渡。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>短沟道器件中，速度饱和会限制电流随电场继续增加。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>这不是通用微观定律；多能谷负微分迁移率和非局部热载流子效应需单独处理。</p></section></div>'}]}]},
  {'id': 'sp8-ch5',
-  'num': '第5章',
+  'num': '第五章',
   'title': '非平衡载流子',
   'en': 'NONEQUILIBRIUM CARRIERS',
   'sub': '把产生、复合、漂移和扩散统一到连续性方程。',
   'desc': '把产生、复合、漂移和扩散统一到连续性方程。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#7c3aed',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '5.1 产生与复合',
+                'color': '#2563eb',
+                'desc': '寿命、准费米能级与复合、SRH复合',
                 'items': [{'id': 'sp8-5-1',
                            'name': '寿命、准费米能级与复合',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '光照或电注入会产生过剩载流子；小注入条件下常以寿命描述复合衰减。非平衡时可分别用电子、空穴准费米能级描述分布。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>光照或电注入会产生过剩载流子；小注入条件下常以寿命描述复合衰减。非平衡时可分别用电子、空穴准费米能级描述分布。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\Delta n(t)=\\Delta '
-                                   'n(0)e^{-t/\\tau},\\quad '
-                                   'np=n_i^2e^{(F_n-F_p)/(k_BT)}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>指数衰减假定寿命近似恒定；准费米表达要求各载流子子系统可用相应统计分布描述。深能级辅助、辐射和俄歇复合的注入依赖不同。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第5章，§5.1—5.5。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-5-2',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '光照或电注入会产生过剩载流子；小注入条件下常以寿命描述复合衰减。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>光照或电注入会产生过剩载流子；小注入条件下常以寿命描述复合衰减。非平衡时可分别用电子、空穴准费米能级描述分布。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div class="la-fml">$$\\Delta '
+                                   'n(t)=\\Delta n(0)e^{-t/\\tau},\\quad '
+                                   'np=n_i^2e^{(F_n-F_p)/(k_BT)}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>指数衰减假定寿命近似恒定；准费米表达要求各载流子子系统可用相应统计分布描述。深能级辅助、辐射和俄歇复合的注入依赖不同。</p></section>'},
+                          {'id': 'sp-detail-5-1',
+                           'name': 'SRH复合',
+                           'brief': '单一陷阱能级可通过依次俘获电子、空穴完成间接复合。。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>单一陷阱能级可通过依次俘获电子、空穴完成间接复合。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$U_{SRH}=\\frac{np-n_i^2}{\\tau_p(n+n_1)+\\tau_n(p+p_1)}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>令陷阱占据率的变化为零，平衡电子俘获、发射与空穴俘获、发射四个过程，消去占据率得到净复合率。n₁=n_i '
+                                   'exp[(E_t−E_i)/kBT]，p₁=n_i exp[(E_i−E_t)/kBT]。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>在低注入p型材料中，适当条件下净复合率近似与过剩电子浓度成正比。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 注</h5><p>τ_n=1/(σ_n v_th '
+                                   'N_t)，τ_p类似；费米能级、陷阱位置与截面共同决定复合效率。</p></section></div>'}]},
+               {'name': '5.2 漂移与扩散',
+                'color': '#3b82f6',
+                'desc': '漂移扩散与爱因斯坦关系、辐射复合与俄歇复合',
+                'items': [{'id': 'sp8-5-2',
                            'name': '漂移扩散与爱因斯坦关系',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '浓度不均匀引起扩散，电场引起漂移。扩散电流的电子、空穴符号不同，来自各自电荷符号。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>浓度不均匀引起扩散，电场引起漂移。扩散电流的电子、空穴符号不同，来自各自电荷符号。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[J_n=q\\mu_n n\\mathcal '
-                                   'E+qD_n\\nabla n,\\quad J_p=q\\mu_p p\\mathcal E-qD_p\\nabla p,\\quad '
-                                   'D/\\mu=k_BT/q\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>这里使用常规电流方向。爱因斯坦关系取经典非简并、局部热平衡形式；简并时需修正。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第5章，§5.6—5.7。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-5-3',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '浓度不均匀引起扩散，电场引起漂移。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>浓度不均匀引起扩散，电场引起漂移。扩散电流的电子、空穴符号不同，来自各自电荷符号。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$J_n=q\\mu_n n\\mathcal E+qD_n\\nabla n,\\quad '
+                                   'J_p=q\\mu_p p\\mathcal E-qD_p\\nabla p,\\quad '
+                                   'D/\\mu=k_BT/q$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>这里使用常规电流方向。爱因斯坦关系取经典非简并、局部热平衡形式；简并时需修正。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>热平衡时漂移和扩散分别可以非零，但它们的电流总和必须抵消。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$J_n=q\\mu_n n\\mathcal E+qD_n\\frac{dn}{dx}=0,\\quad '
+                                   '\\frac{D_n}{\\mu_n}=\\frac{k_BT}{q}$$</div><p><br><strong>①</strong> '
+                                   '平衡时费米能级恒定，而 E_c 随静电势变化。<br><strong>②</strong> 非简并分布 '
+                                   'n∝exp[−(E_c−E_F)/(k_BT)]，且平衡时 E_F 恒定、dE_c/dx=q𝓔，因此 '
+                                   'dn/dx=−qn𝓔/(k_BT)。<br><strong>③</strong> 代回电子电流式，得到 '
+                                   'D/μ=k_BT/q。均匀温度、非简并统计和局部平衡是关键假设。</p></section>'},
+                          {'id': 'sp-detail-5-2',
+                           'name': '辐射复合与俄歇复合',
+                           'brief': '辐射复合把能量交给光子。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>辐射复合把能量交给光子；俄歇复合把能量交给第三个载流子。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$U_{rad}=B(np-n_i^2),\\quad U_A=(C_n n+C_p '
+                                   'p)(np-n_i^2)$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>两粒子相遇概率与np相关；俄歇过程还需第三个粒子，因此多一个浓度因子。平衡产生项保证热平衡时净复合为零。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>高注入下n≈p≈Δn，辐射项约随Δn²增长，俄歇项约随Δn³增长。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>系数依赖材料和温度；不能只按浓度幂次断定所有实验数据的复合机制。</p></section></div>'}]},
+               {'name': '5.3 连续性与边界条件',
+                'color': '#0ea5e9',
+                'desc': '连续性与扩散长度、表面复合边界',
+                'items': [{'id': 'sp8-5-3',
                            'name': '连续性与扩散长度',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '局部载流子数目的变化来自电流流入流出、产生和复合。扩散长度衡量少子在复合前扩散的典型距离。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>局部载流子数目的变化来自电流流入流出、产生和复合。扩散长度衡量少子在复合前扩散的典型距离。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\frac{\\partial '
-                                   'n}{\\partial t}=\\frac{1}{q}\\nabla\\cdot J_n+G_n-R_n,\\qquad '
-                                   'L_n=\\sqrt{D_n\\tau_n}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>长度不是平均自由程。稳态无场、均匀材料、线性复合近似下，边界注入产生指数衰减分布。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第5章，§5.8—5.9。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '局部载流子数目的变化来自电流流入流出、产生和复合。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>局部载流子数目的变化来自电流流入流出、产生和复合。扩散长度衡量少子在复合前扩散的典型距离。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{\\partial n}{\\partial '
+                                   't}=\\frac{1}{q}\\nabla\\cdot J_n+G_n-R_n,\\qquad '
+                                   'L_n=\\sqrt{D_n\\tau_n}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>长度不是平均自由程。稳态无场、均匀材料、线性复合近似下，边界注入产生指数衰减分布。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>一维稳态少子分布由扩散和复合的竞争决定。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$D\\frac{d^2\\Delta n}{dx^2}-\\frac{\\Delta '
+                                   'n}{\\tau}=0,\\quad \\Delta n(x)=\\Delta n(0)e^{-x/L},\\quad '
+                                   'L=\\sqrt{D\\tau}$$</div><p><br><strong>①</strong> '
+                                   '在均匀中性区忽略电场和体产生，稳态连续性方程化成常系数微分方程。<br><strong>②</strong> '
+                                   '解为两个指数项。<br><strong>③</strong> '
+                                   '半无限样品在无穷远恢复平衡，舍去增长项。有限长度样品必须使用另一端的表面复合或接触边界条件，不能直接使用单个指数。</p></section>'},
+                          {'id': 'sp-detail-5-3',
+                           'name': '表面复合边界',
+                           'brief': '表面缺陷通过俘获载流子形成额外复合通道。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>表面缺陷通过俘获载流子形成额外复合通道，常用表面复合速度描述。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\Gamma_n\\cdot\\hat{\\mathbf n}=S\\Delta n_s,\\quad '
+                                   '\\Gamma_n=-D_n\\nabla\\Delta n$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>取外法线方向，表面流出的扩散粒子通量等于表面复合率。半无限体的无穷远条件与有限样品的表面条件不同。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>S→0近似钝化边界；S很大时，表面过剩浓度被强烈压低。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>此式为无场扩散模型；S单位为速度，表达的是复合边界参数而非实际漂移速度。</p></section></div>'}]}]},
  {'id': 'sp8-ch6',
-  'num': '第6章',
+  'num': '第六章',
   'title': 'pn结',
   'en': 'PN JUNCTIONS',
   'sub': '由平衡能带出发，再分析注入、电容和击穿。',
   'desc': '由平衡能带出发，再分析注入、电容和击穿。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#08916f',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '6.1 平衡pn结',
+                'color': '#2563eb',
+                'desc': '耗尽层与内建电势、结势垒的温度与掺杂',
                 'items': [{'id': 'sp8-6-1',
                            'name': '耗尽层与内建电势',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '电子与空穴跨结扩散后留下离化杂质，空间电荷建立内电场。热平衡时漂移和扩散抵消，费米能级处处相同。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>电子与空穴跨结扩散后留下离化杂质，空间电荷建立内电场。热平衡时漂移和扩散抵消，费米能级处处相同。</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[V_{bi}=\\frac{k_BT}{q}\\ln\\frac{N_AN_D}{n_i^2}\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>公式采用非简并、完全电离近似。内建电势不能直接当作外部端子可测的电源电压。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第6章，§6.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-6-2',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '电子与空穴跨结扩散后留下离化杂质，空间电荷建立内电场。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电子与空穴跨结扩散后留下离化杂质，空间电荷建立内电场。热平衡时漂移和扩散抵消，费米能级处处相同。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$V_{bi}=\\frac{k_BT}{q}\\ln\\frac{N_AN_D}{n_i^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>公式采用非简并、完全电离近似。内建电势不能直接当作外部端子可测的电源电压。</p></section><section '
+                                   'class="la-kp-sec"><h5>物理图像（示意）</h5><svg viewBox="0 0 460 180" role="img" '
+                                   'aria-label="pn结耗尽区示意图" style="width:100%;max-width:460px"><rect x="25" '
+                                   'y="28" width="195" height="100" fill="#fce7f3"/><rect x="220" y="28" '
+                                   'width="215" height="100" fill="#dbeafe"/><rect x="155" y="28" '
+                                   'width="135" height="100" fill="#fef3c7"/><text x="68" y="57" '
+                                   'font-size="18">p 区</text><text x="330" y="57" font-size="18">n '
+                                   '区</text><text x="165" y="75" font-size="17">− − −\u3000+ + +</text><path '
+                                   'd="M280 102H170m0 0 12-6m-12 6 12 6" stroke="#7c3aed" stroke-width="3" '
+                                   'fill="none"/><text x="170" y="155" font-size="15">耗尽区\u3000内建电场 '
+                                   '←</text></svg></section><section class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>耗尽近似将空间电荷视为两侧均匀的离化杂质，并用泊松方程求解。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$N_Ax_p=N_Dx_n,\\quad '
+                                   'W=x_p+x_n=\\sqrt{\\frac{2\\varepsilon_s}{q}\\left(\\frac1{N_A}+\\frac1{N_D}\\right)(V_{bi}-V)}$$</div><p><br><strong>①</strong> '
+                                   '由总空间电荷中性得两侧耗尽宽度之比 x_p/x_n=N_D/N_A。<br><strong>②</strong> 对 d𝓔/dx=ρ/ε '
+                                   '积分，电场呈分段线性，边界处为零。<br><strong>③</strong> 电场面积等于势垒电压，再联立宽度关系。重掺杂侧的耗尽区更窄；V '
+                                   '的正方向取正向偏置。</p></section>'},
+                          {'id': 'sp-detail-6-1',
+                           'name': '结势垒的温度与掺杂',
+                           'brief': '内建电势由两侧平衡费米能级差决定。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>内建电势由两侧平衡费米能级差决定，电子和空穴浓度随势垒呈指数关系。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$V_{bi}=\\frac{k_BT}{q}\\ln\\frac{N_AN_D}{n_i^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>从两侧非简并统计分别写费米能级到本征能级的距离，相加并除q得到电势差。</p></section><section '
+                                   'class="la-kp-sec la-kp-exa"><h5>例子与应用</h5><p>300 K、N_A=N_D=10¹⁶ '
+                                   'cm⁻³、n_i=10¹⁰ cm⁻³时，V_bi≈0.714 V。</p></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>完全电离、非简并是前提；温度改变时n_i也改变，不能仅把kBT看成唯一温度项。</p></section></div>'}]},
+               {'name': '6.2 注入与整流',
+                'color': '#3b82f6',
+                'desc': '理想二极管方程、扩散电容',
+                'items': [{'id': 'sp8-6-2',
                            'name': '理想二极管方程',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '正偏降低势垒并注入少数载流子；少子在中性区扩散和复合形成电流。理想模型给出指数伏安特性。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>正偏降低势垒并注入少数载流子；少子在中性区扩散和复合形成电流。理想模型给出指数伏安特性。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '正偏降低势垒并注入少数载流子；少子在中性区扩散和复合形成电流。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>正偏降低势垒并注入少数载流子；少子在中性区扩散和复合形成电流。理想模型给出指数伏安特性。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$J=J_s\\left(e^{qV/(k_BT)}-1\\right)$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>前提包括小注入、忽略耗尽区复合、串联电阻和击穿。实际器件的理想因子及漏电机制会随电压改变。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[J=J_s\\left(e^{qV/(k_BT)}-1\\right)\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>指数规律来自结边界少子浓度，扩散电流来自中性区的浓度梯度。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div class="la-fml">$$J_s=q '
+                                   'n_i^2\\left(\\frac{D_p}{L_pN_D}+\\frac{D_n}{L_nN_A}\\right),\\quad '
+                                   'J=J_s(e^{qV/k_BT}-1)$$</div><p><br><strong>①</strong> '
+                                   '在低注入和准平衡边界条件下，结边缘少子浓度相对平衡值增加 e^(qV/kBT)−1 倍。<br><strong>②</strong> '
+                                   '解中性区稳态扩散方程，求结边梯度。<br><strong>③</strong> 电子和空穴扩散电流相加得到 '
+                                   'J_s。公式假设两侧中性区足够长、表面复合及耗尽区复合可忽略。</p></section>'},
+                          {'id': 'sp-detail-6-2',
+                           'name': '扩散电容',
+                           'brief': '正偏注入的过剩少子形成储存电荷。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>正偏注入的过剩少子形成储存电荷，其随电压的变化体现为扩散电容。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$C_d=\\frac{dQ}{dV}\\simeq\\tau_T\\frac{dI}{dV}\\simeq\\frac{q\\tau_T '
+                                   'I}{k_BT}$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>若储存电荷Q≈τ_T '
+                                   'I，且τ_T近似常数，对电压求导；理想指数区dI/dV≈qI/kBT。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>前提包括小注入、忽略耗尽区复合、串联电阻和击穿。实际器件的理想因子及漏电机制会随电压改变。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第6章，§6.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-6-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>扩散电容随正向电流迅速增长，是二极管开关与反向恢复的重要因素。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>τ_T是有效储存时间，取决于结构和输运；强注入与高频条件下应使用更完整模型。</p></section></div>'}]},
+               {'name': '6.3 电容与击穿',
+                'color': '#0ea5e9',
+                'desc': '结电容、击穿与隧道、雪崩、隧穿与热击穿',
+                'items': [{'id': 'sp8-6-3',
                            'name': '结电容、击穿与隧道',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '耗尽层宽度随偏压变化形成势垒电容；正向注入储存电荷形成扩散电容。强反偏还可能引发雪崩或隧道击穿。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>耗尽层宽度随偏压变化形成势垒电容；正向注入储存电荷形成扩散电容。强反偏还可能引发雪崩或隧道击穿。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '耗尽层宽度随偏压变化形成势垒电容；正向注入储存电荷形成扩散电容。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>耗尽层宽度随偏压变化形成势垒电容；正向注入储存电荷形成扩散电容。强反偏还可能引发雪崩或隧道击穿。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$W=\\sqrt{\\frac{2\\varepsilon_s}{q}\\left(\\frac{1}{N_A}+\\frac{1}{N_D}\\right)(V_{bi}-V)},\\quad '
+                                   "C'_j=\\frac{\\varepsilon_s}{W}$$</div></section><section "
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>W式适用于突变结耗尽近似，V正向为正，C′为单位面积电容。热击穿与受控雪崩的物理机制不同。</p></section>'},
+                          {'id': 'sp-detail-6-3',
+                           'name': '雪崩、隧穿与热击穿',
+                           'brief': '雪崩由碰撞电离增殖载流子。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>雪崩由碰撞电离增殖载流子，隧穿由强场下量子跃迁造成，热失稳则源于功率与散热失衡。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{dJ_n}{dx}=\\alpha_nJ_n+\\alpha_pJ_p$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>沿载流子路径，电子与空穴的碰撞电离均可产生新载流子，形成正反馈增殖。隧穿不依赖同样的碰撞电离链条。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[W=\\sqrt{\\frac{2\\varepsilon_s}{q}\\left(\\frac{1}{N_A}+\\frac{1}{N_D}\\right)(V_{bi}-V)},\\quad '
-                                   "C'_j=\\frac{\\varepsilon_s}{W}\\]</p></section><section "
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>W式适用于突变结耗尽近似，V正向为正，C′为单位面积电容。热击穿与受控雪崩的物理机制不同。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第6章，§6.3—6.5。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>重掺杂使耗尽区较薄、局部场强较大，更容易出现显著隧穿。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>击穿电压和温度系数受多机制竞争影响；不要把所有反向大电流都称为雪崩。</p></section></div>'}]}]},
  {'id': 'sp8-ch7',
-  'num': '第7章',
+  'num': '第七章',
   'title': '金属和半导体的接触',
   'en': 'METAL–SEMICONDUCTOR CONTACTS',
   'sub': '区分势垒高度、能带弯曲和接触电阻。',
   'desc': '区分势垒高度、能带弯曲和接触电阻。',
-  'sections': [{'name': '核心学习导读',
+  'sections': [{'name': '7.1 接触势垒',
                 'color': '#2563eb',
-                'desc': '概念 · 关键关系 · 适用条件',
+                'desc': '功函数与肖特基势垒、界面态与费米能级钉扎',
                 'items': [{'id': 'sp8-7-1',
                            'name': '功函数与肖特基势垒',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '功函数是从费米能级移走电子到真空所需的能量，电子亲和能从导带底计起。接触后电荷转移使半导体能带弯曲。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>功函数是从费米能级移走电子到真空所需的能量，电子亲和能从导带底计起。接触后电荷转移使半导体能带弯曲。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '功函数是从费米能级移走电子到真空所需的能量，电子亲和能从导带底计起。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>功函数是从费米能级移走电子到真空所需的能量，电子亲和能从导带底计起。接触后电荷转移使半导体能带弯曲。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_{Bn}=W_m-\\chi_s$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>式中W_m、χ_s均用能量单位；这是理想界面模型。界面态和费米能级钉扎会使实际势垒偏离功函数预测。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_{Bn}=W_m-\\chi_s\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>理想金属与n型半导体接触后，平衡要求费米能级对齐。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$q\\phi_{Bn}=W_m-\\chi,\\quad '
+                                   'V_{bi}=\\phi_{Bn}-\\frac{E_c-E_F}{q},\\quad '
+                                   'W=\\sqrt{\\frac{2\\varepsilon_s(V_{bi}-V)}{qN_D}}$$</div><p><br><strong>①</strong> '
+                                   '金属功函数减半导体电子亲和能给理想电子势垒能量。<br><strong>②</strong> '
+                                   '减去体内导带底与费米能级间距，得到半导体内建电势。<br><strong>③</strong> '
+                                   '对均匀电离施主区积分泊松方程得到耗尽宽度。真实界面态可能钉扎费米能级，且此处能量与电势单位必须区分。</p></section>'},
+                          {'id': 'sp-detail-7-1',
+                           'name': '界面态与费米能级钉扎',
+                           'brief': '大量界面态可随费米能级变化交换电荷。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>大量界面态可随费米能级变化交换电荷，改变金属功函数对势垒的控制程度。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$S_B=\\frac{d\\phi_B}{d(W_m/q)}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>理想肖特基–莫特极限S_B接近1；界面态响应强时，改变金属功函数主要引起界面电荷重排，势垒变化减弱。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>式中W_m、χ_s均用能量单位；这是理想界面模型。界面态和费米能级钉扎会使实际势垒偏离功函数预测。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第7章，§7.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-7-2',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>低接触电阻工程常需同时考虑界面清洁、钝化和金属化学反应。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>势垒不均匀、界面偶极也会影响实验；单一斜率不能唯一确定界面态密度。</p></section></div>'}]},
+               {'name': '7.2 接触输运',
+                'color': '#3b82f6',
+                'desc': '热电子发射整流、镜像力降垒',
+                'items': [{'id': 'sp8-7-2',
                            'name': '热电子发射整流',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '载流子热激发越过势垒可形成整流电流。势垒高度对电流有指数影响，镜像力和隧穿也可能参与输运。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>载流子热激发越过势垒可形成整流电流。势垒高度对电流有指数影响，镜像力和隧穿也可能参与输运。</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[J=A^{**}T^2e^{-E_{Bn}/(k_BT)}\\left(e^{qV/(k_BT)}-1\\right)\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>这里忽略串联电阻、势垒不均匀等非理想因素。A**为有效Richardson常数，不宜不分材料直接套数值。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第7章，§7.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-7-3',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '载流子热激发越过势垒可形成整流电流。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>载流子热激发越过势垒可形成整流电流。势垒高度对电流有指数影响，镜像力和隧穿也可能参与输运。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$J=A^{**}T^2e^{-E_{Bn}/(k_BT)}\\left(e^{qV/(k_BT)}-1\\right)$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>这里忽略串联电阻、势垒不均匀等非理想因素。A**为有效Richardson常数，不宜不分材料直接套数值。</p></section>'},
+                          {'id': 'sp-detail-7-2',
+                           'name': '镜像力降垒',
+                           'brief': '金属中的感应电荷对接近界面的电子产生吸引。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>金属中的感应电荷对接近界面的电子产生吸引，使外场下的有效势垒降低。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div class="la-fml">$$\\Delta '
+                                   'E_B=\\sqrt{\\frac{q^3|\\mathcal '
+                                   'E|}{4\\pi\\varepsilon_s}}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 导</h5><p>在平面界面经典模型中，电子势能包含−q²/(16πε_s '
+                                   'x)与电场项。对两项之和求极值，得到势垒顶部位置与降垒量。</p></section><section class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>降垒使反偏肖特基电流随电场增大，不再保持理想常数饱和电流。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>该式是能量；若需要伏特为单位的降垒电势，应除以q。</p></section></div>'}]},
+               {'name': '7.3 欧姆接触',
+                'color': '#0ea5e9',
+                'desc': '欧姆接触、隧穿欧姆接触',
+                'items': [{'id': 'sp8-7-3',
                            'name': '欧姆接触',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '欧姆接触应在工作电流范围内低阻且近似线性。重掺杂可缩窄势垒，使隧穿增强；不必把势垒高度降为零。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>欧姆接触应在工作电流范围内低阻且近似线性。重掺杂可缩窄势垒，使隧穿增强；不必把势垒高度降为零。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '欧姆接触应在工作电流范围内低阻且近似线性。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>欧姆接触应在工作电流范围内低阻且近似线性。重掺杂可缩窄势垒，使隧穿增强；不必把势垒高度降为零。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\rho_c=\\left(\\left.\\frac{\\partial J}{\\partial '
+                                   'V}\\right|_{V=0}\\right)^{-1}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>比接触电阻具有电阻乘面积的量纲。接触设计还涉及表面处理、金属体系和退火条件。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\rho_c=\\left(\\left.\\frac{\\partial '
-                                   'J}{\\partial V}\\right|_{V=0}\\right)^{-1}\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>在热发射控制的理想接触中，零偏微分电导可由电流方程求得。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$J=J_s(e^{qV/(k_BT)}-1),\\quad '
+                                   '\\rho_c=\\left.\\left(\\frac{dJ}{dV}\\right)^{-1}\\right|_{V=0}=\\frac{k_BT}{qJ_s}$$</div><p><br><strong>①</strong> '
+                                   '对指数伏安关系求导。<br><strong>②</strong> 令 V=0，取倒数。<br><strong>③</strong> 由于 '
+                                   'J_s∝T²exp(−E_B/kBT)，势垒升高会显著增加比接触电阻。重掺杂隧穿、界面反应及电流拥挤使实际接触偏离此模型。</p></section>'},
+                          {'id': 'sp-detail-7-3',
+                           'name': '隧穿欧姆接触',
+                           'brief': '重掺杂可以显著缩窄接触耗尽层。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>重掺杂可以显著缩窄接触耗尽层，使载流子穿越势垒的概率增加。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$T\\sim\\exp\\left[-2\\int_{x_1}^{x_2}\\frac{\\sqrt{2m^*(U-E)}}{\\hbar}\\,dx\\right]$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>WKB近似给出穿越禁阻区的指数衰减。减小势垒宽度通常会明显增大透射率，即使势垒高度并未消失。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>比接触电阻具有电阻乘面积的量纲。接触设计还涉及表面处理、金属体系和退火条件。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第7章，§7.3。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>通过接触区重掺杂改善金属与半导体的电流传输。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>热发射、热场发射与场发射可在不同温区并存；过量掺杂还可能造成活化和材料问题。</p></section></div>'}]}]},
  {'id': 'sp8-ch8',
-  'num': '第8章',
+  'num': '第八章',
   'title': '半导体表面与MIS结构',
   'en': 'SURFACES AND MIS',
   'sub': '用表面势联系能带弯曲、栅电压与电容测量。',
   'desc': '用表面势联系能带弯曲、栅电压与电容测量。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#7c3aed',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '8.1 表面态与能带弯曲',
+                'color': '#2563eb',
+                'desc': '表面态与电场效应、积累、耗尽与反型',
                 'items': [{'id': 'sp8-8-1',
                            'name': '表面态与电场效应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '表面破坏晶体周期性，界面缺陷产生额外电子态。对p型衬底施加不同栅压，可依次出现积累、耗尽和反型。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>表面破坏晶体周期性，界面缺陷产生额外电子态。对p型衬底施加不同栅压，可依次出现积累、耗尽和反型。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '表面破坏晶体周期性，界面缺陷产生额外电子态。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>表面破坏晶体周期性，界面缺陷产生额外电子态。对p型衬底施加不同栅压，可依次出现积累、耗尽和反型。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_c(x)-E_c(\\mathrm{bulk})=-q\\psi(x)$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>正表面势使电子能带向下弯曲。界面态可交换电荷并影响表面势响应，不能全部等同于固定氧化层电荷。</p></section><section '
+                                   'class="la-kp-sec"><h5>物理图像（示意）</h5><svg viewBox="0 0 460 180" role="img" '
+                                   'aria-label="MIS电容结构示意图" style="width:100%;max-width:460px"><rect x="35" '
+                                   'y="30" width="110" height="100" fill="#cbd5e1"/><rect x="145" y="30" '
+                                   'width="65" height="100" fill="#fef3c7"/><rect x="210" y="30" width="215" '
+                                   'height="100" fill="#dbeafe"/><text x="50" y="82" '
+                                   'font-size="17">金属栅</text><text x="150" y="82" '
+                                   'font-size="15">绝缘层</text><text x="240" y="82" '
+                                   'font-size="17">半导体衬底</text><text x="92" y="160" '
+                                   'font-size="15">栅压调节半导体表面电荷</text></svg></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_c(x)-E_c(\\mathrm{bulk})=-q\\psi(x)\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>以理想p型衬底为例，强反型条件来自表面电子浓度与体内空穴浓度相当。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\phi_F=\\frac{k_BT}{q}\\ln\\frac{N_A}{n_i},\\quad '
+                                   "V_T=V_{FB}+2\\phi_F+\\frac{\\sqrt{4\\varepsilon_sqN_A\\phi_F}}{C'_{ox}}$$</div><p><br><strong>①</strong> "
+                                   '平衡时体内费米能级距本征能级为 qφF。<br><strong>②</strong> 表面势达到 2φF '
+                                   '时表面电子浓度约等于体内空穴浓度。<br><strong>③</strong> '
+                                   '栅压需承担平带电压、表面势及氧化层上平衡耗尽电荷产生的压降。式中假定均匀掺杂、完全电离、无源体偏压；V_FB '
+                                   '可包含有效氧化层电荷。</p></section>'},
+                          {'id': 'sp-detail-8-1',
+                           'name': '积累、耗尽与反型',
+                           'brief': 'p型半导体表面随表面势变化。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>p型半导体表面随表面势变化，可由空穴积累过渡到耗尽，再出现电子反型层。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$p_s=p_0e^{-q\\psi_s/k_BT},\\quad '
+                                   'n_s=n_0e^{q\\psi_s/k_BT}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>静电势使电子能带移动−qψ_s；在平衡费米能级不变时，代入非简并分布即得表面浓度的指数关系。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>正表面势使电子能带向下弯曲。界面态可交换电荷并影响表面势响应，不能全部等同于固定氧化层电荷。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第8章，§8.1—8.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-8-2',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>ψ_s为正时空穴减少、电子增加；足够大的正表面势形成反型层。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不能仅凭栅电压正负判断状态，须考虑平带电压和衬底类型。</p></section></div>'}]},
+               {'name': '8.2 MIS电容特性',
+                'color': '#3b82f6',
+                'desc': 'MIS电容与频率响应、平带电压与固定电荷',
+                'items': [{'id': 'sp8-8-2',
                            'name': 'MIS电容与频率响应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '理想MIS结构由绝缘层与半导体空间电荷区共同承担电压。耗尽区变宽时测得电容降低，反型时响应取决于测量频率。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>理想MIS结构由绝缘层与半导体空间电荷区共同承担电压。耗尽区变宽时测得电容降低，反型时响应取决于测量频率。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '理想MIS结构由绝缘层与半导体空间电荷区共同承担电压。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>理想MIS结构由绝缘层与半导体空间电荷区共同承担电压。耗尽区变宽时测得电容降低，反型时响应取决于测量频率。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{1}{C\'}=\\frac{1}{C\'_{ox}}+\\frac{1}{C\'_s},\\qquad '
+                                   "C'_{ox}=\\frac{\\varepsilon_{ox}}{t_{ox}}$$</div></section><section "
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>高频小信号下少子通常跟不上交流变化；低频准静态反型电容行为不同。面积归一化的电容必须使用一致单位。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\frac{1}{C\'}=\\frac{1}{C\'_{ox}}+\\frac{1}{C\'_s},\\qquad '
-                                   "C'_{ox}=\\frac{\\varepsilon_{ox}}{t_{ox}}\\]</p></section><section "
+                                   'la-kp-def"><h5>推导思路</h5><p>同一静态偏压下，不同频率对少数载流子的响应不同，因此测得的微分电容也不同。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\frac1{C\'}=\\frac1{C\'_{ox}}+\\frac1{C\'_s},\\quad '
+                                   "C'_{ox}=\\frac{\\varepsilon_{ox}}{t_{ox}}$$</div><p><br><strong>①</strong> "
+                                   '积累区电荷贴近界面，半导体微分电容大，串联结果接近氧化层电容。<br><strong>②</strong> '
+                                   '耗尽区宽度增长，空间电荷电容降低。<br><strong>③</strong> '
+                                   '强反型时，低频少子可响应，小信号电容回升；高频少子难以跟随，电容维持较低值。深耗尽属于非平衡扫描状态，不应与平衡高频曲线混同。</p></section>'},
+                          {'id': 'sp-detail-8-2',
+                           'name': '平带电压与固定电荷',
+                           'brief': '平带表示半导体内部能带无弯曲。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>平带表示半导体内部能带无弯曲，但栅与半导体的功函数差及绝缘层电荷仍可能需要非零栅压平衡。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$V_{FB}=\\phi_{ms}-\\frac{Q_{eff}}{C\'_{ox}}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>按栅电压的电势降平衡，界面等效正电荷需要负的栅压补偿，因此产生负向平带电压偏移。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>高频小信号下少子通常跟不上交流变化；低频准静态反型电容行为不同。面积归一化的电容必须使用一致单位。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第8章，§8.3。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-8-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>C–V曲线的整体横向平移可用来估计有效固定电荷变化。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>分布在绝缘层不同位置的电荷具有不同权重；界面态还会造成拉伸及频散。</p></section></div>'}]},
+               {'name': '8.3 界面质量与表面输运',
+                'color': '#0ea5e9',
+                'desc': '氧化层电荷与表面迁移率、界面态与频散',
+                'items': [{'id': 'sp8-8-3',
                            'name': '氧化层电荷与表面迁移率',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '固定电荷、可动离子、氧化层陷阱与界面态分别造成平带偏移、漂移或频散。界面粗糙与库仑散射也影响表面迁移率。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>固定电荷、可动离子、氧化层陷阱与界面态分别造成平带偏移、漂移或频散。界面粗糙与库仑散射也影响表面迁移率。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\Delta '
-                                   "V_{FB}=-\\frac{Q_{eff}}{C'_{ox}}\\]</p></section><section "
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '固定电荷、可动离子、氧化层陷阱与界面态分别造成平带偏移、漂移或频散。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>固定电荷、可动离子、氧化层陷阱与界面态分别造成平带偏移、漂移或频散。界面粗糙与库仑散射也影响表面迁移率。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div class="la-fml">$$\\Delta '
+                                   "V_{FB}=-\\frac{Q_{eff}}{C'_{ox}}$$</div></section><section "
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>Q_eff为按单位面积折算的有效电荷；分布电荷的位置权重不能忽略。钝化的目的之一是降低表面复合和不稳定性。</p></section>'},
+                          {'id': 'sp-detail-8-3',
+                           'name': '界面态与频散',
+                           'brief': '界面态与半导体交换电荷的时间尺度决定其能否跟随小信号。。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>界面态与半导体交换电荷的时间尺度决定其能否跟随小信号。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\omega\\tau_{it}\\ll1\\ \\text{可响应},\\qquad '
+                                   '\\omega\\tau_{it}\\gg1\\ \\text{难以响应}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>低频时态占据可随表面势变化，增加交流电荷响应；高频时部分态冻结，导致电容和电导出现频率依赖。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>Q_eff为按单位面积折算的有效电荷；分布电荷的位置权重不能忽略。钝化的目的之一是降低表面复合和不稳定性。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第8章，§8.4—8.6。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>联合多频C–V和电导测量，可区分部分界面态与固定电荷影响。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>单条C–V曲线通常不足以唯一提取缺陷分布，需明确温度与扫描历史。</p></section></div>'}]}]},
  {'id': 'sp8-ch9',
-  'num': '第9章',
+  'num': '第九章',
   'title': '半导体异质结构',
   'en': 'HETEROSTRUCTURES',
   'sub': '能带不连续既是势垒，也能用于约束载流子。',
   'desc': '能带不连续既是势垒，也能用于约束载流子。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#08916f',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '9.1 能带不连续',
+                'color': '#2563eb',
+                'desc': '带阶与异质结、异质结的三类能带排列',
                 'items': [{'id': 'sp8-9-1',
                            'name': '带阶与异质结',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '不同半导体接触时，导带和价带通常不连续。带阶决定电子、空穴分别倾向停留在哪种材料中。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>不同半导体接触时，导带和价带通常不连续。带阶决定电子、空穴分别倾向停留在哪种材料中。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '不同半导体接触时，导带和价带通常不连续。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>不同半导体接触时，导带和价带通常不连续。带阶决定电子、空穴分别倾向停留在哪种材料中。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_{g2}-E_{g1}=(E_{c2}-E_{c1})-(E_{v2}-E_{v1})$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>此式明确使用同一方向定义的能量差。电子亲和能模型只是带阶估算方法，实际界面受成分、应变与界面偶极影响。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_{g2}-E_{g1}=(E_{c2}-E_{c1})-(E_{v2}-E_{v1})\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>定义相同参考能量后，导带偏移、价带偏移与两材料带隙差之间存在代数约束。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div class="la-fml">$$\\Delta '
+                                   'E_c=E_{c2}-E_{c1},\\quad \\Delta E_v=E_{v2}-E_{v1},\\quad \\Delta '
+                                   'E_c-\\Delta E_v=E_{g2}-E_{g1}$$</div><p><br><strong>①</strong> 对两种材料分别写 '
+                                   'E_g=E_c−E_v。<br><strong>②</strong> 相减得到上式。<br><strong>③</strong> '
+                                   '理想电子亲和能模型以真空能级对齐估算导带偏移，再由带隙差确定价带偏移。界面偶极、化学键与应变会改变实验结果；必须明确偏移的符号约定。</p></section>'},
+                          {'id': 'sp-detail-9-1',
+                           'name': '异质结的三类能带排列',
+                           'brief': '按导带底与价带顶在两种材料中的相对位置。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>按导带底与价带顶在两种材料中的相对位置，异质结可呈包覆型、交错型或破隙型。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_g=E_c-E_v$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>Ⅰ型常将电子与空穴约束在同一材料；Ⅱ型使两者倾向分离；Ⅲ型一侧导带可低于另一侧价带。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>此式明确使用同一方向定义的能量差。电子亲和能模型只是带阶估算方法，实际界面受成分、应变与界面偶极影响。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第9章，§9.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-9-2',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>Ⅰ型量子阱常用于发光，Ⅱ型排列可用于载流子分离与特定波段探测。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>具体类型需要实验或可靠带阶数据，不能只由两个材料的带隙大小判断。</p></section></div>'}]},
+               {'name': '9.2 应变与界面',
+                'color': '#3b82f6',
+                'desc': '晶格失配与界面质量、调制掺杂与二维电子气',
+                'items': [{'id': 'sp8-9-2',
                            'name': '晶格失配与界面质量',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '异质材料晶格常数不匹配时会出现应变。厚度增加可使失配通过位错释放，进而影响迁移率与复合。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>异质材料晶格常数不匹配时会出现应变。厚度增加可使失配通过位错释放，进而影响迁移率与复合。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '异质材料晶格常数不匹配时会出现应变。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>异质材料晶格常数不匹配时会出现应变。厚度增加可使失配通过位错释放，进而影响迁移率与复合。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$f=\\frac{a_2-a_1}{a_1}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>失配率的分母依衬底约定；需明确材料顺序。能带设计必须与应变、缺陷和生长条件共同考虑。</p></section>'},
+                          {'id': 'sp-detail-9-2',
+                           'name': '调制掺杂与二维电子气',
+                           'brief': '将施主放在势垒层、载流子放在相邻量子阱中。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>将施主放在势垒层、载流子放在相邻量子阱中，可在供给电子的同时降低离化杂质散射。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div class="la-fml">$$n_s=\\int '
+                                   'n(z)\\,dz$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>沿垂直界面的限制方向积分三维浓度得到二维片浓度。电荷转移、静电势和量子子带需要自洽决定。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[f=\\frac{a_2-a_1}{a_1}\\]</p></section><section '
-                                   'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>失配率的分母依衬底约定；需明确材料顺序。能带设计必须与应变、缺陷和生长条件共同考虑。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第9章，§9.4。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-9-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>HEMT利用高迁移率界面电子通道；GaN体系还需考虑自发及压电极化电荷。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>二维片浓度单位为cm⁻²或m⁻²，不能与体浓度直接比较。</p></section></div>'}]},
+               {'name': '9.3 量子约束与超晶格',
+                'color': '#0ea5e9',
+                'desc': '量子阱与超晶格、共振隧穿',
+                'items': [{'id': 'sp8-9-3',
                            'name': '量子阱与超晶格',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '窄带隙层夹在势垒之间可约束载流子，垂直方向出现离散子带。重复排列的耦合阱可形成超晶格微带。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>窄带隙层夹在势垒之间可约束载流子，垂直方向出现离散子带。重复排列的耦合阱可形成超晶格微带。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '窄带隙层夹在势垒之间可约束载流子，垂直方向出现离散子带。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>窄带隙层夹在势垒之间可约束载流子，垂直方向出现离散子带。重复排列的耦合阱可形成超晶格微带。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_j=\\frac{\\pi^2\\hbar^2j^2}{2m^*L^2},\\quad '
+                                   'j=1,2,\\ldots$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>这是无限深方阱的量子化能量，有限势垒时波函数会穿透，需满足界面边界条件。不要把理想阱公式当作实际器件精确谱线。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[E_j=\\frac{\\pi^2\\hbar^2j^2}{2m^*L^2},\\quad '
-                                   'j=1,2,\\ldots\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>这是无限深方阱的量子化能量，有限势垒时波函数会穿透，需满足界面边界条件。不要把理想阱公式当作实际器件精确谱线。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第9章，§9.3—9.6。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-def"><h5>推导思路</h5><p>空间约束越强，能级间隔通常越大；有限势垒允许波函数向外渗透。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$E_n^{(\\infty)}=\\frac{n^2\\pi^2\\hbar^2}{2m^*L^2},\\quad '
+                                   'k=\\sqrt{2m^*E}/\\hbar$$</div><p><br><strong>①</strong> '
+                                   '阱内薛定谔方程的解为正弦与余弦。<br><strong>②</strong> 无限势垒边界令波函数在两端为零，得到 '
+                                   'kL=nπ。<br><strong>③</strong> '
+                                   '有限阱需在界面匹配波函数和适当的质量加权导数，能级低于同宽无限阱，且束缚态数目有限。异质结构中的有效质量和带阶需分别指定。</p></section>'},
+                          {'id': 'sp-detail-9-3',
+                           'name': '共振隧穿',
+                           'brief': '双势垒之间的量子阱形成准束缚态。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>双势垒之间的量子阱形成准束缚态，入射载流子能量与之匹配时透射显著增强。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$T(E)\\propto\\frac{\\Gamma_L\\Gamma_R}{(E-E_0)^2+(\\Gamma_L+\\Gamma_R)^2/4}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>左右势垒耦合使离散阱态获得有限寿命和能量宽度。共振峰的位置由阱能级决定，宽度由逃逸速率决定。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>偏压使发射区态与共振能级先对齐后错开，可产生负微分电阻。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>峰值与线形受散射、温度、能级展宽及电荷积累影响。</p></section></div>'}]}]},
  {'id': 'sp8-ch10',
-  'num': '第10章',
+  'num': '第十章',
   'title': '半导体的光学性质和光电与发光现象',
   'en': 'OPTICS AND PHOTOELECTRIC EFFECTS',
   'sub': '从光吸收到载流子产生，再到探测、光伏与发光。',
   'desc': '从光吸收到载流子产生，再到探测、光伏与发光。',
-  'sections': [{'name': '核心学习导读',
+  'sections': [{'name': '10.1 吸收与光谱',
                 'color': '#2563eb',
-                'desc': '概念 · 关键关系 · 适用条件',
+                'desc': '光吸收与跃迁条件、激子与吸收边',
                 'items': [{'id': 'sp8-10-1',
                            'name': '光吸收与跃迁条件',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '光吸收涉及能量和动量守恒；直接、间接跃迁的吸收边不同。激子、杂质和自由载流子也可贡献光谱。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>光吸收涉及能量和动量守恒；直接、间接跃迁的吸收边不同。激子、杂质和自由载流子也可贡献光谱。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[I(x)=I_0e^{-\\alpha '
-                                   'x},\\qquad h\\nu\\gtrsim E_g\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>指数吸收取均匀吸收系数且忽略多次反射。带隙阈值是简化图像，激子、声子和带尾都会改变吸收边。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第10章，§10.1—10.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-10-2',
-                           'name': '光电导与光生伏特',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '光生载流子增加电导；在结的内建场和扩散共同作用下，电子空穴可分离并产生光电流与开路电压。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>光生载流子增加电导；在结的内建场和扩散共同作用下，电子空穴可分离并产生光电流与开路电压。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '光吸收涉及能量和动量守恒；直接、间接跃迁的吸收边不同。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>光吸收涉及能量和动量守恒；直接、间接跃迁的吸收边不同。激子、杂质和自由载流子也可贡献光谱。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$I(x)=I_0e^{-\\alpha x},\\qquad h\\nu\\gtrsim '
+                                   'E_g$$</div></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>指数吸收取均匀吸收系数且忽略多次反射。带隙阈值是简化图像，激子、声子和带尾都会改变吸收边。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\Delta\\sigma=q(\\mu_n\\Delta '
-                                   'n+\\mu_p\\Delta p),\\quad '
-                                   'J=J_s(e^{qV/(k_BT)}-1)-J_{ph}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>光伏式采用理想二极管及规定的电流方向。光电导增益与寿命、渡越时间及陷阱有关，不等于量子效率。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第10章，§10.3—10.4。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-10-3',
+                                   'la-kp-def"><h5>推导思路</h5><p>能量守恒与晶体动量守恒共同限制光跃迁；声子辅助改变吸收边形状。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div class="la-fml">$$\\alpha '
+                                   'h\\nu\\propto(h\\nu-E_g)^{1/2}\\quad\\text{直接允许跃迁}$$</div><p><br><strong>①</strong> '
+                                   '光子能量必须足以跨越相关初末态能量差。<br><strong>②</strong> '
+                                   '光子动量相对布里渊区尺度通常很小，直接跃迁近似保持波矢。<br><strong>③</strong> '
+                                   '间接跃迁要同时吸收或发射声子，阈值与温度因声子占据而变化。上式仅适用于理想三维抛物线带的直接允许跃迁近边近似。</p></section>'},
+                          {'id': 'sp-detail-10-1',
+                           'name': '激子与吸收边',
+                           'brief': '电子和空穴可通过库仑吸引形成束缚态。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电子和空穴可通过库仑吸引形成束缚态，在带间连续吸收边以下产生光学结构。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_{ex,n}=E_g-\\frac{R^*}{n^2},\\quad '
+                                   'R^*=13.6\\,\\mathrm{eV}\\frac{\\mu_r/m_0}{\\varepsilon_r^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>在Wannier–Mott模型中，把电子空穴相对运动化成约化质量μ_r的氢样问题，并用介电屏蔽修正束缚能。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>低温下热展宽较弱，激子吸收峰更容易分辨。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>该模型要求激子尺度大于晶格尺度；强局域或低维材料需另行处理。</p></section></div>'}]},
+               {'name': '10.2 光电导与光伏',
+                'color': '#3b82f6',
+                'desc': '光电导与光生伏特、光电导增益',
+                'items': [{'id': 'sp8-10-2',
+                           'name': '光电导与光生伏特',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '光生载流子增加电导；在结的内建场和扩散共同作用下，电子空穴可分离并产生光电流与开路电压。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>光生载流子增加电导；在结的内建场和扩散共同作用下，电子空穴可分离并产生光电流与开路电压。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\Delta\\sigma=q(\\mu_n\\Delta n+\\mu_p\\Delta '
+                                   'p),\\quad J=J_s(e^{qV/(k_BT)}-1)-J_{ph}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>光伏式采用理想二极管及规定的电流方向。光电导增益与寿命、渡越时间及陷阱有关，不等于量子效率。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>光生电流与二极管正向电流相抵消时，外电路电流为零。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$J(V)=J_0(e^{qV/(nk_BT)}-1)-J_{ph},\\quad '
+                                   'V_{oc}=\\frac{nk_BT}{q}\\ln\\left(1+\\frac{J_{ph}}{J_0}\\right)$$</div><p><br><strong>①</strong> '
+                                   '选定电流符号并写出光照下的单二极管模型。<br><strong>②</strong> 开路令 '
+                                   'J=0，移项并取自然对数。<br><strong>③</strong> 温度、电流和复合影响 J₀，因此 V_oc '
+                                   '不能只由带隙决定。式中忽略串并联电阻，n 为经验理想因子；最大输出功率点不在开路点。</p></section>'},
+                          {'id': 'sp-detail-10-2',
+                           'name': '光电导增益',
+                           'brief': '若载流子寿命长于穿越器件的时间。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>若载流子寿命长于穿越器件的时间，外电路中每个吸收光子可对应多次电荷输运。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$G\\approx\\frac{\\tau}{t_{tr}},\\quad '
+                                   't_{tr}\\approx\\frac{L^2}{\\mu V}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>漂移速度为μV/L，穿越长度L所需时间为L²/(μV)。将寿命与渡越时间比较，得到简化增益估计。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>增加寿命可提高稳态响应，但往往降低响应速度。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>增益不是吸收量子效率；接触注入、空间电荷与陷阱会改变这一简单关系。</p></section></div>'}]},
+               {'name': '10.3 发光与激光',
+                'color': '#0ea5e9',
+                'desc': '辐射复合与半导体激光、激光阈值与镜面损耗',
+                'items': [{'id': 'sp8-10-3',
                            'name': '辐射复合与半导体激光',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '自发辐射提供发光基础；激光还要求受激辐射增益抵消腔损耗。双异质结同时帮助载流子与光场约束。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>自发辐射提供发光基础；激光还要求受激辐射增益抵消腔损耗。双异质结同时帮助载流子与光场约束。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\Gamma '
-                                   'g_{th}=\\alpha_i+\\alpha_m\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>Γ为光学限制因子，α_i和α_m分别为内部与镜面损耗。粒子数反转与阈值不能仅由材料是否直接带隙判断。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第10章，§10.5—10.7。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '自发辐射提供发光基础；激光还要求受激辐射增益抵消腔损耗。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>自发辐射提供发光基础；激光还要求受激辐射增益抵消腔损耗。双异质结同时帮助载流子与光场约束。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div class="la-fml">$$\\Gamma '
+                                   'g_{th}=\\alpha_i+\\alpha_m$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>Γ为光学限制因子，α_i和α_m分别为内部与镜面损耗。粒子数反转与阈值不能仅由材料是否直接带隙判断。</p></section>'},
+                          {'id': 'sp-detail-10-3',
+                           'name': '激光阈值与镜面损耗',
+                           'brief': '腔内一周传播后。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>腔内一周传播后，光增益需补偿内部吸收、散射和镜面透射损耗。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div class="la-fml">$$\\Gamma '
+                                   'g_{th}=\\alpha_i+\\frac1{2L}\\ln\\frac1{R_1R_2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 导</h5><p>令一周强度乘子R₁R₂ '
+                                   'exp[2(Γg−α_i)L]=1，取对数得到阈值条件。</p></section><section class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>提高反射率可减小镜面损耗，但输出耦合和阈值之间需要权衡。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>增益g、限制因子Γ、腔长L与损耗单位必须一致；阈值载流子浓度还需增益模型。</p></section></div>'}]}]},
  {'id': 'sp8-ch11',
-  'num': '第11章',
+  'num': '第十一章',
   'title': '半导体的热电性质',
   'en': 'THERMOELECTRIC PROPERTIES',
   'sub': '理解电荷与热流的耦合以及材料性能之间的权衡。',
   'desc': '理解电荷与热流的耦合以及材料性能之间的权衡。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#7c3aed',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '11.1 温差电动势',
+                'color': '#2563eb',
+                'desc': '塞贝克效应、双载流子热电势',
                 'items': [{'id': 'sp8-11-1',
                            'name': '塞贝克效应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '温度梯度引起载流子扩散，并建立阻止进一步扩散的电场。开路热电压可用于温差测量与发电。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>温度梯度引起载流子扩散，并建立阻止进一步扩散的电场。开路热电压可用于温差测量与发电。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[S=-\\frac{\\Delta '
-                                   'V}{\\Delta T}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>本页采用此符号约定，实际测量需明确端子与温差方向。两种载流子同时参与时，热电势会发生部分抵消。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第11章，§11.1—11.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-11-2',
-                           'name': '珀尔帖与汤姆逊效应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '电流通过不同材料接点可吸热或放热；温度梯度中有电流通过时还存在可逆汤姆逊热。它们与不可逆焦耳热不同。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>电流通过不同材料接点可吸热或放热；温度梯度中有电流通过时还存在可逆汤姆逊热。它们与不可逆焦耳热不同。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\Pi=ST,\\qquad '
-                                   '\\tau_T=T\\frac{dS}{dT}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>这是相容符号约定下的Kelvin关系。判断接点制冷还是发热，必须同时给出材料顺序与电流方向。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第11章，§11.1、11.3—11.4。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-11-3',
-                           'name': '热导率与热电优值',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '总热导包含载流子和晶格贡献。高电导、大塞贝克系数和低热导有利于热电转换，但这些量并非完全独立。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>总热导包含载流子和晶格贡献。高电导、大塞贝克系数和低热导有利于热电转换，但这些量并非完全独立。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[ZT=\\frac{S^2\\sigma '
-                                   'T}{\\kappa},\\qquad \\kappa=\\kappa_e+\\kappa_L\\]</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '温度梯度引起载流子扩散，并建立阻止进一步扩散的电场。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>温度梯度引起载流子扩散，并建立阻止进一步扩散的电场。开路热电压可用于温差测量与发电。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$S=-\\frac{\\Delta V}{\\Delta '
+                                   'T}$$</div></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>本页采用此符号约定，实际测量需明确端子与温差方向。两种载流子同时参与时，热电势会发生部分抵消。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>ZT为无量纲指标；器件效率还依赖冷热端温度、接触损耗和材料参数随温度的变化。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第11章，§11.5—11.6。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-def"><h5>推导思路</h5><p>相邻材料的绝对塞贝克响应相减，决定热电偶两端的测量结果。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$V_{oc}=\\int_{T_c}^{T_h}[S_A(T)-S_B(T)]\\,dT$$</div><p><br><strong>①</strong> '
+                                   '采用固定电压与温差方向约定。<br><strong>②</strong> '
+                                   '每一段局部电势变化按其塞贝克系数对温度积分。<br><strong>③</strong> 构成回路的两种材料贡献相减；系数近似常数时 '
+                                   'V_oc≈(S_A−S_B)(T_h−T_c)。符号随端子定义改变，实际测量还涉及引线与接触温差。</p></section>'},
+                          {'id': 'sp-detail-11-1',
+                           'name': '双载流子热电势',
+                           'brief': '电子和空穴可对温差电势产生方向相反的贡献。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电子和空穴可对温差电势产生方向相反的贡献，总响应由各自电导加权。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$S=\\frac{\\sigma_nS_n+\\sigma_pS_p}{\\sigma_n+\\sigma_p}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>对两类载流子分别写线性电流响应，开路时总电流为零，解出温度梯度对应的电场。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>进入本征温区后，两类贡献相互抵消可能降低塞贝克系数绝对值。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>这里S_n、S_p必须采用相同电压和温差方向约定。</p></section></div>'}]},
+               {'name': '11.2 可逆热电效应',
+                'color': '#3b82f6',
+                'desc': '珀尔帖与汤姆逊效应、珀尔帖制冷与焦耳热',
+                'items': [{'id': 'sp8-11-2',
+                           'name': '珀尔帖与汤姆逊效应',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '电流通过不同材料接点可吸热或放热；温度梯度中有电流通过时还存在可逆汤姆逊热。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电流通过不同材料接点可吸热或放热；温度梯度中有电流通过时还存在可逆汤姆逊热。它们与不可逆焦耳热不同。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\Pi=ST,\\qquad '
+                                   '\\tau_T=T\\frac{dS}{dT}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>这是相容符号约定下的Kelvin关系。判断接点制冷还是发热，必须同时给出材料顺序与电流方向。</p></section>'},
+                          {'id': 'sp-detail-11-2',
+                           'name': '珀尔帖制冷与焦耳热',
+                           'brief': '电流跨越不同材料接点可产生可逆吸热或放热。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>电流跨越不同材料接点可产生可逆吸热或放热，而电阻产生不可逆焦耳热。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div class="la-fml">$$\\dot '
+                                   'Q_{P}=(\\Pi_A-\\Pi_B)I,\\quad P_J=I^2R$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>珀尔帖热随电流方向反转而反号；焦耳热随I²变化，反向电流也不会变成吸热。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>制冷器的最佳工作电流受到焦耳热和冷热端热传导共同限制。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>只增加电流不一定提高制冷能力；必须列出完整热收支。</p></section></div>'}]},
+               {'name': '11.3 热导与性能优化',
+                'color': '#0ea5e9',
+                'desc': '热导率与热电优值、晶格热导率',
+                'items': [{'id': 'sp8-11-3',
+                           'name': '热导率与热电优值',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '总热导包含载流子和晶格贡献。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>总热导包含载流子和晶格贡献。高电导、大塞贝克系数和低热导有利于热电转换，但这些量并非完全独立。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$ZT=\\frac{S^2\\sigma T}{\\kappa},\\qquad '
+                                   '\\kappa=\\kappa_e+\\kappa_L$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>ZT为无量纲指标；器件效率还依赖冷热端温度、接触损耗和材料参数随温度的变化。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>材料的热电性能同时依赖电输运和热输运，优化单一参数不一定提高效率。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$ZT=\\frac{S^2\\sigma T}{\\kappa_e+\\kappa_L},\\quad '
+                                   'PF=S^2\\sigma$$</div><p><br><strong>①</strong> S²σ '
+                                   '称功率因子，电导和塞贝克系数常随载流子浓度反向变化。<br><strong>②</strong> '
+                                   '电子既传递电荷也传递热，因而提高电导可能同时增加电子热导。<br><strong>③</strong> 降低晶格热导可有利于提高 '
+                                   'ZT，但散射也可能损害迁移率。ZT 使用绝对温度，各量单位必须一致。</p></section>'},
+                          {'id': 'sp-detail-11-3',
+                           'name': '晶格热导率',
+                           'brief': '声子传热受热容、传播速度和平均自由程共同控制。。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>声子传热受热容、传播速度和平均自由程共同控制。</p></section><section class="la-kp-sec '
+                                   'la-kp-thm"><h5>规 律</h5><div class="la-fml">$$\\kappa_L\\approx\\frac13 '
+                                   'C_v v_s\\ell$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>在各向同性动力学近似下，对各方向的能量通量求平均得到1/3因子，再将能量密度响应写成体积热容。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>合金无序、边界和缺陷可缩短声子平均自由程，从而降低晶格热导。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不同频率声子具有不同速度和寿命；单一平均值只适合定性估计。</p></section></div>'}]}]},
  {'id': 'sp8-ch12',
-  'num': '第12章',
+  'num': '第十二章',
   'title': '半导体磁和压阻效应',
   'en': 'MAGNETIC AND PIEZORESISTIVE EFFECTS',
   'sub': '借助磁场与应力响应测量载流子性质并设计传感器。',
   'desc': '借助磁场与应力响应测量载流子性质并设计传感器。',
-  'sections': [{'name': '核心学习导读',
-                'color': '#08916f',
-                'desc': '概念 · 关键关系 · 适用条件',
+  'sections': [{'name': '12.1 霍尔测量',
+                'color': '#2563eb',
+                'desc': '霍尔效应与载流子测量、霍尔散射因子',
                 'items': [{'id': 'sp8-12-1',
                            'name': '霍尔效应与载流子测量',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '磁场使运动电荷横向偏转，稳态霍尔场平衡洛伦兹力。单一载流子近似可用霍尔符号判别导电类型。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>磁场使运动电荷横向偏转，稳态霍尔场平衡洛伦兹力。单一载流子近似可用霍尔符号判别导电类型。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '磁场使运动电荷横向偏转，稳态霍尔场平衡洛伦兹力。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>磁场使运动电荷横向偏转，稳态霍尔场平衡洛伦兹力。单一载流子近似可用霍尔符号判别导电类型。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$R_H=\\frac{p\\mu_p^2-n\\mu_n^2}{q(p\\mu_p+n\\mu_n)^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>式中忽略霍尔散射因子；两类载流子同时贡献时，符号由浓度和迁移率共同决定，不能只比较n与p。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[R_H=\\frac{p\\mu_p^2-n\\mu_n^2}{q(p\\mu_p+n\\mu_n)^2}\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>霍尔电压可结合样品厚度、磁场和电流估算载流子浓度。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$R_H=\\frac{V_Ht}{IB},\\quad n_H=\\frac1{q|R_H|},\\quad '
+                                   '\\mu_H=|R_H|\\sigma$$</div><p><br><strong>①</strong> 单载流子、忽略霍尔散射因子时 '
+                                   'R_H≈−1/(qn) 或 +1/(qp)。<br><strong>②</strong> 例如 R_H=−6.24×10⁻⁴ m³/C，得 '
+                                   'n_H≈1.0×10²² m⁻³，即 1.0×10¹⁶ cm⁻³。<br><strong>③</strong> '
+                                   '霍尔迁移率由霍尔系数绝对值乘电导率求出。混合导电或散射因子偏离1时，该浓度只是表观值。</p></section>'},
+                          {'id': 'sp-detail-12-1',
+                           'name': '霍尔散射因子',
+                           'brief': '实际载流子具有速度和弛豫时间分布。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>实际载流子具有速度和弛豫时间分布，霍尔测量的统计权重与直流电导不同。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$R_H=-\\frac{r_H}{qn},\\quad '
+                                   '\\mu_H=r_H\\mu_d$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>在简单各向同性模型中，r_H与弛豫时间的一、二阶加权矩有关，因此未必等于1。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>式中忽略霍尔散射因子；两类载流子同时贡献时，符号由浓度和迁移率共同决定，不能只比较n与p。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第12章，§12.1。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-12-2',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>若忽略r_H，则霍尔表观浓度n_H=n/r_H，而不是实际电子浓度。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>多能谷、各向异性和双载流子输运可进一步改变表达式。</p></section></div>'}]},
+               {'name': '12.2 磁场中的输运',
+                'color': '#3b82f6',
+                'desc': '磁阻与量子霍尔效应、朗道量子化',
+                'items': [{'id': 'sp8-12-2',
                            'name': '磁阻与量子霍尔效应',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '磁场改变输运轨迹，也能量子化电子运动。低温强磁场下二维体系可出现霍尔电阻平台，须与普通体材料霍尔效应区分。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>磁场改变输运轨迹，也能量子化电子运动。低温强磁场下二维体系可出现霍尔电阻平台，须与普通体材料霍尔效应区分。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[R_{xy}=\\frac{h}{\\nu '
-                                   'q^2}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>此处指整数量子霍尔平台，ν为整数填充因子。平台还依赖二维限制、无序与足够低温；经典单载流子理想模型不能解释全部磁阻。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第12章，§12.2—12.6。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-12-3',
-                           'name': '压阻与应变传感',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '应力可改变能带、能谷占据和散射，从而改变电阻率。半导体压阻往往显著大于单纯几何尺寸变化的贡献。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>应力可改变能带、能谷占据和散射，从而改变电阻率。半导体压阻往往显著大于单纯几何尺寸变化的贡献。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '磁场改变输运轨迹，也能量子化电子运动。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>磁场改变输运轨迹，也能量子化电子运动。低温强磁场下二维体系可出现霍尔电阻平台，须与普通体材料霍尔效应区分。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$R_{xy}=\\frac{h}{\\nu q^2}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>此处指整数量子霍尔平台，ν为整数填充因子。平台还依赖二维限制、无序与足够低温；经典单载流子理想模型不能解释全部磁阻。</p></section>'},
+                          {'id': 'sp-detail-12-2',
+                           'name': '朗道量子化',
+                           'brief': '磁场使垂直于磁场的电子轨道量子化。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>磁场使垂直于磁场的电子轨道量子化，产生离散朗道能级。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$E_n=\\hbar\\omega_c(n+1/2)+\\frac{\\hbar^2k_z^2}{2m^*}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>垂直运动在量子力学上等价于谐振子；沿磁场方向仍可自由运动，产生连续的纵向动能。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\frac{\\Delta\\rho}{\\rho}\\approx\\pi '
-                                   'X\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>这是选定晶向及应力方向的一维简化表达。一般关系具有张量形式，不能省略晶向、温度与掺杂条件。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第12章，§12.7。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]},
+                                   'la-kp-exa"><h5>例子与应用</h5><p>磁光吸收可用于研究有效质量与能带参数。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>式中未写自旋塞曼分裂；观察量子振荡要求能级间隔足以超过热和散射展宽。</p></section></div>'}]},
+               {'name': '12.3 应力与压阻',
+                'color': '#0ea5e9',
+                'desc': '压阻与应变传感、压阻系数的张量形式',
+                'items': [{'id': 'sp8-12-3',
+                           'name': '压阻与应变传感',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '应力可改变能带、能谷占据和散射，从而改变电阻率。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>应力可改变能带、能谷占据和散射，从而改变电阻率。半导体压阻往往显著大于单纯几何尺寸变化的贡献。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{\\Delta\\rho}{\\rho}\\approx\\pi '
+                                   'X$$</div></section><section class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>这是选定晶向及应力方向的一维简化表达。一般关系具有张量形式，不能省略晶向、温度与掺杂条件。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>应变既改变样品几何尺寸，也通过压阻效应改变电阻率。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$R=\\rho\\frac{L}{A},\\quad \\frac{\\Delta '
+                                   'R}{R}\\simeq\\frac{\\Delta\\rho}{\\rho}+\\frac{\\Delta '
+                                   'L}{L}-\\frac{\\Delta A}{A}$$</div><p><br><strong>①</strong> 对 R=ρL/A '
+                                   '取微分。<br><strong>②</strong> '
+                                   '小应变下分别计算长度、横截面积和电阻率的相对变化。<br><strong>③</strong> '
+                                   '将元件接入桥路可把微小电阻变化转换为差分电压。半导体压阻与晶向、应力方向、掺杂和温度相关；设计中应明确张量分量。</p></section>'},
+                          {'id': 'sp-detail-12-3',
+                           'name': '压阻系数的张量形式',
+                           'brief': '晶体中电阻率变化不仅依赖应力大小。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>晶体中电阻率变化不仅依赖应力大小，还依赖应力方向和晶向。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\frac{\\Delta\\rho_{ij}}{\\rho}=\\sum_{kl}\\pi_{ijkl}X_{kl}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>以小应力为展开参数，对电阻率张量作一阶展开，四阶张量π描述线性耦合。晶体对称性可减少独立系数数目。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>硅压阻传感器通过选择晶向、掺杂和电桥布局提高灵敏度并减小温漂。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>应先确定坐标系，再将应力与压阻张量变换到器件方向。</p></section></div>'}]}]},
  {'id': 'sp8-ch13',
-  'num': '第13章',
+  'num': '第十三章',
   'title': '非晶态半导体',
   'en': 'AMORPHOUS SEMICONDUCTORS',
   'sub': '用无序、局域态和迁移率边取代完整晶体的简单能带图像。',
   'desc': '用无序、局域态和迁移率边取代完整晶体的简单能带图像。',
-  'sections': [{'name': '核心学习导读',
+  'sections': [{'name': '13.1 无序与电子态',
                 'color': '#2563eb',
-                'desc': '概念 · 关键关系 · 适用条件',
+                'desc': '无序与迁移率边、带尾态与迁移率隙',
                 'items': [{'id': 'sp8-13-1',
                            'name': '无序与迁移率边',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '非晶态保留短程有序，却缺少长程周期性。无序可能产生局域态，迁移率边区分局域态与延展态的输运行为。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>非晶态保留短程有序，却缺少长程周期性。无序可能产生局域态，迁移率边区分局域态与延展态的输运行为。</p></section><section '
-                                   'class="la-kp-sec la-kp-der"><h5>关键关系</h5><p>\\[\\psi(x)\\propto '
-                                   'e^{-\\lvert x\\rvert/\\xi}\\]</p></section><section class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>ξ表示局域长度，这只是局域态衰减的示意模型。迁移率隙与完全没有电子态的理想禁带不同。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第13章，§13.1—13.2。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-13-2',
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '非晶态保留短程有序，却缺少长程周期性。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非晶态保留短程有序，却缺少长程周期性。无序可能产生局域态，迁移率边区分局域态与延展态的输运行为。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\psi(x)\\propto e^{-\\lvert '
+                                   'x\\rvert/\\xi}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-note"><h5>备 '
+                                   '注</h5><p>ξ表示局域长度，这只是局域态衰减的示意模型。迁移率隙与完全没有电子态的理想禁带不同。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-def"><h5>推导思路</h5><p>非晶态带尾中的局域态可以储存载流子，但它们的输运能力与延展态不同。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\sigma(T)\\approx\\sigma_0\\exp\\left[-\\frac{E_a}{k_BT}\\right]$$</div><p><br><strong>①</strong> '
+                                   '若主要导电通道要求载流子热激发到迁移率边附近，活化能可近似表示相应能量差。<br><strong>②</strong> 对 lnσ 关于 1/T '
+                                   '作图，理想单一活化机制下斜率为 −E_a/k_B。<br><strong>③</strong> '
+                                   '若跳跃输运或多种通道主导，图线可能弯曲，不能将单一斜率外推整个温区。</p></section>'},
+                          {'id': 'sp-detail-13-1',
+                           'name': '带尾态与迁移率隙',
+                           'brief': '非晶无序使带边展宽并出现局域带尾态。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非晶无序使带边展宽并出现局域带尾态，导电能力的边界不再等同于态密度突然为零。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$g_{tail}(E)\\propto '
+                                   'e^{-(E_c-E)/E_0}$$</div></section><section class="la-kp-sec '
+                                   'la-kp-der"><h5>推 '
+                                   '导</h5><p>指数带尾是常用经验描述；能量越深入带隙，局域态密度按模型衰减，E₀刻画带尾展宽尺度。</p></section><section '
+                                   'class="la-kp-sec '
+                                   'la-kp-exa"><h5>例子与应用</h5><p>带尾分布会影响光吸收边、热激活导电和陷阱控制的输运。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>E_c在此表示迁移率边附近的参考能量；指数形式并非所有无序体系的精确规律。</p></section></div>'}]},
+               {'name': '13.2 缺陷与掺杂',
+                'color': '#3b82f6',
+                'desc': '缺陷、氢化与掺杂、氢钝化与悬挂键',
+                'items': [{'id': 'sp8-13-2',
                            'name': '缺陷、氢化与掺杂',
-                           'tags': ['def', 'note'],
-                           'brief': '悬挂键等缺陷产生隙态，可钉扎费米能级并增强复合。氢化能钝化一部分悬挂键，使非晶硅的掺杂和光电应用成为可能。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>悬挂键等缺陷产生隙态，可钉扎费米能级并增强复合。氢化能钝化一部分悬挂键，使非晶硅的掺杂和光电应用成为可能。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '悬挂键等缺陷产生隙态，可钉扎费米能级并增强复合。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>悬挂键等缺陷产生隙态，可钉扎费米能级并增强复合。氢化能钝化一部分悬挂键，使非晶硅的掺杂和光电应用成为可能。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>不要把晶体硅中杂质完全电离的浓度关系照搬到非晶硅。缺陷补偿、带尾与亚稳态都影响有效掺杂。</p></section>'},
+                          {'id': 'sp-detail-13-2',
+                           'name': '氢钝化与悬挂键',
+                           'brief': '非晶硅中未满足的共价键可引入隙态。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非晶硅中未满足的共价键可引入隙态；氢与部分悬挂键结合，能降低活性缺陷密度。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\tau^{-1}\\sim\\sigma '
+                                   'v_{th}N_t$$</div></section><section class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>在单一俘获通道近似下，缺陷数越多、俘获截面越大，载流子寿命越短；钝化可通过降低有效N_t改善性能。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>不要把晶体硅中杂质完全电离的浓度关系照搬到非晶硅。缺陷补偿、带尾与亚稳态都影响有效掺杂。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第13章，§13.3。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'},
-                          {'id': 'sp8-13-3',
+                                   'la-kp-exa"><h5>例子与应用</h5><p>氢化非晶硅用于薄膜晶体管和薄膜光电器件。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>氢含量、键合状态和热处理均影响稳定性；钝化不是永久消除全部缺陷。</p></section></div>'}]},
+               {'name': '13.3 输运与光响应',
+                'color': '#0ea5e9',
+                'desc': '跳跃输运与光学性质、弥散输运',
+                'items': [{'id': 'sp8-13-3',
                            'name': '跳跃输运与光学性质',
-                           'tags': ['def', 'der', 'note'],
-                           'brief': '非晶态材料可能由延展态激发、带尾态或局域态跳跃共同导电。陷阱的反复俘获与释放还会造成弥散输运。',
-                           'body': '<section class="la-kp-sec '
-                                   'la-kp-def"><h5>概念与物理图像</h5><p>非晶态材料可能由延展态激发、带尾态或局域态跳跃共同导电。陷阱的反复俘获与释放还会造成弥散输运。</p></section><section '
+                           'tags': ['def', 'thm', 'note'],
+                           'brief': '非晶态材料可能由延展态激发、带尾态或局域态跳跃共同导电。',
+                           'body': '<section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>非晶态材料可能由延展态激发、带尾态或局域态跳跃共同导电。陷阱的反复俘获与释放还会造成弥散输运。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\sigma(T)=\\sigma_0e^{-(T_0/T)^{1/4}}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>此式仅为三维Mott变程跳跃的一种模型，不是所有非晶材料的通用规律。氢化非晶硅还需关注光致亚稳缺陷与性能衰退。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-der"><h5>关键关系</h5><p>\\[\\sigma(T)=\\sigma_0e^{-(T_0/T)^{1/4}}\\]</p></section><section '
+                                   'la-kp-def"><h5>推导思路</h5><p>缺陷态会同时影响暗电导、光电导和少子寿命，光照历史也可能改变测量值。</p></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推导与规 律</h5><div '
+                                   'class="la-fml">$$\\Delta\\sigma=q(\\mu_n\\Delta n+\\mu_p\\Delta '
+                                   'p)$$</div><p><br><strong>①</strong> '
+                                   '光生电子空穴提高瞬时载流子浓度。<br><strong>②</strong> '
+                                   '陷阱俘获与热释放改变有效寿命及响应时间。<br><strong>③</strong> '
+                                   '氢化非晶硅可能出现光照诱导的亚稳缺陷变化，热处理可部分恢复；实验比较应记录光照、温度及退火历史。上式将迁移率视为给定，不能单独确定复合机理。</p></section>'},
+                          {'id': 'sp-detail-13-3',
+                           'name': '弥散输运',
+                           'brief': '载流子在分布很宽的陷阱中反复俘获与释放。',
+                           'tags': ['def', 'thm', 'der', 'exa', 'note'],
+                           'body': '<div class="la-kp"><section class="la-kp-sec la-kp-def"><h5>定 '
+                                   '义</h5><p>载流子在分布很宽的陷阱中反复俘获与释放，会产生宽分布渡越时间和非单指数瞬态。</p></section><section '
+                                   'class="la-kp-sec la-kp-thm"><h5>规 律</h5><div '
+                                   'class="la-fml">$$\\tau_{emit}\\sim\\tau_0e^{E_t/(k_BT)}$$</div></section><section '
+                                   'class="la-kp-sec la-kp-der"><h5>推 '
+                                   '导</h5><p>陷阱越深，热释放越慢；不同深度对应不同等待时间，叠加后脉冲响应难以用单一寿命描述。</p></section><section '
                                    'class="la-kp-sec '
-                                   'la-kp-note"><h5>适用条件与易错点</h5><p>此式仅为三维Mott变程跳跃的一种模型，不是所有非晶材料的通用规律。氢化非晶硅还需关注光致亚稳缺陷与性能衰退。</p></section><section '
-                                   'class="la-kp-sec"><h5>教材定位</h5><p>《半导体物理学》第8版，第13章，§13.4—13.6。本卡为学习导读与概念重述，详细推导及例题请对照原书。</p></section>'}]}]}]
-
-SUBJECT = {'filename': 'semiconductor-physics.html',
- 'title': '半导体物理 · 教材导读',
- 'eyebrow': 'SEMICONDUCTOR PHYSICS · TEXTBOOK GUIDE',
- 'subtitle': '刘恩科等《半导体物理学》第8版 · 13章核心学习导读',
- 'meta_desc': '按教材13章整理的半导体物理学习导读：概念、关键公式、适用条件与易错点。'}
-from semiconductor_derivations import enrich
-enrich(CHAPTERS)
+                                   'la-kp-exa"><h5>例子与应用</h5><p>飞行时间实验中的电流波形可揭示弥散程度与温度依赖。</p></section><section '
+                                   'class="la-kp-sec la-kp-note"><h5>备 '
+                                   '注</h5><p>通过某一拟合时间得到的表观迁移率可能依赖测量时间尺度和样品厚度。</p></section></div>'}]}]}]
+SUBJECT = {'filename': 'semiconductor-physics.html', 'title': '半导体物理 · 知识体系', 'eyebrow': 'SEMICONDUCTOR PHYSICS', 'subtitle': '能带 · 统计 · 输运 · 结与界面 · 光电与热电', 'meta_desc': '半导体物理知识体系：13章，按小节展开概念、规律、推导与应用。'}
 SUBJECT["chapters"] = CHAPTERS
 
 if __name__ == "__main__":
     from pathlib import Path
-    from gen import render_subject
-    Path(__file__).with_name(SUBJECT["filename"]).write_text(render_subject(SUBJECT), encoding="utf-8")
+    from semiconductor_page import render
+    Path(__file__).with_name(SUBJECT["filename"]).write_text(render(),encoding="utf-8")

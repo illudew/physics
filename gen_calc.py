@@ -1351,7 +1351,14 @@ def fix_svg_lt(s):
     import re
     return re.sub(r"<(?!/?(?:svg|g|defs|line|rect|circle|ellipse|path|polygon|polyline|text|tspan|use|marker|linearGradient|radialGradient|stop|clipPath|symbol|pattern|mask|filter|title|desc|animate|animateTransform|image|style)\b)([A-Za-z])", r"&lt;\1", s)
 
-def gen_html():
+def gen_html(chapters=None, core_formulas=None):
+    # 默认生成微积分；其他学科可复用同一版式。
+    CHAPTERS = globals()["CHAPTERS"] if chapters is None else chapters
+    CORE_FORMULAS = globals()["CORE_FORMULAS"] if core_formulas is None else core_formulas
+    FIG = globals()["FIG"] if chapters is None else {}
+    TAG_LABEL = dict(globals()["TAG_LABEL"])
+    if chapters is not None:
+        TAG_LABEL["thm"] = "规 律"
     data_lines = []
     for ch in CHAPTERS:
         sec_strs = []

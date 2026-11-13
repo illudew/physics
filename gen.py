@@ -453,7 +453,11 @@ def render_subject(sub):
     return html
 
 def write_subject(sub):
-    html = render_subject(sub)
+    if sub["filename"] == "semiconductor-physics.html":
+        from semiconductor_page import render
+        html = render()
+    else:
+        html = render_subject(sub)
     path = os.path.join(OUT_DIR, sub["filename"])
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
