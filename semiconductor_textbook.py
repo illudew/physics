@@ -553,6 +553,8 @@ SUBJECT = {'filename': 'semiconductor-physics.html',
  'eyebrow': 'SEMICONDUCTOR PHYSICS · TEXTBOOK GUIDE',
  'subtitle': '刘恩科等《半导体物理学》第8版 · 13章核心学习导读',
  'meta_desc': '按教材13章整理的半导体物理学习导读：概念、关键公式、适用条件与易错点。'}
+from semiconductor_derivations import enrich
+enrich(CHAPTERS)
 SUBJECT["chapters"] = CHAPTERS
 
 if __name__ == "__main__":
