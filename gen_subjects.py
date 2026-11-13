@@ -985,8 +985,8 @@ SUBJECTS.append({
   "filename":"atomic-physics.html",
   "title":"原子物理学",
   "eyebrow":"ATOMIC PHYSICS",
-  "subtitle":"原子模型 · 玻尔理论 · 量子数 · 精细结构 · 塞曼效应 · 跃迁",
-  "meta_desc":"原子物理知识体系：卢瑟福模型、玻尔理论、量子数、自旋轨道耦合、精细结构、塞曼效应、跃迁选择定则",
+  "subtitle":"卢瑟福模型 · 玻尔理论 · 量子力学导论 · 电子自旋 · 泡利原理 · X 射线",
+  "meta_desc":"原子物理知识体系：卢瑟福散射、玻尔模型、波粒二象性与薛定谔方程、电子自旋与精细结构、泡利原理与元素周期表、X 射线与康普顿散射",
   "chapters":[
     {"id":"la-ch1","num":"第一章","title":"原子结构与玻尔模型","en":"ATOMIC STRUCTURE & BOHR MODEL","sub":"卢瑟福散射、玻尔假设","desc":"从卢瑟福散射实验到玻尔量子化模型，建立原子的量子化描述。","sections":[
       {"name":"1.1 玻尔模型","color":"#2563eb","desc":"氢原子能级","items":[

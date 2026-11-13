@@ -1051,7 +1051,6 @@ SUBJECT_LIST = [
     ("ACOUSTICS", "声学", "ACOUSTICS", "声波·超声·噪声", CROSS_TOPICS),
     # 量子原子核 -> QUANTUM_TOPICS
     ("QUANTUM_MECHANICS", "量子力学", "QM", "波函数·算符·薛定谔", QUANTUM_TOPICS),
-    ("ATOMIC_PHYSICS", "原子物理", "ATOMIC PHYSICS", "原子结构·光谱", QUANTUM_TOPICS),
     ("NUCLEAR_PHYSICS", "核物理", "NUCLEAR PHYSICS", "核结构·衰变·核反应", QUANTUM_TOPICS),
     # 实验 -> CROSS_TOPICS
     ("EXPERIMENTAL_PHYSICS", "基础物理实验", "EXPERIMENTAL", "测量·误差·基础实验", CROSS_TOPICS),
@@ -1108,9 +1107,11 @@ for name, ch_title, en, sub, pool in SUBJECT_LIST:
 # ============================================================
 from qcii_qc import chapters as qc_chapters
 from qcii_qi import chapters as qi_chapters
+from gen_atomic import chapters as atomic_chapters
 
 dump_var("QUANTUM_COMPUTING", qc_chapters())
 dump_var("QUANTUM_INFORMATION", qi_chapters())
+dump_var("ATOMIC_PHYSICS", atomic_chapters())
 
 
 # ============================================================
