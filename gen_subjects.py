@@ -1934,6 +1934,9 @@ for s in SUBJECTS:
         prefix = fn.replace("-","_").replace(".html","")
         s["chapters"] = expand_subject(fn, SUBJECT_MAP[fn], prefix)
 
+from semiconductor_textbook import SUBJECT as SEMICONDUCTOR_TEXTBOOK
 for s in SUBJECTS:
+    if s["filename"] == SEMICONDUCTOR_TEXTBOOK["filename"]:
+        s = SEMICONDUCTOR_TEXTBOOK
     write_subject(s)
 print(f"\nDone! Generated {len(SUBJECTS)} subject pages.")

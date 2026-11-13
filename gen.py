@@ -356,9 +356,9 @@ function renderLa(){{
   }});
   root.innerHTML = html;
   const kCount = Object.keys(LA_KP).length;
-  const fCount = (root.innerHTML.match(/\\$\\$/g) || []).length;
+  const fCount = Object.values(LA_KP).reduce((n, rec) => n + rec.item.body.split(String.fromCharCode(92) + '[').length - 1 + Math.floor((rec.item.body.split('$$').length - 1) / 2), 0);
   document.getElementById('laKCount').textContent = kCount;
-  document.getElementById('laFCount').textContent = Math.round(fCount / 2);
+  document.getElementById('laFCount').textContent = fCount;
 }}
 function showLaItem(id){{
   const rec = LA_KP[id];
